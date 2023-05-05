@@ -1,16 +1,16 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD
-        define(['leaflet', 'maplibre-gl'], factory);
+        define(['leaflet', '@maptiler/sdk'], factory);
     } else if (typeof exports === 'object') {
         // Node, CommonJS-like
-        module.exports = factory(require('leaflet'), require('maplibre-gl'));
+        module.exports = factory(require('leaflet'), require('@maptiler/sdk'));
     } else {
         // Browser globals (root is window)
-        root.returnExports = factory(root.L, root.maplibregl);
+        root.returnExports = factory(root.L, root.maptilersdk);
     }
-}(typeof globalThis !== 'undefined' ? globalThis : this || self, function (L, maplibregl) {
-    L.MaplibreGL = L.Layer.extend({
+}(typeof globalThis !== 'undefined' ? globalThis : this || self, function (L, maptilersdk) {
+    L.MaptilerSDK = L.Layer.extend({
             options: {
             updateInterval: 32,
             // How much to extend the overlay view (relative to map size)
@@ -70,7 +70,7 @@
             };
         },
 
-        getMaplibreMap: function () {
+        getMaptilerMap: function () {
             return this._glMap;
         },
 
@@ -120,14 +120,36 @@
         _initGL: function () {
             var center = this._map.getCenter();
 
-            var options = L.extend({}, this.options, {
-                container: this._container,
-                center: [center.lng, center.lat],
-                zoom: this._map.getZoom() - 1,
-                attributionControl: false
-            });
+            let style = this.options.style;
+            let apiKey = this.options.apiKey;
 
-            this._glMap = new maplibregl.Map(options);
+            // If the style is a MapTiler style, then it will probably come with an API key
+            if (this.options.style.startsWith("https://api.maptiler.com/maps/")) {
+              try {
+                const styleURL = new URL(this.options.style);
+                const apiKeyFromURL = styleURL.searchParams.get("key");
+
+                if (apiKeyFromURL) {
+                  apiKey = apiKeyFromURL;
+                  styleURL.searchParams.delete("key");
+                  style = styleURL.href;
+                }
+              } catch(e) {
+                console.error(e);
+              }
+            }
+
+            const options = {
+              ...this.options,
+              style,
+              apiKey,
+              container: this._container,
+              center: [center.lng, center.lat],
+              zoom: this._map.getZoom() - 1,
+              attributionControl: false
+            }
+
+            this._glMap = new maptilersdk.Map(options);
 
             // allow GL base map to pan beyond min/max latitudes
             this._glMap.transform.latRange = null;
@@ -135,12 +157,7 @@
 
             this._transformGL(this._glMap);
 
-            if (this._glMap._canvas.canvas) {
-                // older versions of mapbox-gl surfaced the canvas differently
-                this._glMap._actualCanvas = this._glMap._canvas.canvas;
-            } else {
-                this._glMap._actualCanvas = this._glMap._canvas;
-            }
+            this._glMap._actualCanvas = this._glMap._canvas;
 
             // treat child <canvas> element like L.ImageOverlay
             var canvas = this._glMap._actualCanvas;
@@ -197,7 +214,7 @@
             // calling setView directly causes sync issues because it uses requestAnimFrame
 
             var tr = gl.transform;
-            tr.center = maplibregl.LngLat.convert([center.lng, center.lat]);
+            tr.center = maptilersdk.LngLat.convert([center.lng, center.lat]);
             tr.zoom = this._map.getZoom() - 1;
         },
 
@@ -279,8 +296,8 @@
         }
     });
 
-    L.maplibreGL = function (options) {
-        return new L.MaplibreGL(options);
+    L.maptilerSDK = function (options) {
+        return new L.MaptilerSDK(options);
     };
 
 }));

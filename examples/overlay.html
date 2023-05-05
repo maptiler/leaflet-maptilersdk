@@ -6,10 +6,10 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
-  <!-- Maplibre GL -->
-  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel='stylesheet' />
-  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
-  <script src="../leaflet-maplibre-gl.js"></script>
+  <!-- MapTiler SDK -->
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
+  <script src="../leaflet-maptilersdk.js"></script>
   <style>
     html, body, #map {
       width: 100%;
@@ -24,9 +24,9 @@
 
 	<script>
     var map = new L.Map('map');
-		var gl = L.maplibreGL({
+		var gl = L.maptilerSDK({
       // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-      style: 'https://api.maptiler.com/maps/basic/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=bod4IIn9bwK8mnZIk49v'
     }).addTo(map);
 
 		var	bounds = new L.LatLngBounds(

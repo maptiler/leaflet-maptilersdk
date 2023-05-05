@@ -1,20 +1,21 @@
 {
-  "name": "@maplibre/maplibre-gl-leaflet",
+  "name": "@maptiler/maptilersdk-leaflet",
   "version": "0.0.20",
-  "description": "binding from maplibre gl to the leaflet api",
-  "main": "leaflet-maplibre-gl.js",
+  "description": "binding from MapTiler SDK to the leaflet api",
+  "main": "leaflet-maptilersdk.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "jshint leaflet-maplibre-gl.js"
+    "test": "jshint leaflet-maptilersdk.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/maplibre/maplibre-gl-leaflet.git"
+    "url": "https://github.com/maptiler/maptilersdk-leaflett.git"
   },
   "keywords": [
-    "maplibre",
+    "maptiler",
+    "SDK",
     "gl",
     "leaflet",
     "leafletjs",
@@ -22,16 +23,16 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/maplibre/maplibre-gl-leaflet/issues"
+    "url": "https://github.com/maptiler/maptilersdk-leaflet/issues"
   },
-  "homepage": "https://github.com/maplibre/maplibre-gl-leaflet",
+  "homepage": "https://github.com/maptiler/maptilersdk-leaflet",
   "devDependencies": {
     "jshint": "^2.10.1"
   },
   "peerDependencies": {
     "@types/leaflet": "^1.9.0",
     "leaflet": "^1.9.3",
-    "maplibre-gl": "^2.4.0"
+    "@maptiler/maptilersdk": "^1.0.12"
   },
-  "types": "leaflet-maplibre-gl.d.ts"
+  "types": "leaflet-maptilersdk.d.ts"
 }

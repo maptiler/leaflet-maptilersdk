@@ -16,13 +16,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
-    <!-- Maplibre GL -->
-    <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel='stylesheet' />
-    <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+    <!-- MapTiler SDK -->
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
   </head>
   <body>
   <div id="map"></div>
-  <script src="../leaflet-maplibre-gl.js"></script>
+  <script src="../leaflet-maptilersdk.js"></script>
   <script>
   var leafletMap = L.map('map').setView([38.912753, -77.032194], 2);
 
@@ -31,32 +31,32 @@
     .addTo(leafletMap)
     .openPopup();
 
-  var gl = L.maplibreGL({
+  var gl = L.maptilerSDK({
     padding: 0.1,
     // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-    style: 'https://api.maptiler.com/maps/basic/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
+    style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=bod4IIn9bwK8mnZIk49v',
     interactive: true
   }).addTo(leafletMap);
 
-  var maplibreMap = gl.getMaplibreMap();
+  var maptilerMap = gl.getMaptilerMap();
 
-  maplibreMap.on('load', () => {
-    console.log('MAPLIBRE map loaded');
+  maptilerMap.on('load', () => {
+    console.log('MapTiler SDK map loaded');
 
-    // let's see events on maplibre map
-    maplibreMap.on('mousemove', () => { console.log('MAPLIBRE mousemove') });
-    maplibreMap.on('mouseenter', () => { console.log('MAPLIBRE mouseenter') });
-    maplibreMap.on('mouseout', () => { console.log('MAPLIBRE mouseout') });
-    maplibreMap.on('mouseleave', () => { console.log('MAPLIBRE mouseleave') });
-    maplibreMap.on('mouseover', () => { console.log('MAPLIBRE mouseover') });
+    // let's see events on MapTiler SDK map
+    maptilerMap.on('mousemove', () => { console.log('MapTiler SDK mousemove') });
+    maptilerMap.on('mouseenter', () => { console.log('MapTiler SDK mouseenter') });
+    maptilerMap.on('mouseout', () => { console.log('MapTiler SDK mouseout') });
+    maptilerMap.on('mouseleave', () => { console.log('MapTiler SDK mouseleave') });
+    maptilerMap.on('mouseover', () => { console.log('MapTiler SDK mouseover') });
 
     // let's add some layer and fire events on it
 
-    maplibreMap.addSource('states', {
+    maptilerMap.addSource('states', {
       'type': 'geojson',
       'data': 'https://docs.mapbox.com/mapbox-gl-js/assets/us_states.geojson'
     });
-    maplibreMap.addLayer({
+    maptilerMap.addLayer({
       'id': 'state-fills',
       'type': 'fill',
       'source': 'states',
@@ -67,10 +67,10 @@
       }
     });
 
-    maplibreMap.on('mouseenter', 'state-fills', (e) => {console.log('state-fills mouseenter', e) });
-    maplibreMap.on('mousemove', 'state-fills', (e) => {console.log('state-fills mousemove', e) });
-    maplibreMap.on('mouseout', 'state-fills', (e) => {console.log('state-fills mouseout', e) });
-    maplibreMap.on('mouseleave', 'state-fills', (e) => {console.log('state-fills mouseleave', e) });
+    maptilerMap.on('mouseenter', 'state-fills', (e) => {console.log('state-fills mouseenter', e) });
+    maptilerMap.on('mousemove', 'state-fills', (e) => {console.log('state-fills mousemove', e) });
+    maptilerMap.on('mouseout', 'state-fills', (e) => {console.log('state-fills mouseout', e) });
+    maptilerMap.on('mouseleave', 'state-fills', (e) => {console.log('state-fills mouseleave', e) });
 
   });
 
