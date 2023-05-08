@@ -10,6 +10,7 @@
         root.returnExports = factory(root.L, root.maptilersdk);
     }
 }(typeof globalThis !== 'undefined' ? globalThis : this || self, function (L, maptilersdk) {
+
     L.MaptilerSDK = L.Layer.extend({
             options: {
             updateInterval: 32,
@@ -20,7 +21,7 @@
             // events on the maptiler sdk overlay
             interactive: false,
             // set the tilepane as the default pane to draw gl tiles
-            pane: 'tilePane'
+            pane: 'tilePane',
         },
 
         initialize: function (options) {
@@ -315,7 +316,18 @@
     });
 
     L.maptilerSDK = function (options) {
-        return new L.MaptilerSDK(options);
+      let attribution = "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e";
+      
+      console.log("options", options);
+
+      if (options.attribution) {
+        attribution += ` ${options.attribution}`;
+      }
+
+      return new L.MaptilerSDK({
+        ...options,
+        attribution,
+      });
     };
 
 }));
