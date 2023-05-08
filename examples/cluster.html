@@ -25,14 +25,14 @@
 <body>
 <div id="map"></div>
 
-<script src="../leaflet-maptilersdk.js"></script>
+<script src="../maptilersdk-leaflet.js"></script>
 <script>
 
-var map = L.map('map', {maxZoom: 17}).setView([-37.821, 175.219], 16);
+var map = L.map('map', {maxZoom: 22}).setView([-37.821, 175.219], 16);
 
 var gl = L.maptilerSDK({
     // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-    style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=YOUR_TOKEN'
+    style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=YOUR_MAPTILER_API_KEY'
 }).addTo(map);
 
 var markers = L.markerClusterGroup();

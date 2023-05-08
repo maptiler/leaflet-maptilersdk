@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.0.0 - 2023-05-08
+
+### Changed
+
+- This fork is intended to support MapTiler SDK instead of MapLibre GL JS
+
 ## Unreleased
 
 - Fix [#29](https://github.com/maplibre/maplibre-gl-leaflet/issues/29) - layer is mis-aligned with map when panning the map off screen ([#31](https://github.com/maplibre/maplibre-gl-leaflet/pulls/31))

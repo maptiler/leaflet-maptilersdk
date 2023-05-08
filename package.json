@@ -1,17 +1,17 @@
 {
   "name": "@maptiler/maptilersdk-leaflet",
-  "version": "0.0.20",
-  "description": "binding from MapTiler SDK to the leaflet api",
-  "main": "leaflet-maptilersdk.js",
+  "version": "1.0.0",
+  "description": "Binding from MapTiler SDK to the Leaflet api",
+  "main": "maptilersdk-leaflet.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "jshint leaflet-maptilersdk.js"
+    "test": "echo 'no test yet.'"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/maptiler/maptilersdk-leaflett.git"
+    "url": "https://github.com/maptiler/maptilersdk-leaflet.git"
   },
   "keywords": [
     "maptiler",
@@ -34,5 +34,5 @@
     "leaflet": "^1.9.3",
     "@maptiler/maptilersdk": "^1.0.12"
   },
-  "types": "leaflet-maptilersdk.d.ts"
+  "types": "maptilersdk-leaflet.d.ts"
 }
