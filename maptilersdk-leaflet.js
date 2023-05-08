@@ -36,6 +36,18 @@
                 this._initContainer();
             }
 
+            // Adding MapTiler logo + link
+            const maptilerLink = document.createElement("a");
+            maptilerLink.href = "https://www.maptiler.com";
+            maptilerLink.style = "position:absolute; left:10px; bottom:2px; z-index:999;";
+            const maptilerLogo = document.createElement("img");
+            maptilerLogo.src = "https://api.maptiler.com/resources/logo.svg";
+            maptilerLogo.alt = "MapTiler logo";
+            maptilerLogo.width = "100";
+            maptilerLogo.height = "30";
+            maptilerLink.appendChild(maptilerLogo);
+            map.getContainer().appendChild(maptilerLink);
+
             var paneName = this.getPaneName();
             map.getPane(paneName).appendChild(this._container);
 
@@ -318,8 +330,6 @@
     L.maptilerSDK = function (options) {
       let attribution = "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e";
       
-      console.log("options", options);
-
       if (options.attribution) {
         attribution += ` ${options.attribution}`;
       }
