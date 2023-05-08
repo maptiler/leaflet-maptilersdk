@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>WebGL</title>
+    <title>Cluster</title>
     <meta charset="utf-8">
     <style>#map { width: 800px; height: 600px; }</style>
 
@@ -28,19 +28,20 @@
 <script src="../maptilersdk-leaflet.js"></script>
 <script>
 
-var map = L.map('map', {maxZoom: 22}).setView([-37.821, 175.219], 16);
+const map = L.map('map', {maxZoom: 22}).setView([-37.821, 175.219], 16);
 
-var gl = L.maptilerSDK({
-    // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-    style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=YOUR_MAPTILER_API_KEY'
+const gl = L.maptilerSDK({
+  // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
+  style: "streets-v2",
+  apiKey: "YOUR_MAPTILER_API_KEY",
 }).addTo(map);
 
-var markers = L.markerClusterGroup();
+const markers = L.markerClusterGroup();
 
-for (var i = 0; i < addressPoints.length; i++) {
-    var a = addressPoints[i];
-    var title = a[2];
-    var marker = L.marker(new L.LatLng(a[0], a[1]), { title: title });
+for (let i = 0; i < addressPoints.length; i++) {
+    const a = addressPoints[i];
+    const title = a[2];
+    const marker = L.marker(new L.LatLng(a[0], a[1]), { title: title });
     marker.bindPopup(title);
     markers.addLayer(marker);
 }

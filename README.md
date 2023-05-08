@@ -26,54 +26,11 @@ You can also use any of the MapTiler style shorthand alongside the `apiKey` opti
 ```javascript
 var gl = L.maptilerSDK({
 	style: "streets-v2",
-    apiKey: "YOUR_MAPTILER_API_KEY",
+  apiKey: "YOUR_MAPTILER_API_KEY",
 }).addTo(map);
 ```
 
 Get an API key with the generous free plan at [cloud.maptiler.com](https://cloud.maptiler.com/)
-
-<details>
-  <summary>🎨 Expand to list of the MapTiler styles</summary>
-
-- `"streets-v2"`
-- `"streets-v2-dark"`
-- `"streets-v2-light"`
-- `"streets-v2-night"`
-- `"streets-v2-pastel"`
-- `"dataviz"`
-- `"dataviz-dark"`
-- `"dataviz-light"`
-- `"outdoor-v2"`
-- `"outdoor-v2-dark"`
-- `"winter-v2"`
-- `"winter-v2-dark"`
-- `"satellite"`
-- `"hybrid"`
-- `"basic-v2"`
-- `"basic-v2-dark"`
-- `"basic-v2-light"`
-- `"bright-v2"`
-- `"bright-v2-dark"`
-- `"bright-v2-light"`
-- `"bright-v2-pastel"`
-- `"openstreetmap"`
-- `"topo-v2"`
-- `"topo-v2-dark"`
-- `"topo-v2-shiny"`
-- `"topo-v2-pastel"`
-- `"topo-v2-topographique"`
-- `"voyager-v2"`
-- `"voyager-v2-darkmatter"`
-- `"voyager-v2-positron"`
-- `"voyager-v2-vintage"`
-- `"toner-v2"`
-- `"toner-v2-background"`
-- `"toner-v2-lite"`
-- `"toner-v2-lines"`
-- `"Ocean"`
-
-You can also create your custom styles on [cloud.maptiler.com/maps](https://cloud.maptiler.com/maps/)
-</details>  
 
 Once you have created the leaflet layer, the MapTiler SDK `Map` instance can be accessed using
 ```javascript
@@ -121,10 +78,135 @@ Create a new MapTiler SDK layer in a Leaflet-compatible wrapper.
 so consult [documentation]https://docs.maptiler.com/sdk-js/api/map/)
 for the full range.
 
-| Option | Value | Description |
-| ---- | ---- | ---- |
-| padding | number | [0.15] | Relative padding of the MapTiler SDK layer to avoid the background flickering around the edges of the map |
-| interactive | boolean | [false] | Wheter or not to register the mouse and keyboard events on the MapTiler SDK layer. Turn this on if you intend to use the MapTiler SDK layer events. |
+Here are the major options:
+
+- `geolocate`: [boolean] if `true`, will locate the user and center the map accordingly. Note that Leaflet still requires the use of `.setView()` but this will be ignored. Default: `false`.
+- `language`: [string] by default is using the language from the system settings, and falls back to local names. Yet the language can be enforced with one from the list below. Default: `"auto"` <details>
+  <summary>See the list of possible languages</summary>
+
+  - `"auto"`: uses the language of the browser 
+  - `"style_lock"`: maintains the language as defined in the style.json
+  - `"latin"`: default language that uses latin charset
+  - `"nonlatin"`: default language that uses non-latin charset
+  - `""` (empty string): Labels are in their local language, when available
+  - `"sq"`: Albanian
+  - `"am"`: Amharic
+  - `"ar"`: Arabic (right-to-left)
+  - `"hy"`: Armenian
+  - `"az"`: Azerbaijani
+  - `"eu"`: Basque
+  - `"be"`: Belorussian
+  - `"bs"`: Bosnian
+  - `"br"`: Breton
+  - `"bg"`: Bulgarian
+  - `"ca"`: Catalan
+  - `"zh"`: Chinese
+  - `"co"`: Corsican
+  - `"hr"`: Croatian
+  - `"cs"`: Czech
+  - `"da"`: Danish
+  - `"nl"`: Dutch
+  - `"en"`: English
+  - `"eo"`: Esperanto
+  - `"et"`: Estonian
+  - `"fi"`: Finnish
+  - `"fr"`: French
+  - `"fy"`: Frisian
+  - `"ka"`: Geordian
+  - `"de"`: German
+  - `"el"`: Greek
+  - `"he"`: Hebrew (right-to-left)
+  - `"hi"`: Hindi
+  - `"hu"`: Hungarian
+  - `"is"`: Icelandic
+  - `"id"`: Indonesian
+  - `"ga"`: Irish
+  - `"it"`: Italian
+  - `"ja"`: Japanese
+  - `"ja-Hira"`: Japanese Hiragana
+  - `"ja_kana"`: Japanese Kana
+  - `"ja_rm"`: Japanese Latin
+  - `"kn"`: Kannada
+  - `"kk"`: Kazakh
+  - `"ko"`: Korean
+  - `"ko-Latn"`: Korean with latin charset
+  - `"ku"`: Kurdish
+  - `"la"`: Roman Latin
+  - `"lv"`: Latvian
+  - `"lt"`: Lithuanian
+  - `"lb"`: Luxembourgish
+  - `"mk"`: Macedonian
+  - `"ml"`: Malayalam
+  - `"mt"`: Maltese
+  - `"no"`: Norwegian
+  - `"oc"`: Occitan
+  - `"pl"`: Polish
+  - `"pt"`: Portuguese
+  - `"ro"`: Romanian
+  - `"rm"`: Romansh
+  - `"ru"`: Russian
+  - `"gd"`: Scottish Gaelic
+  - `"sr"`: Serbian (Cyrillic charset)
+  - `"sr-Latn"`: Serbian (Latin chaset)
+  - `"sk"`: Slovak
+  - `"sl"`: Sloven
+  - `"es"`: Spanish
+  - `"sv"`: Swedish
+  - `"ta"`: Tamil
+  - `"te"`: Telugu
+  - `"th"`: Thai
+  - `"tr"`: Turkish
+  - `"uk"`: Ukrainian
+  - `"cy"`: Welsh
+</details>
+
+- `style`: [string] MapTiler has created many professional-looking styles that may suit your particular need. Directly from the constructor, you can specify the short style ID. Default: `"streets-v2"` <details>
+  <summary>🎨 Expand to list of the MapTiler style IDs</summary>
+
+  - `"streets-v2"`
+  - `"streets-v2-dark"`
+  - `"streets-v2-light"`
+  - `"streets-v2-night"`
+  - `"streets-v2-pastel"`
+  - `"dataviz"`
+  - `"dataviz-dark"`
+  - `"dataviz-light"`
+  - `"outdoor-v2"`
+  - `"outdoor-v2-dark"`
+  - `"winter-v2"`
+  - `"winter-v2-dark"`
+  - `"satellite"`
+  - `"hybrid"`
+  - `"basic-v2"`
+  - `"basic-v2-dark"`
+  - `"basic-v2-light"`
+  - `"bright-v2"`
+  - `"bright-v2-dark"`
+  - `"bright-v2-light"`
+  - `"bright-v2-pastel"`
+  - `"openstreetmap"`
+  - `"topo-v2"`
+  - `"topo-v2-dark"`
+  - `"topo-v2-shiny"`
+  - `"topo-v2-pastel"`
+  - `"topo-v2-topographique"`
+  - `"voyager-v2"`
+  - `"voyager-v2-darkmatter"`
+  - `"voyager-v2-positron"`
+  - `"voyager-v2-vintage"`
+  - `"toner-v2"`
+  - `"toner-v2-background"`
+  - `"toner-v2-lite"`
+  - `"toner-v2-lines"`
+  - `"Ocean"`
+
+  You can also create your custom styles on [cloud.maptiler.com/maps](https://cloud.maptiler.com/maps/)
+</details>  
+
+- `apiKey`: [string] your MapTiler Cloud API key. Default: empty string
+- `terrain`: [boolean] Enables the terrain elevation is `true`. Leaflet is not able to tilt the map, yet, once enabled, the terrain will create a nice parallax effect seen from above, especially visible with a `terrainExaggeration` above `2.5`. Default: `false`
+- `terrainExaggeration`: [number] exagerration factor applied to the terrain. Default: `1`
+ 
 
 ### `layer.addTo(map)`
 

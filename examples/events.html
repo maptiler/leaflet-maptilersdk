@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WebGL</title>
+    <title>Events</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -31,14 +31,15 @@
     .addTo(leafletMap)
     .openPopup();
 
-  var gl = L.maptilerSDK({
+  const gl = L.maptilerSDK({
     padding: 0.1,
     // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-    style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=YOUR_MAPTILER_API_KEY',
+    style: "streets-v2",
+    apiKey: "YOUR_MAPTILER_API_KEY",
     interactive: true
   }).addTo(leafletMap);
 
-  var maptilerMap = gl.getMaptilerMap();
+  const maptilerMap = gl.getMaptilerMap();
 
   maptilerMap.on('load', () => {
     console.log('MapTiler SDK map loaded');

@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Leaflet debug page</title>
+	<title>Overlay</title>
 
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
@@ -24,21 +24,25 @@
 	<div id="map"></div>
 
 	<script>
-    var map = new L.Map('map');
-		var gl = L.maptilerSDK({
+    const map = new L.Map('map');
+
+		const gl = L.maptilerSDK({
       // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
       style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=YOUR_MAPTILER_API_KEY'
     }).addTo(map);
 
-		var	bounds = new L.LatLngBounds(
+		const	bounds = new L.LatLngBounds(
 			new L.LatLng(40.71222,-74.22655),
 			new L.LatLng(40.77394,-74.12544));
+
 		map.fitBounds(bounds);
-		var overlay = new L.ImageOverlay("https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg", bounds, {
+
+		const overlay = new L.ImageOverlay("https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg", bounds, {
 			opacity: 0.5,
 			interactive: true,
 			attribution: '&copy; A.B.B Corp.'
 		});
+
 		map.addLayer(overlay);
 		overlay.on('dblclick',function (e) {
 			console.log('Double click on image.');

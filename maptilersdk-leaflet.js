@@ -149,7 +149,23 @@
               attributionControl: false
             }
 
+            // if the geolocate MapTiiler SDK option was given, then the center should be removed
+            if (this.options.geolocate) {
+              delete options.center;
+              delete options.zoom;
+            }
+
             this._glMap = new maptilersdk.Map(options);
+
+            this._glMap.transform.freezeElevation = true;
+
+            // if the geolocate MapTiiler SDK option was given, then we need to propagate the actual center to Leaflet map
+            if (this.options.geolocate) {
+              this._glMap.on("load", (e) => {
+                this._map.setView(this._glMap.getCenter(), this._glMap.getZoom() + 1 );
+              })
+            }
+            
 
             // allow GL base map to pan beyond min/max latitudes
             this._glMap.transform.latRange = null;
@@ -158,6 +174,8 @@
             this._transformGL(this._glMap);
 
             this._glMap._actualCanvas = this._glMap._canvas;
+
+            
 
             // treat child <canvas> element like L.ImageOverlay
             var canvas = this._glMap._actualCanvas;

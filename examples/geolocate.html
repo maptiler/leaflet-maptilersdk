@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>WebGL</title>
+    <title>Geolocate</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -27,17 +27,15 @@
 
 <script src="../maptilersdk-leaflet.js"></script>
 <script>
-const map = L.map('map').setView([38.912753, -77.032194], 15);
 
-L.marker([38.912753, -77.032194])
-  .bindPopup("Hello <b>Leaflet with MapTiler SDK</b>!<br>Whoa, it works!")
-  .addTo(map)
-  .openPopup();
+// Leaflet still requires to set the view, 
+// but this is going to be superseded by the `geolocate: true` options
+const map = L.map('map').setView([0, 0], 0);
 
 const gl = L.maptilerSDK({
-  // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
   style: "streets-v2",
   apiKey: "YOUR_MAPTILER_API_KEY",
+  geolocate: true,
 }).addTo(map);
 
 </script>
