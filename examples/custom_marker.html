@@ -29,17 +29,29 @@
 <script>
 const map = L.map('map').setView([45.9767521, 7.6569418], 12);
 
-L.marker([45.9767521, 7.6569418])
-  .bindPopup("Hello <b>Leaflet with MapTiler SDK</b>!<br>Whoa, it works!")
+
+const LeafIcon = L.Icon.extend({
+		options: {
+			shadowUrl: "leaf_shadow.png",
+			iconSize:     [38, 95],
+			shadowSize:   [50, 64],
+			iconAnchor:   [22, 94],
+			shadowAnchor: [4, 62],
+			popupAnchor:  [-3, -76]
+		}
+	});
+
+const leafIcon = new LeafIcon({iconUrl: "leaf_marker.png"});
+
+L.marker([45.9767521, 7.6569418], {icon: leafIcon})
   .addTo(map)
   .openPopup();
 
 const gl = L.maptilerSDK({
   // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-  style: "winter-v2",
+  style: "outdoor-v2",
   apiKey: "YOUR_MAPTILER_API_KEY",
 }).addTo(map);
-
 
 </script>
 </body>

@@ -27,6 +27,8 @@
         initialize: function (options) {
             L.setOptions(this, options);
 
+            
+
             // setup throttling the update event when panning
             this._throttledUpdate = L.Util.throttle(this._update, this.options.updateInterval, this);
         },
@@ -59,6 +61,9 @@
             if (map.options.zoomAnimation) {
                 L.DomEvent.on(map._proxy, L.DomUtil.TRANSITION_END, this._transitionEnd, this);
             }
+
+            // Adding MapTiler attribution
+            map.attributionControl.addAttribution("\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e");
         },
 
         onRemove: function (map) {
@@ -328,16 +333,7 @@
     });
 
     L.maptilerSDK = function (options) {
-      let attribution = "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e";
-      
-      if (options.attribution) {
-        attribution += ` ${options.attribution}`;
-      }
-
-      return new L.MaptilerSDK({
-        ...options,
-        attribution,
-      });
+      return new L.MaptilerSDK(options);
     };
 
 }));

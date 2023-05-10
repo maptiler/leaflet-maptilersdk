@@ -28,7 +28,8 @@
 
 		const gl = L.maptilerSDK({
       // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-      style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=YOUR_MAPTILER_API_KEY'
+      style: "winter-v2",
+      apiKey: "YOUR_MAPTILER_API_KEY",
     }).addTo(map);
 
 		const	bounds = new L.LatLngBounds(
