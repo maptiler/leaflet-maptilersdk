@@ -65,14 +65,14 @@
 <body>
 
 <div id='map'></div>
-<script src="../maptilersdk-leaflet.js"></script>
+<script src="../leaflet-maptilersdk.js"></script>
 <script type="text/javascript" src="us-states.js"></script>
 
 <script type="text/javascript">
 
   const map = L.map('map').setView([37.8, -96], 5);
 
-  const gl = L.maptilerSDK({
+  const mtLayer = L.maptilerLayer({
     // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
     style: "dataviz-light",
     apiKey: "YOUR_MAPTILER_API_KEY",

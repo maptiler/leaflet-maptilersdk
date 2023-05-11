@@ -1,8 +1,8 @@
 {
-  "name": "@maptiler/maptilersdk-leaflet",
+  "name": "@maptiler/leaflet-maptilersdk",
   "version": "1.0.0",
-  "description": "Binding from MapTiler SDK to the Leaflet api",
-  "main": "maptilersdk-leaflet.js",
+  "description": "Vector tiles basemap plugin for Leaflet - multi-lingual basemaps using MapTiler SDK",
+  "main": "leaflet-maptilersdk.js",
   "directories": {
     "example": "examples"
   },
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/maptiler/maptilersdk-leaflet.git"
+    "url": "https://github.com/maptiler/leaflet-maptilersdk.git"
   },
   "keywords": [
     "maptiler",
@@ -23,9 +23,9 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/maptiler/maptilersdk-leaflet/issues"
+    "url": "https://github.com/maptiler/leaflet-maptilersdk/issues"
   },
-  "homepage": "https://github.com/maptiler/maptilersdk-leaflet",
+  "homepage": "https://github.com/maptiler/leaflet-maptilersdk",
   "devDependencies": {
     "jshint": "^2.10.1"
   },
@@ -34,5 +34,5 @@
     "leaflet": "^1.9.3",
     "@maptiler/maptilersdk": "^1.0.12"
   },
-  "types": "maptilersdk-leaflet.d.ts"
+  "types": "leaflet-maptilersdk.d.ts"
 }

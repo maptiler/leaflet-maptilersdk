@@ -10,7 +10,7 @@
   <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
   <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
   
-  <script src="../maptilersdk-leaflet.js"></script>
+  <script src="../leaflet-maptilersdk.js"></script>
   <style>
     html, body, #map {
       width: 100%;
@@ -26,7 +26,7 @@
 	<script>
     const map = new L.Map('map');
 
-		const gl = L.maptilerSDK({
+		const mtLayer = L.maptilerLayer({
       // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
       style: "winter-v2",
       apiKey: "YOUR_MAPTILER_API_KEY",

@@ -5,9 +5,9 @@ import { Map, MapOptions } from '@maptiler/sdk';
 declare module 'leaflet' {
     type LeafletMaptilerSDKOptions = Omit<MapOptions, "container">;
 
-    class MaptilerSDK extends L.Layer {
+    class maptilerLayer extends L.Layer {
         constructor(options: LeafletMaptilerSDKOptions);
-        getMaptilerMap(): Map
+        getMaptilerSDKMap(): Map
         getCanvas(): HTMLCanvasElement
         getSize(): L.Point
         getBounds(): L.LatLngBounds

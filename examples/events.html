@@ -22,7 +22,7 @@
   </head>
   <body>
   <div id="map"></div>
-  <script src="../maptilersdk-leaflet.js"></script>
+  <script src="../leaflet-maptilersdk.js"></script>
   <script>
   var leafletMap = L.map('map').setView([38.912753, -77.032194], 2);
 
@@ -31,7 +31,7 @@
     .addTo(leafletMap)
     .openPopup();
 
-  const gl = L.maptilerSDK({
+  const mtLayer = L.maptilerLayer({
     padding: 0.1,
     // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
     style: "streets-v2",
@@ -39,7 +39,7 @@
     interactive: true
   }).addTo(leafletMap);
 
-  const maptilerMap = gl.getMaptilerMap();
+  const maptilerMap = gl.getMaptilerSDKMap();
 
   maptilerMap.on('load', () => {
     console.log('MapTiler SDK map loaded');

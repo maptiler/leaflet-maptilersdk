@@ -11,8 +11,8 @@
     }
 }(typeof globalThis !== 'undefined' ? globalThis : this || self, function (L, maptilersdk) {
 
-    L.MaptilerSDK = L.Layer.extend({
-            options: {
+    L.MaptilerLayer = L.Layer.extend({
+        options: {
             updateInterval: 32,
             // How much to extend the overlay view (relative to map size)
             // e.g. 0.1 would be 10% of map view in each direction
@@ -88,7 +88,7 @@
             };
         },
 
-        getMaptilerMap: function () {
+        getMaptilerSDKMap: function () {
             return this._glMap;
         },
 
@@ -118,6 +118,8 @@
             return this._map.getPane(this.options.pane) ? this.options.pane : 'tilePane';
         },
 
+        
+
         _roundPoint: function(p) {
             return {x: Math.round(p.x), y: Math.round(p.y)};
         },
@@ -142,7 +144,7 @@
             let apiKey = this.options.apiKey;
 
             // If the style is a MapTiler style, then it will probably come with an API key
-            if (this.options.style.startsWith("https://api.maptiler.com/maps/")) {
+            if ((typeof this.options.style === 'string' || this.options.style instanceof String) && this.options.style.startsWith("https://api.maptiler.com/maps/")) {
               try {
                 const styleURL = new URL(this.options.style);
                 const apiKeyFromURL = styleURL.searchParams.get("key");
@@ -332,8 +334,15 @@
         }
     });
 
-    L.maptilerSDK = function (options) {
-      return new L.MaptilerSDK(options);
+    
+
+    L.maptilerLayer = function (options) {
+      return new L.MaptilerLayer(options);
     };
+
+    Object.keys(maptilersdk.MapStyle).forEach((k) => {
+        L.MaptilerLayer[k] = maptilersdk.MapStyle[k];
+        L.maptilerLayer[k] = maptilersdk.MapStyle[k];
+    })
 
 }));
