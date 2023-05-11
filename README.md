@@ -12,21 +12,22 @@ This is a binding from [MapTiler SDK JS/TS](https://docs.maptiler.com/sdk-js/) t
 ## Code example
 ```javascript
 
-var map = L.map('map').setView([38.912753, -77.032194], 15);
+const map = L.map('map').setView([38.912753, -77.032194], 15);
 L.marker([38.912753, -77.032194])
     .bindPopup("Hello <b>Leaflet GL</b>!<br>Whoa, it works!")
     .addTo(map)
     .openPopup();
-var gl = L.maptilerSDK({
+
+const mtLayer = L.maptilerLayer({
     style: "https://api.maptiler.com/maps/streets-v2/style.json?key=YOUR_MAPTILER_API_KEY",
 }).addTo(map);
 ```
 
 You can also use any of the MapTiler style shorthand alongside the `apiKey` option:
 ```javascript
-var gl = L.maptilerSDK({
-	style: "streets-v2",
+const mtLayer = L.maptilerLayer({
   apiKey: "YOUR_MAPTILER_API_KEY",
+  style: L.MaptilerStyle.STREETS, // optional
 }).addTo(map);
 ```
 
@@ -34,16 +35,17 @@ Get an API key with the generous free plan at [cloud.maptiler.com](https://cloud
 
 Once you have created the leaflet layer, the MapTiler SDK `Map` instance can be accessed using
 ```javascript
-gl.getMaptilerMap()....
-// add a source to the MapTiler SDK layer
-gl.getMaptilerMap().addSource({...})
+const maptilerMap = mtLayer.getMaptilerMap();
+
+// add a source to the MapTiler SDK layer, just like you would do with the MapTiler SDK
+mtLayer.getMaptilerMap().addSource({...});
 ```
 
 ## Examples
 The [examples](examples) folder of this repository is a good place to start!
 
 ## Installation
-Add a script tag referencing maptilersdk-leaflet after adding leaflet and MapTiler SDK in your website:
+Add a script tag referencing leaflet-maptilersdk after adding leaflet and MapTiler SDK in your website:
 ```html
 <!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
@@ -54,23 +56,24 @@ Add a script tag referencing maptilersdk-leaflet after adding leaflet and MapTil
 <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
 
 <!-- MapTiler SDK + Leaflet bindings -->
-<script src="https://cdn.maptiler.com/maptilersdk-leaflet/latest/maptilersdk-leaflet.js"></script>
+<script src="https://cdn.maptiler.com/leaflet-maptilersdk/latest/leaflet-maptilersdk.js"></script>
 ```
 
 ## Motivation
-This project makes it possible to easily add a MapTiler SDK JS layer in your Leaflet map. When using maptilersdk-leaflet, you won't be able to use some of the MapTiler SDK features.
+This project makes it possible to easily add a MapTiler SDK JS layer in your Leaflet map. When using leaflet-maptilersdk, you won't be able to use some of the MapTiler SDK features.
 Here are the main differences between a "pure" MapTiler SDK map and a Leaflet map using maptilesdk-leaflet:
 - No rotation / bearing / pitch support
-- Slower performances: When using maptilersdk-leaflet, MapTiler SDK is set as not interactive. Leaflet receives the touch/mouse events and updates the MapTiler SDK map behind the scenes. Because MapTiler SDK doesn't redraw as fast as Leaflet, the map can seem slower.
+- Slower performances: When using leaflet-maptilersdk, MapTiler SDK is set as not interactive. Leaflet receives the touch/mouse events and updates the MapTiler SDK map behind the scenes. Because MapTiler SDK doesn't redraw as fast as Leaflet, the map can seem slower.
+- Terrain elevation is possible but will create a parallax effect that will result in a missalignment of other Leaflet features (markers, overlays, etc.)
 
-On the bright side, the maptilersdk-leaflet binding will allow you to use all the leaflet features and plugins.
+On the bright side, the leaflet-maptilersdk binding will allow you to use all the leaflet features and plugins.
 
 If you only need the MapTiler SDK features, you are probably better off using it directly.
 
 ## API Reference
-## `L.maptilerSDK(options)`
+## `L.maptilerLayer(options)`
 
-Create a new MapTiler SDK layer in a Leaflet-compatible wrapper.
+Create a new MapTiler SDK layer in a Leaflet-compatible wrapper. This is a *factory function* that under the hood creates an instance `new L.MaptilerLayer(options)` and returns it. Wrapping the contructor call with a factory function makes chaining possible, which is a concept at the heart of Leaflet API design.
 
 <span class='leaflet icon'>_Extends_: `L.Class`</span>
 
@@ -81,165 +84,171 @@ for the full range.
 Here are the major options:
 
 - `geolocate`: [boolean] if `true`, will locate the user and center the map accordingly. Note that Leaflet still requires the use of `.setView()` but this will be ignored. Default: `false`.
-- `language`: [string] by default is using the language from the system settings, and falls back to local names. Yet the language can be enforced with one from the list below. Default: `"auto"` <details>
+- `language`: [string] by default is using the language from the system settings, and falls back to local names. Yet the language can be enforced with one from the list below. Default: `L.MaptilerLanguage.AUTO` <details>
   <summary>See the list of possible languages</summary>
 
-  - `"auto"`: uses the language of the browser 
-  - `"style_lock"`: maintains the language as defined in the style.json
-  - `"latin"`: default language that uses latin charset
-  - `"nonlatin"`: default language that uses non-latin charset
-  - `""` (empty string): Labels are in their local language, when available
-  - `"sq"`: Albanian
-  - `"am"`: Amharic
-  - `"ar"`: Arabic (right-to-left)
-  - `"hy"`: Armenian
-  - `"az"`: Azerbaijani
-  - `"eu"`: Basque
-  - `"be"`: Belorussian
-  - `"bs"`: Bosnian
-  - `"br"`: Breton
-  - `"bg"`: Bulgarian
-  - `"ca"`: Catalan
-  - `"zh"`: Chinese
-  - `"co"`: Corsican
-  - `"hr"`: Croatian
-  - `"cs"`: Czech
-  - `"da"`: Danish
-  - `"nl"`: Dutch
-  - `"en"`: English
-  - `"eo"`: Esperanto
-  - `"et"`: Estonian
-  - `"fi"`: Finnish
-  - `"fr"`: French
-  - `"fy"`: Frisian
-  - `"ka"`: Geordian
-  - `"de"`: German
-  - `"el"`: Greek
-  - `"he"`: Hebrew (right-to-left)
-  - `"hi"`: Hindi
-  - `"hu"`: Hungarian
-  - `"is"`: Icelandic
-  - `"id"`: Indonesian
-  - `"ga"`: Irish
-  - `"it"`: Italian
-  - `"ja"`: Japanese
-  - `"ja-Hira"`: Japanese Hiragana
-  - `"ja_kana"`: Japanese Kana
-  - `"ja_rm"`: Japanese Latin
-  - `"kn"`: Kannada
-  - `"kk"`: Kazakh
-  - `"ko"`: Korean
-  - `"ko-Latn"`: Korean with latin charset
-  - `"ku"`: Kurdish
-  - `"la"`: Roman Latin
-  - `"lv"`: Latvian
-  - `"lt"`: Lithuanian
-  - `"lb"`: Luxembourgish
-  - `"mk"`: Macedonian
-  - `"ml"`: Malayalam
-  - `"mt"`: Maltese
-  - `"no"`: Norwegian
-  - `"oc"`: Occitan
-  - `"pl"`: Polish
-  - `"pt"`: Portuguese
-  - `"ro"`: Romanian
-  - `"rm"`: Romansh
-  - `"ru"`: Russian
-  - `"gd"`: Scottish Gaelic
-  - `"sr"`: Serbian (Cyrillic charset)
-  - `"sr-Latn"`: Serbian (Latin chaset)
-  - `"sk"`: Slovak
-  - `"sl"`: Sloven
-  - `"es"`: Spanish
-  - `"sv"`: Swedish
-  - `"ta"`: Tamil
-  - `"te"`: Telugu
-  - `"th"`: Thai
-  - `"tr"`: Turkish
-  - `"uk"`: Ukrainian
-  - `"cy"`: Welsh
+  - `L.MaptilerLanguage.AUTO` uses the language of the browser 
+  - `L.MaptilerLanguage.STYLE_LOCK` maintains the language as defined in the `style.json`
+  - `L.MaptilerLanguage.LATIN` default language that uses latin charset
+  - `L.MaptilerLanguage.NON_LATIN` default language that uses non-latin charset
+  - `L.MaptilerLanguage.LOCAL` Labels are in their local language, when available
+  - `L.MaptilerLanguage.ALBANIAN`
+  - `L.MaptilerLanguage.AMHARIC`
+  - `L.MaptilerLanguage.ARABIC`
+  - `L.MaptilerLanguage.ARMENIAN`
+  - `L.MaptilerLanguage.AZERBAIJANI`
+  - `L.MaptilerLanguage.BASQUE`
+  - `L.MaptilerLanguage.BELORUSSIAN`
+  - `L.MaptilerLanguage.BOSNIAN`
+  - `L.MaptilerLanguage.BRETON`
+  - `L.MaptilerLanguage.BULGARIAN`
+  - `L.MaptilerLanguage.CATALAN`
+  - `L.MaptilerLanguage.CHINESE`
+  - `L.MaptilerLanguage.CORSICAN`
+  - `L.MaptilerLanguage.CROATIAN`
+  - `L.MaptilerLanguage.CZECH`
+  - `L.MaptilerLanguage.DANISH`
+  - `L.MaptilerLanguage.DUTCH`
+  - `L.MaptilerLanguage.ENGLISH`
+  - `L.MaptilerLanguage.ESPERANTO`
+  - `L.MaptilerLanguage.ESTONIAN`
+  - `L.MaptilerLanguage.FINNISH`
+  - `L.MaptilerLanguage.FRENCH`
+  - `L.MaptilerLanguage.FRISIAN`
+  - `L.MaptilerLanguage.GEORGIAN`
+  - `L.MaptilerLanguage.GERMAN`
+  - `L.MaptilerLanguage.GREEK`
+  - `L.MaptilerLanguage.HEBREW`
+  - `L.MaptilerLanguage.HINDI`
+  - `L.MaptilerLanguage.HUNGARIAN`
+  - `L.MaptilerLanguage.ICELANDIC`
+  - `L.MaptilerLanguage.INDONESIAN`
+  - `L.MaptilerLanguage.IRISH`
+  - `L.MaptilerLanguage.ITALIAN`
+  - `L.MaptilerLanguage.JAPANESE`
+  - `L.MaptilerLanguage.JAPANESE_HIRAGANA`
+  - `L.MaptilerLanguage.JAPANESE_KANA`
+  - `L.MaptilerLanguage.JAPANESE_LATIN`
+  - `L.MaptilerLanguage.JAPANESE_2018`
+  - `L.MaptilerLanguage.KANNADA`
+  - `L.MaptilerLanguage.KAZAKH`
+  - `L.MaptilerLanguage.KOREAN`
+  - `L.MaptilerLanguage.KOREAN_LATIN`
+  - `L.MaptilerLanguage.KURDISH`
+  - `L.MaptilerLanguage.ROMAN_LATIN`
+  - `L.MaptilerLanguage.LATVIAN`
+  - `L.MaptilerLanguage.LITHUANIAN`
+  - `L.MaptilerLanguage.LUXEMBOURGISH`
+  - `L.MaptilerLanguage.MACEDONIAN`
+  - `L.MaptilerLanguage.MALAYALAM`
+  - `L.MaptilerLanguage.MALTESE`
+  - `L.MaptilerLanguage.NORWEGIAN`
+  - `L.MaptilerLanguage.OCCITAN`
+  - `L.MaptilerLanguage.POLISH`
+  - `L.MaptilerLanguage.PORTUGUESE`
+  - `L.MaptilerLanguage.ROMANIAN`
+  - `L.MaptilerLanguage.ROMANSH`
+  - `L.MaptilerLanguage.RUSSIAN`
+  - `L.MaptilerLanguage.SCOTTISH_GAELIC`
+  - `L.MaptilerLanguage.SERBIAN_CYRILLIC`
+  - `L.MaptilerLanguage.SERBIAN_LATIN`
+  - `L.MaptilerLanguage.SLOVAK`
+  - `L.MaptilerLanguage.SLOVENE`
+  - `L.MaptilerLanguage.SPANISH`
+  - `L.MaptilerLanguage.SWEDISH`
+  - `L.MaptilerLanguage.TAMIL`
+  - `L.MaptilerLanguage.TELUGU`
+  - `L.MaptilerLanguage.THAI`
+  - `L.MaptilerLanguage.TURKISH`
+  - `L.MaptilerLanguage.UKRAINIAN`
+  - `L.MaptilerLanguage.WELSH`
+
 </details>
 
-- `style`: [string] MapTiler has created many professional-looking styles that may suit your particular need. Directly from the constructor, you can specify the short style ID. Default: `"streets-v2"` <details>
+- `style`: [string | style definition] MapTiler has created many professional-looking styles that may suit your particular need. Directly from the constructor, you can specify the short style ID. Alternatively, a style URL or a complete style definition object can also be used. Default: `L.MaptilerStyle.STREETS`. <details>
   <summary>🎨 Expand to list of the MapTiler style IDs</summary>
 
-  - `"streets-v2"`
-  - `"streets-v2-dark"`
-  - `"streets-v2-light"`
-  - `"streets-v2-night"`
-  - `"streets-v2-pastel"`
-  - `"dataviz"`
-  - `"dataviz-dark"`
-  - `"dataviz-light"`
-  - `"outdoor-v2"`
-  - `"outdoor-v2-dark"`
-  - `"winter-v2"`
-  - `"winter-v2-dark"`
-  - `"satellite"`
-  - `"hybrid"`
-  - `"basic-v2"`
-  - `"basic-v2-dark"`
-  - `"basic-v2-light"`
-  - `"bright-v2"`
-  - `"bright-v2-dark"`
-  - `"bright-v2-light"`
-  - `"bright-v2-pastel"`
-  - `"openstreetmap"`
-  - `"topo-v2"`
-  - `"topo-v2-dark"`
-  - `"topo-v2-shiny"`
-  - `"topo-v2-pastel"`
-  - `"topo-v2-topographique"`
-  - `"voyager-v2"`
-  - `"voyager-v2-darkmatter"`
-  - `"voyager-v2-positron"`
-  - `"voyager-v2-vintage"`
-  - `"toner-v2"`
-  - `"toner-v2-background"`
-  - `"toner-v2-lite"`
-  - `"toner-v2-lines"`
-  - `"Ocean"`
+  - `L.MaptilerStyle.STREETS`, reference style for navigation and city exploration
+    - `L.MaptilerStyle.STREETS.DARK` (variant)
+    - `L.MaptilerStyle.STREETS.LIGHT` (variant)
+    - `L.MaptilerStyle.STREETS.PASTEL` (variant)
+  - `L.MaptilerStyle.SATELLITE` reference style satellite and airborne imagery (no variants)
+  - `L.MaptilerStyle.HYBRID` reference style satellite and airborne imagery with labels (no variants)
+  - `L.MaptilerStyle.OUTDOOR` reference style for adventure
+    - `L.MaptilerStyle.OUTDOOR.DARK` (variant)
+  - `L.MaptilerStyle.WINTER` reference style for winter adventure
+    - `L.MaptilerStyle.WINTER.DARK` (variant)
+  - `L.MaptilerStyle.DATAVIZ`, the perfect style for data visualization, with very little noise
+    - `L.MaptilerStyle.DATAVIZ.DARK` (variant)
+    - `L.MaptilerStyle.DATAVIZ.LIGHT` (variant)
+  - `L.MaptilerStyle.BASIC` reference style for minimalist design and general purpose
+    - `L.MaptilerStyle.BASIC.DARK` (variant)
+    - `L.MaptilerStyle.BASIC.LIGHT` (variant)
+  - `L.MaptilerStyle.BRIGHT` reference style for high contrast navigation
+    - `L.MaptilerStyle.BRIGHT.DARK` (variant)
+    - `L.MaptilerStyle.BRIGHT.LIGHT` (variant)
+    - `L.MaptilerStyle.BRIGHT.PASTEL` (variant)
+  - `L.MaptilerStyle.TOPO` reference style for topographic study
+    - `L.MaptilerStyle.TOPO.SHINY` (variant)
+    - `L.MaptilerStyle.TOPO.PASTEL` (variant)
+    - `L.MaptilerStyle.TOPO.TOPOGRAPHIQUE` (variant)
+  - `L.MaptilerStyle.VOYAGER` reference style for stylish yet minimalist maps
+    - `L.MaptilerStyle.VOYAGER.DARK` (variant)
+    - `L.MaptilerStyle.VOYAGER.LIGHT` (variant)
+    - `L.MaptilerStyle.VOYAGER.VINTAGE` (variant)
+  - `L.MaptilerStyle.TONER` reference style for very high contrast stylish maps 
+    - `L.MaptilerStyle.TONER.BACKGROUND` (variant)
+    - `L.MaptilerStyle.TONER.LITE` (variant)
+    - `L.MaptilerStyle.TONER.LINES` (variant)
+  - `L.MaptilerStyle.OPENSTREETMAP` reference style for the classic OSM look
+  - `L.MaptilerStyle.OCEAN` reference style with seabed isoline, hilshading and trenches info
 
   You can also create your custom styles on [cloud.maptiler.com/maps](https://cloud.maptiler.com/maps/)
 </details>  
 
 - `apiKey`: [string] your MapTiler Cloud API key. Default: empty string
-- `terrain`: [boolean] Enables the terrain elevation is `true`. Leaflet is not able to tilt the map, yet, once enabled, the terrain will create a nice parallax effect seen from above, especially visible with a `terrainExaggeration` above `2.5`. Default: `false`
-- `terrainExaggeration`: [number] exagerration factor applied to the terrain. Default: `1`
- 
 
-### `layer.addTo(map)`
+
+### `mtLayer.addTo(map)`
 
 Same behavior as `.addTo` on any Leaflet layer: this adds the layer to a given
 map or group.
 
-### `layer.getMaptilerMap(): maptilersdk.Map`
+### `mtLayer.getMaptilerMap(): maptilerLayer.Map`
 
 Returns `mapltilersdk.Map` object.
 
-### `layer.getContainer(): HTMLDivElement`
+### `mtLayer.getContainer(): HTMLDivElement`
 
 Returns layer's DOM container `div`.
 
-### `layer.getCanvas(): HTMLCanvasElement`
+### `mtLayer.getCanvas(): HTMLCanvasElement`
 
-Returns `maptilersdk.Map` canvas.
+Returns `maptilerLayer.Map` canvas.
 
-### `layer.getSize(): L.Point`
+### `mtLayer.getSize(): L.Point`
 
 Returns layer size in pixels including padding.
 
-### `layer.getBounds(): L.LatLngBounds`
+### `mtLayer.getBounds(): L.LatLngBounds`
 
 Returns layer bounds including padding.
 
-### `layer.getPaneName(): string`
+### `mtLayer.getPaneName(): string`
 
 Returns the pane name set in options if it is a valid pane, defaults to tilePane.
 
+### `mtLayer.setStyle(s)`
+
+Update the style with a style ID, style URL or a style definition. The easiest is to use a built-in style ID such as listed above with the form `L.MaptilerStyle.STREETS`.
+
+### `mtLayer.setLanguage(l)`
+
+Update the map language. The argument `l` can be a one of the supported 2-char ISO language code or the simpler solution is to use a built-in language shorthand with the form `L.MaptilerLanguage.JAPANESE`, such as listed above.
+
 
 ## Bug Reports & Feature Requests
-Please use the [issue tracker](https://github.com/maptiler/maptilersdk-leaflet/issues) to report any bugs or file feature requests.
+Please use the [issue tracker](https://github.com/maptiler/leaflet-maptilersdk/issues) to report any bugs or file feature requests.
 
 ## Licence
 ISC © [MapTiler](https://maptiler.com) - © [MapLibre](https://github.com/maplibre)

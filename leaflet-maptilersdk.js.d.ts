@@ -26,7 +26,7 @@ declare module 'leaflet' {
     setStyle(s: ReferenceMapStyle | MapStyleVariant | StyleSpecification | string)
   }
 
-  function maptilerSDK(options: LeafletMaptilerSDKOptions): MaptilerSDK;
+  function maptilerSDK(options: LeafletMaptilerSDKOptions): MaptilerLayer;
 
   const MapTilerStyle: MapStyleType;
   const mapTilerStyle: MapStyleType;
