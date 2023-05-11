@@ -1,20 +1,35 @@
 import * as L from 'leaflet';
-import { Map, MapOptions } from '@maptiler/sdk';
+import type {
+  Map,
+  MapOptions,
+  MapStyleType,
+  LanguageString,
+  ReferenceMapStyle,
+  MapStyleVariant,
+  StyleSpecification,
+  Language,
+} from '@maptiler/sdk';
 
 
 declare module 'leaflet' {
-    type LeafletMaptilerSDKOptions = Omit<MapOptions, "container">;
+  type LeafletMaptilerSDKOptions = Omit<MapOptions, "container">;
 
-    class maptilerLayer extends L.Layer {
-        constructor(options: LeafletMaptilerSDKOptions);
-        getMaptilerSDKMap(): Map
-        getCanvas(): HTMLCanvasElement
-        getSize(): L.Point
-        getBounds(): L.LatLngBounds
-        getContainer(): HTMLDivElement
-        getPaneName(): string
-    }
+  class MaptilerLayer extends L.Layer {
+    constructor(options: LeafletMaptilerSDKOptions);
+    getMaptilerSDKMap(): Map
+    getCanvas(): HTMLCanvasElement
+    getSize(): L.Point
+    getBounds(): L.LatLngBounds
+    getContainer(): HTMLDivElement
+    getPaneName(): string
+    setlanguage(l: LanguageString)
+    setStyle(s: ReferenceMapStyle | MapStyleVariant | StyleSpecification | string)
+  }
 
-    function maptilerSDK(options: LeafletMaptilerSDKOptions): MaptilerSDK;
+  function maptilerSDK(options: LeafletMaptilerSDKOptions): MaptilerSDK;
 
+  const MapTilerStyle: MapStyleType;
+  const mapTilerStyle: MapStyleType;
+  const MaptilerLanguage: Language;
+  const maptilerLanguage: Language;
 }
