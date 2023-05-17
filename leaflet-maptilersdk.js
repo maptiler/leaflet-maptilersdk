@@ -231,10 +231,8 @@
         }
 
         const size = this.getSize();
-        const container = this._container;
-          gl = this._maptilerMap;
-          offset = this._map.getSize().multiplyBy(this.options.padding);
-          topLeft = this._map.containerPointToLayerPoint([0, 0]).subtract(offset);
+        const offset = this._map.getSize().multiplyBy(this.options.padding);
+        const topLeft = this._map.containerPointToLayerPoint([0, 0]).subtract(offset);
 
         L.DomUtil.setPosition(this._container, this._roundPoint(topLeft));
 
