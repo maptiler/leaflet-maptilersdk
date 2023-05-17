@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "Vector tiles basemap plugin for Leaflet - multi-lingual basemaps using MapTiler SDK",
   "main": "leaflet-maptilersdk.js",
+  "exports": {
+    ".": {
+      "import": "./leaflet-maptilersdk.js"
+    }
+  },
   "directories": {
     "example": "examples"
   },
