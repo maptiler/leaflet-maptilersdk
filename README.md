@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://docs.maptiler.com/sdk-js/">official page →</a><br>
+  <a href="https://docs.maptiler.com/leaflet/">official page →</a><br>
   <img src="header.png" width="70%">
 </p>
 
