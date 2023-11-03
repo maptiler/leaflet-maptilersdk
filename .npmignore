@@ -1,0 +1,11 @@
+src/
+docs
+images
+tests
+vite*
+maptiler-weather-*.tgz
+.github
+.eslintrc.cjs 
+build/*.map
+demos
+build

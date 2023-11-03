@@ -1,51 +1,67 @@
 <p align="center">
   <a href="https://docs.maptiler.com/sdk-js/">official page →</a><br>
-  <img src="header.png" width="70%">
+  <img src="images/header.png" width="70%">
 </p>
 
 
 This is a binding from [MapTiler SDK JS/TS](https://docs.maptiler.com/sdk-js/) to the familiar
-[Leaflet](http://leafletjs.com/) API. This is a fork of the [MapLibre version](https://github.com/maplibre/maplibre-gl-leaflet).
+[Leaflet](http://leafletjs.com/) API.
 
 **MapTiler SDK JS** is an extension of MapLibre GL JS, fully backward compatible, tailored for MapTiler Cloud and with plenty of extra features!
 
-## Code example
-```javascript
+![](images/leaflet-maptilersdk.jpg)
 
-const map = L.map('map').setView([38.912753, -77.032194], 15);
-L.marker([38.912753, -77.032194])
-    .bindPopup("Hello <b>Leaflet GL</b>!<br>Whoa, it works!")
-    .addTo(map)
-    .openPopup();
+## Usage
+### From ES module using `import`
+For the following examples, we are using the [Vite vanilla JS app](https://vitejs.dev/guide/) as a starting point.
 
-const mtLayer = L.maptilerLayer({
-    style: "https://api.maptiler.com/maps/streets-v2/style.json?key=YOUR_MAPTILER_API_KEY",
-}).addTo(map);
+The typical Leaflet plugin usualy adds new elements directly in the global object `L` and even though this API design is now a bit dated and somewhat frown uppon, we did not want to disrupt the dev experiece for those used to this. For this reason, you will need to import the plugin but not a specific object from it, as `MaptilerLayer` is internally added to `L`:
+
+```js
+// import Leaflet and its style
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Import the Leaflet MapTiler Plugin
+import "@maptiler/leaflet-maptilersdk";
+
+// Import your custom style, 
+// depending on your configuration, you may have to change how this is done
+import './style.css';
 ```
 
-You can also use any of the MapTiler style shorthand alongside the `apiKey` option:
-```javascript
-const mtLayer = L.maptilerLayer({
+Then, in the Vite vanilla app, we would have to do exactely like in regular vanilla JS:
+```js
+// Center the map on Manhattan, zoom level 13
+const map = L.map("map").setView([40.7468, -73.98775], 13);
+
+// Center the map on Manhattan, zoom level 13
+L.marker([40.7468, -73.98775])
+  .bindPopup("Hello <b>Leaflet with MapTiler SDK</b>")
+  .addTo(map)
+  .openPopup();
+
+// Create a MapTiler Layer inside Leaflet
+const mtLayer = new L.MaptilerLayer({
+  // Get your free API key at https://cloud.maptiler.com
   apiKey: "YOUR_MAPTILER_API_KEY",
-  style: L.MaptilerStyle.STREETS, // optional
 }).addTo(map);
 ```
 
-Get an API key with the generous free plan at [cloud.maptiler.com](https://cloud.maptiler.com/)
+If you would rather stick to more modern API design and do not feel like using the `L` object, we got you covered:
 
-Once you have created the leaflet layer, the MapTiler SDK `Map` instance can be accessed using
-```javascript
-const maptilerMap = mtLayer.getMaptilerMap();
+```js
+import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 
-// add a source to the MapTiler SDK layer, just like you would do with the MapTiler SDK
-mtLayer.getMaptilerMap().addSource({...});
+// ...
+
+const mtLayer = new MaptilerLayer( options );
 ```
 
-## Examples
-The [examples](examples) folder of this repository is a good place to start!
 
-## Installation
-Add a script tag referencing leaflet-maptilersdk after adding leaflet and MapTiler SDK in your website:
+### From CDN with the UMD bundle
+The UDM *leaflet-maptilersdk* bundle is not package with Leaflet nor with MapTiler SDK, so those will have to be imported as `<script>` separately as follow in the `<head>` HTML element:
+
 ```html
 <!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
@@ -55,38 +71,50 @@ Add a script tag referencing leaflet-maptilersdk after adding leaflet and MapTil
 <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
 <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
 
-<!-- MapTiler SDK + Leaflet bindings -->
-<script src="https://cdn.maptiler.com/leaflet-maptilersdk/latest/leaflet-maptilersdk.js"></script>
+<!-- Leaflet plugin for MapTiler SDK Layers -->
+<script src="../build/leaflet-maptilersdk.umd.js"></script>
 ```
 
-## Motivation
-This project makes it possible to easily add a MapTiler SDK JS layer in your Leaflet map. When using leaflet-maptilersdk, you won't be able to use some of the MapTiler SDK features.
-Here are the main differences between a "pure" MapTiler SDK map and a Leaflet map using maptilesdk-leaflet:
-- No rotation / bearing / pitch support
-- Slower performances: When using leaflet-maptilersdk, MapTiler SDK is set as not interactive. Leaflet receives the touch/mouse events and updates the MapTiler SDK map behind the scenes. Because MapTiler SDK doesn't redraw as fast as Leaflet, the map can seem slower.
-- Terrain elevation is possible but will create a parallax effect that will result in a missalignment of other Leaflet features (markers, overlays, etc.)
+Then, in the HTML `<body>`, decalre the container that will host the map:
+```html
+<div id="map"></div>
+```
 
-On the bright side, the leaflet-maptilersdk binding will allow you to use all the leaflet features and plugins.
+Finally, add a `<script>` to initialize the Leaflet Map that contains a MapTiler SDK Layer:
 
-If you only need the MapTiler SDK features, you are probably better off using it directly.
+```js
+// Center the map on Manhattan, zoom level 13
+const map = L.map('map').setView([40.7468, -73.98775], 13);
 
-## API Reference
-## `L.maptilerLayer(options)`
+// Add a marker with a popup
+L.marker([40.7468, -73.98775])
+  .bindPopup("Hello <b>Leaflet with MapTiler SDK</b>!<br>Whoa, it works!")
+  .addTo(map)
+  .openPopup();
 
-Create a new MapTiler SDK layer in a Leaflet-compatible wrapper. This is a *factory function* that under the hood creates an instance `new L.MaptilerLayer(options)` and returns it. Wrapping the contructor call with a factory function makes chaining possible, which is a concept at the heart of Leaflet API design.
+// Create a MapTiler Layer inside Leaflet
+const mtLayer = L.maptilerLayer({
+  // Get your free API key at https://cloud.maptiler.com
+  apiKey: "YOUR_MAPTILER_API_KEY",
+}).addTo(map);
+```
 
-<span class='leaflet icon'>_Extends_: `L.Class`</span>
+The notation `L.maptilerLayer` is the typical Leaflet way to expose a factory function that creates a layer. Though, our plugin exposes other ways to do exactely the same thing but that may suit your programming style better.  
+The following are all yielding the same result:
+- `const mtLayer = L.maptilerLayer( options )`
+- `const mtLayer = new L.MaptilerLayer( options )` (mind the upper case `M`)
+- `const mtLayer = leafletmaptilersdk.maptilerLayer( options )`
+- `const mtLayer = new leafletmaptilersdk.MaptilerLayer( options )` (mind the upper case `M`)
 
-`options` is an object of options. All options given are passed to a MapTiler SDK `Map` object,
-so consult [documentation]https://docs.maptiler.com/sdk-js/api/map/)
-for the full range.
+### API and options
+#### Constructor and Factory function
+The option object passed to the factory function `maptilerLayer` or to the constructor `MaptilerLayer` is then passed to the constructor of the Maptiler SDK `Map` class. Read more about the possible options on our [SDK documentation](https://docs.maptiler.com/sdk-js/api/map/).
 
 Here are the major options:
 
 - `geolocate`: [boolean] if `true`, will locate the user and center the map accordingly. Note that Leaflet still requires the use of `.setView()` but this will be ignored. Default: `false`.
-- `language`: [string] by default is using the language from the system settings, and falls back to local names. Yet the language can be enforced with one from the list below. Default: `L.MaptilerLanguage.AUTO` <details>
+- `language`: [string] by default is using the language from the system settings, and falls back to local names. Yet the language can be enforced with one from the list below. Depending on how you are importing, you could use `L.MaptilerLanguage.ENGLISH`, `MaptilerLanguage.ENGLISH` or `leafletmaptilersdk.MaptilerLanguage.ENGLISH`. <details>
   <summary>See the list of possible languages</summary>
-
   - `L.MaptilerLanguage.AUTO` uses the language of the browser 
   - `L.MaptilerLanguage.STYLE_LOCK` maintains the language as defined in the `style.json`
   - `L.MaptilerLanguage.LATIN` default language that uses latin charset
@@ -165,7 +193,7 @@ Here are the major options:
 
 </details>
 
-- `style`: [string | style definition] MapTiler has created many professional-looking styles that may suit your particular need. Directly from the constructor, you can specify the short style ID. Alternatively, a style URL or a complete style definition object can also be used. Default: `L.MaptilerStyle.STREETS`. <details>
+- `style`: [string | style definition] MapTiler has created many professional-looking styles that may suit your particular need. Directly from the constructor, you can specify the short style ID. Alternatively, a style URL or a complete style definition object can also be used. Default: `L.MaptilerStyle.STREETS`. Depending on how you are importing, you could use `L.MaptilerStyle.STREETS`, `MaptilerStyle.STREETS` or `leafletmaptilersdk.MaptilerStyle.STREETS`. <details>
   <summary>🎨 Expand to list of the MapTiler style IDs</summary>
 
   - `L.MaptilerStyle.STREETS`, reference style for navigation and city exploration
@@ -208,44 +236,35 @@ Here are the major options:
 
 - `apiKey`: [string] your MapTiler Cloud API key. Default: empty string
 
+The `MaptilerLayer` constructor and/or `maptilerLayer` factory function returns a Leaflet Maptiler layer, that we will call `mtLayer`.
 
-### `mtLayer.addTo(map)`
-
+#### `mtLayer.addTo(map)`
 Same behavior as `.addTo` on any Leaflet layer: this adds the layer to a given
 map or group.
 
-### `mtLayer.getMaptilerMap(): maptilerLayer.Map`
-
+#### `mtLayer.getMaptilerMap(): maptilerLayer.Map`
 Returns `mapltilersdk.Map` object.
 
-### `mtLayer.getContainer(): HTMLDivElement`
-
+#### `mtLayer.getContainer(): HTMLDivElement`
 Returns layer's DOM container `div`.
 
-### `mtLayer.getCanvas(): HTMLCanvasElement`
-
+#### `mtLayer.getCanvas(): HTMLCanvasElement`
 Returns `maptilerLayer.Map` canvas.
 
-### `mtLayer.getSize(): L.Point`
-
+#### `mtLayer.getSize(): L.Point`
 Returns layer size in pixels including padding.
 
-### `mtLayer.getBounds(): L.LatLngBounds`
-
+#### `mtLayer.getBounds(): L.LatLngBounds`
 Returns layer bounds including padding.
 
-### `mtLayer.getPaneName(): string`
-
+#### `mtLayer.getPaneName(): string`
 Returns the pane name set in options if it is a valid pane, defaults to tilePane.
 
-### `mtLayer.setStyle(s)`
-
+#### `mtLayer.setStyle(s)`
 Update the style with a style ID, style URL or a style definition. The easiest is to use a built-in style ID such as listed above with the form `L.MaptilerStyle.STREETS`.
 
-### `mtLayer.setLanguage(l)`
-
-Update the map language. The argument `l` can be a one of the supported 2-char ISO language code or the simpler solution is to use a built-in language shorthand with the form `L.MaptilerLanguage.JAPANESE`, such as listed above.
-
+#### `mtLayer.setLanguage(l)`
+Update the map language. For this, the best is to use a built-in language shorthand with the form `L.MaptilerLanguage.JAPANESE`, such as listed above.
 
 ## Bug Reports & Feature Requests
 Please use the [issue tracker](https://github.com/maptiler/leaflet-maptilersdk/issues) to report any bugs or file feature requests.
