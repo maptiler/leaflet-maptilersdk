@@ -33,26 +33,28 @@
 
 <script>
 
+// Init the map
+const map = L.map('map').setView([46.3796, 6.1518], 13);
 
+// Creating and mounting the MapTiler SDK Layer
+const mtLayer = new L.MaptilerLayer({
+  apiKey: "YOUR_API_KEY",
+  style: L.MaptilerStyle.BACKDROP.DARK,
+}).addTo(map);
 
-// Create a MapTiler Layer inside Leaflet
-// const mtLayer = L.maptilerLayer({
-//   apiKey: "PhsGJ2SdW2MhmzzsT8zU",
-//   style: L.MaptilerStyle.DATAVIZ.DARK,
-// }).addTo(map);
-
-// mtLayer.addPolyline({data: "74003ba7-215a-4b7e-8e26-5bbe3aa70b05"})
-
-(async () => {
-  const map = L.map('map').setView([46.3796, 6.1518], 13);
-  const mtLayer = await L.maptilerLayerAsync({
-    apiKey: "PhsGJ2SdW2MhmzzsT8zU",
-    style: L.MaptilerStyle.DATAVIZ.DARK,
+// Custom event triggered by the MaptilerLayer when the internal MapTiler Map instance is fully loaded
+mtLayer.on("ready", () => {
+  
+  // Leverage the MapTiler SDK layer helpers to easily add polyline / point / polygon / heatmap layers
+  mtLayer.addPolyline({
+    // An Maptiler Cloud dataset ID, or URL to GeoJSON/GPX/KML
+    data:"74003ba7-215a-4b7e-8e26-5bbe3aa70b05",
+    lineColor: "#ff3333", // optional
+    outline: true,        // optional
+    outlineWidth: 2,      // optional
   });
 
-  mtLayer.addTo(map);
-})()
-
+})
 
 
 </script>

@@ -58,6 +58,37 @@ import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 const mtLayer = new MaptilerLayer( options );
 ```
 
+## From ES module, the *async* way
+Some frontend frameworks always are very opinionated regarding Server-Side-rendering and will attemp to perform it, that's the case of [Next.js](https://nextjs.org/). But Leaflet does not play well with it because there are some direct calls to the global `window` object, and this would crash on a server. The fix consists in importing Leaflet dynamically, and then `@maptiler/leaflet-maptilersdk` can also be imported.
+
+The React lifecycle method `.componentDidMount()` of a class component is only called on the frontend so this is why we have decided to dynamically import from there, but feel free to adapt your code if you are using a function component or a non-React app:
+
+```js
+componentDidMount() {
+  // assuming this was init with React.createRef()
+  const container = this.mapContainer.current;
+  
+  // A self-callable async function because importing packages dynamically is an async thing to do
+  (async () => {
+
+    // dynamic import of Leaflet
+    const L = await import('leaflet');
+
+    // dynamic import of the library
+    const leafletmaptilersdk = await import('@maptiler/leaflet-maptilersdk'); 
+    
+    // Creating the Leaflet map
+    const map = L.map(container).setView([51.505, -0.09], 10);
+
+    // Creating the MapTiler Layer
+    const mtLayer = new leafletmaptilersdk.MaptilerLayer({
+      apiKey: "YOUR_API_KEY",
+    }).addTo(map);
+
+  })()
+}
+```
+
 
 ### From CDN with the UMD bundle
 The UDM *leaflet-maptilersdk* bundle is not package with Leaflet nor with MapTiler SDK, so those will have to be imported as `<script>` separately as follow in the `<head>` HTML element:
@@ -238,38 +269,74 @@ Here are the major options:
 
 The `MaptilerLayer` constructor and/or `maptilerLayer` factory function returns a Leaflet Maptiler layer, that we will call `mtLayer`.
 
-#### `mtLayer.addTo(map)`
+#### Method `.addTo(map)`
 Same behavior as `.addTo` on any Leaflet layer: this adds the layer to a given
 map or group.
 
-#### `mtLayer.getMaptilerMap(): maptilerLayer.Map`
+#### Method `.getMaptilerMap(): maptilerLayer.Map`
 Returns `mapltilersdk.Map` object.
 
-#### `mtLayer.getContainer(): HTMLDivElement`
+#### Method `.getContainer(): HTMLDivElement`
 Returns layer's DOM container `div`.
 
-#### `mtLayer.getCanvas(): HTMLCanvasElement`
+#### Method `.getCanvas(): HTMLCanvasElement`
 Returns `maptilerLayer.Map` canvas.
 
-#### `mtLayer.getSize(): L.Point`
+#### Method `.getSize(): L.Point`
 Returns layer size in pixels including padding.
 
-#### `mtLayer.getBounds(): L.LatLngBounds`
+#### Method `.getBounds(): L.LatLngBounds`
 Returns layer bounds including padding.
 
-#### `mtLayer.getPaneName(): string`
+#### Method `.getPaneName(): string`
 Returns the pane name set in options if it is a valid pane, defaults to tilePane.
 
-#### `mtLayer.setStyle(s)`
+#### Method `.setStyle(s)`
 Update the style with a style ID, style URL or a style definition. The easiest is to use a built-in style ID such as listed above with the form `L.MaptilerStyle.STREETS`.
 
-#### `mtLayer.setLanguage(l)`
+#### Method `.setLanguage(l)`
 Update the map language. For this, the best is to use a built-in language shorthand with the form `L.MaptilerLanguage.JAPANESE`, such as listed above.
+
+#### Methods to add vector layers
+We have added an even easier way to use the MapTiler SDK [vector layer helpers](https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers), directed under the instance of the custom Leaflet layer. You can now call `.addPolyline`, `.addPolygon`, `.addPoint` and `.addHeatmap` using a path to a file or the ID of a dataset hosted on MapTiler Cloud.   
+Let's see an example:
+
+```js
+// Init the map
+const map = L.map('map').setView([46.3796, 6.1518], 13);
+
+// Creating and mounting the MapTiler SDK Layer
+const mtLayer = new L.MaptilerLayer({
+  apiKey: "YOUR_API_KEY",
+  style: L.MaptilerStyle.BACKDROP.DARK,
+}).addTo(map);
+
+// The custom event "ready" is triggered by the MaptilerLayer when the internal
+// MapTiler Map instance is fully loaded and can be added more layers
+mtLayer.on("ready", () => {
+  
+  // Leverage the MapTiler SDK layer helpers to easily add polyline / point / polygon / heatmap layers
+  mtLayer.addPolyline({
+    // A Maptiler Cloud dataset ID, or URL to GeoJSON/GPX/KML
+    data:"74003ba7-215a-4b7e-8e26-5bbe3aa70b05",
+    lineColor: "#008888", // optional
+    outline: true,        // optional
+    outlineWidth: 2,      // optional
+  });
+
+})
+```
+
+Here is the result, a bike ride in France and Switzerlanld, displayed on the dark Backdrop MapTiler style:
+![](images/sdk_helpers.jpg)
+
+#### Event `"ready"`
+The `"ready"` event is triggered when the internal MapTiler SDK Map instance is fully loaded and can accept some more layers to be added. This corresponds to the MapTiler SDk and MapLibre `load` event.
 
 ## Bug Reports & Feature Requests
 Please use the [issue tracker](https://github.com/maptiler/leaflet-maptilersdk/issues) to report any bugs or file feature requests.
 
 ## Licence
-ISC © [MapTiler](https://maptiler.com) - © [MapLibre](https://github.com/maplibre)
+ISC © [MapTiler](https://maptiler.com)
 
 
