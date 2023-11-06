@@ -3,9 +3,7 @@ docs
 images
 tests
 vite*
-maptiler-weather-*.tgz
 .github
-.eslintrc.cjs 
-build/*.map
+.eslintrc.json
 demos
 build
