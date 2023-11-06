@@ -5,7 +5,9 @@ import L from "leaflet";
 export let MaptilerLayer = null;
 export let maptilerLayer = null;
 export let MaptilerStyle = null;
+export let maptilerStyle = null;
 export let MaptilerLanguage = null;
+export let maptilerLanguage = null;
 
 export function init() {
   L.MaptilerLayer = L.Layer.extend({
@@ -398,6 +400,8 @@ export function init() {
     L.MaptilerStyle[k] = maptilersdk.MapStyle[k];
   });
   MaptilerStyle = L.MaptilerStyle;
+  maptilerStyle = L.MaptilerStyle;
+  L.maptilerStyle = L.MaptilerStyle;
 
   // exposing the languages
   L.MaptilerLanguage = {};
@@ -405,6 +409,8 @@ export function init() {
     L.MaptilerLanguage[k] = maptilersdk.Language[k];
   });
   MaptilerLanguage = L.MaptilerLanguage;
+  maptilerLanguage = L.MaptilerLanguage;
+  L.maptilerLanguage = L.MaptilerLanguage;
 }
 
 (() => {
