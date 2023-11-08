@@ -65,7 +65,7 @@
 <body>
 
 <div id='map'></div>
-<script src="../leaflet-maptilersdk.js"></script>
+<script src="../build/leaflet-maptilersdk.umd.js"></script>
 <script type="text/javascript" src="us-states.js"></script>
 
 <script type="text/javascript">
@@ -74,8 +74,8 @@
 
   const mtLayer = L.maptilerLayer({
     // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-    apiKey: "YOUR_MAPTILER_API_KEY",
-    style: L.maptilerStyle.DATAVIZ.LIGHT,
+    apiKey: "YOUR_API_KEY",
+    style: L.MaptilerStyle.DATAVIZ.LIGHT,
   }).addTo(map);
 
   // control that shows state info on hover

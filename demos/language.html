@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Geolocate</title>
+    <title>Language</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -25,17 +25,16 @@
 <body>
 <div id="map"></div>
 
-<script src="../leaflet-maptilersdk.js"></script>
+<script src="../build/leaflet-maptilersdk.umd.js"></script>
 <script>
 
 // Leaflet still requires to set the view, 
-// but this is going to be superseded by the `geolocate: true` options
-const map = L.map('map').setView([0, 0], 0);
+const map = L.map('map').setView([42, 40], 4);
 
 const mtLayer = L.maptilerLayer({
-  style: L.maptilerStyle.BASIC,
-  apiKey: "YOUR_MAPTILER_API_KEY",
-  geolocate: true,
+  style: L.MaptilerStyle.STREETS.DARK,
+  apiKey: "YOUR_API_KEY",
+  language: L.MaptilerLanguage.JAPANESE,
 }).addTo(map);
 
 </script>

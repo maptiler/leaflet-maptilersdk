@@ -12,6 +12,8 @@
       }
     </style>
 
+
+
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
@@ -20,25 +22,30 @@
     <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
     <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
 
+    <!-- Leaflet plugin for MapTiler SDK Layers -->
+    <script src="../build/leaflet-maptilersdk.umd.js"></script>
 </head>
 
 <body>
+<!-- The map container -->
 <div id="map"></div>
 
-<script src="../leaflet-maptilersdk.js"></script>
+
 <script>
+
+// Center the map on Manhattan, zoom level 13
 const map = L.map('map').setView([40.7468, -73.98775], 13);
 
+// Add a marker with a popup
 L.marker([40.7468, -73.98775])
   .bindPopup("Hello <b>Leaflet with MapTiler SDK</b>!<br>Whoa, it works!")
   .addTo(map)
   .openPopup();
 
+// Create a MapTiler Layer inside Leaflet
 const mtLayer = L.maptilerLayer({
-  // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-  apiKey: "YOUR_MAPTILER_API_KEY",
+  apiKey: "YOUR_API_KEY",
 }).addTo(map);
-
 
 
 

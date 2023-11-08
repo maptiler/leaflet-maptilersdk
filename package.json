@@ -1,43 +1,48 @@
 {
   "name": "@maptiler/leaflet-maptilersdk",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Vector tiles basemap plugin for Leaflet - multi-lingual basemaps using MapTiler SDK",
-  "main": "leaflet-maptilersdk.js",
+  "module": "dist/leaflet-maptilersdk.js",
+  "type": "module",
   "exports": {
     ".": {
-      "import": "./leaflet-maptilersdk.js"
+      "import": "./dist/leaflet-maptilersdk.js"
     }
   },
-  "directories": {
-    "example": "examples"
-  },
+  "author": "MapTiler",
+  "keywords": [
+    "maptiler",
+    "plugin",
+    "leaflet",
+    "layer"
+  ],
   "scripts": {
-    "test": "echo 'no test yet.'"
+    "format:fix": "prettier --write \"src/**/*.js\"",
+    "lint:fix": "eslint --fix \"src/**/*.js\"",
+    "format": "prettier -c \"src/**/*.js\"",
+    "lint": "eslint \"src/**/*.js\"",
+    "make": "npm run format:fix && npm run lint:fix && npm run build",
+    "build": "npm run build-es && npm run build-umd",
+    "build-dev": "NODE_ENV=development npm run build-es && NODE_ENV=development npm run build-umd",
+    "build-umd": "vite build -c vite.config-umd.js",
+    "build-es": "vite build -c vite.config-es.js",
+    "dev:umd": "NODE_ENV=development vite build -w -c vite.config-umd.js",
+    "dev:es": "NODE_ENV=development vite build -w -c vite.config-ues.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/maptiler/leaflet-maptilersdk.git"
   },
-  "keywords": [
-    "maptiler",
-    "SDK",
-    "gl",
-    "leaflet",
-    "leafletjs",
-    "maps"
-  ],
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/maptiler/leaflet-maptilersdk/issues"
-  },
-  "homepage": "https://github.com/maptiler/leaflet-maptilersdk",
+  "license": "",
   "devDependencies": {
-    "jshint": "^2.10.1"
+    "eslint": "^8.44.0",
+    "eslint-plugin-import": "^2.28.0",
+    "prettier": "^2.8.8",
+    "terser": "^5.19.2",
+    "vite": "^4.4.8"
   },
-  "peerDependencies": {
-    "@types/leaflet": "^1.9.0",
-    "leaflet": "^1.9.3",
-    "@maptiler/sdk": "^1.0.12"
-  },
-  "types": "leaflet-maptilersdk.d.ts"
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "@maptiler/sdk": "^1.2.0"
+  }
 }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebGL</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      html, body, #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+
+
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+    <!-- MapTiler SDK -->
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
+
+    <!-- Leaflet plugin for MapTiler SDK Layers -->
+    <script src="../build/leaflet-maptilersdk.umd.js"></script>
+</head>
+
+<body>
+<!-- The map container -->
+<div id="map"></div>
+
+
+<script>
+
+// Init the map
+const map = L.map('map').setView([46.3796, 6.1518], 13);
+
+// Creating and mounting the MapTiler SDK Layer
+const mtLayer = new L.MaptilerLayer({
+  apiKey: "YOUR_API_KEY",
+  style: L.MaptilerStyle.BACKDROP.DARK,
+}).addTo(map);
+
+// Custom event triggered by the MaptilerLayer when the internal MapTiler Map instance is fully loaded
+mtLayer.on("ready", () => {
+  
+  // Leverage the MapTiler SDK layer helpers to easily add polyline / point / polygon / heatmap layers
+  mtLayer.addPolyline({
+    // An Maptiler Cloud dataset ID, or URL to GeoJSON/GPX/KML
+    data:"74003ba7-215a-4b7e-8e26-5bbe3aa70b05",
+    lineColor: "#ff3333", // optional
+    outline: true,        // optional
+    outlineWidth: 2,      // optional
+  });
+
+})
+
+
+</script>
+</body>
+</html>

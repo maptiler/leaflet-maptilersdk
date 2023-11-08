@@ -33,14 +33,14 @@
 <body>
 <div id="map"></div>
 
-<script src="../leaflet-maptilersdk.js"></script>
+<script src="../build/leaflet-maptilersdk.umd.js"></script>
 <script>
 
 const map = L.map('map', {maxZoom: 22}).setView([-37.821, 175.219], 16);
 
 const mtLayer = L.maptilerLayer({
   // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-  apiKey: "YOUR_MAPTILER_API_KEY",
+  apiKey: "YOUR_API_KEY",
 }).addTo(map);
 
 const markers = L.markerClusterGroup();

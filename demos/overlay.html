@@ -10,7 +10,7 @@
   <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
   <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
   
-  <script src="../leaflet-maptilersdk.js"></script>
+  <script src="../build/leaflet-maptilersdk.umd.js"></script>
   <style>
     html, body, #map {
       width: 100%;
@@ -28,8 +28,8 @@
 
 		const mtLayer = L.maptilerLayer({
       // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-      style: L.maptilerStyle.DATAVIZ.LIGHT,
-      apiKey: "YOUR_MAPTILER_API_KEY",
+      style: L.MaptilerStyle.DATAVIZ.LIGHT,
+      apiKey: "YOUR_API_KEY",
     }).addTo(map);
 
 		const	bounds = new L.LatLngBounds(
