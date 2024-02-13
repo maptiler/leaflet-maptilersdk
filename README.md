@@ -1,21 +1,19 @@
 <p align="center">
-  <a href="https://docs.maptiler.com/sdk-js/">official page →</a><br>
-  <img src="images/header.png" width="70%">
+  <a href="https://docs.maptiler.com/leaflet/examples/vector-tiles-in-leaflet-js/">Vector Tiles in Leaflet JS tutorial →</a><br><br>
+  <img src="images/header.png" width="70%" alt="Leaflet + MapTiler SDK JS logo">
 </p>
 
+This is a binding from [MapTiler SDK JS/TS](https://docs.maptiler.com/sdk-js/) to the popular [Leaflet](http://leafletjs.com/) API.
 
-This is a binding from [MapTiler SDK JS/TS](https://docs.maptiler.com/sdk-js/) to the familiar
-[Leaflet](http://leafletjs.com/) API.
+**MapTiler SDK JS** is an extension of MapLibre GL JS, fully backward compatible, tailored for MapTiler Cloud, and with plenty of extra features!
 
-**MapTiler SDK JS** is an extension of MapLibre GL JS, fully backward compatible, tailored for MapTiler Cloud and with plenty of extra features!
+![MapTiler vector map displayed with Leaflet](images/leaflet-maptilersdk.jpg)
 
-![](images/leaflet-maptilersdk.jpg)
-
-## Usage
+## How to use vector tile layer in Leaflet with MapTiler SDK JS
 ### From ES module using `import`
-For the following examples, we are using the [Vite vanilla JS app](https://vitejs.dev/guide/) as a starting point.
+We use the [Vite vanilla JS app](https://vitejs.dev/guide/) as a starting point for the following examples.
 
-The typical Leaflet plugin usualy adds new elements directly in the global object `L` and even though this API design is now a bit dated and somewhat frown uppon, we did not want to disrupt the dev experiece for those used to this. For this reason, you will need to import the plugin but not a specific object from it, as `MaptilerLayer` is internally added to `L`:
+The typical Leaflet plugin usually adds new elements directly in the global object `L`. Even though this API design is now a bit dated and somewhat frowned upon, we wanted to maintain the dev experience for those used to this. For this reason, you will need to import the plugin but not a specific object from it, as `MaptilerLayer` is internally added to `L`:
 
 ```js
 // import Leaflet and its style
@@ -30,7 +28,7 @@ import "@maptiler/leaflet-maptilersdk";
 import './style.css';
 ```
 
-Then, in the Vite vanilla app, we would have to do exactely like in regular vanilla JS:
+Then, in the Vite vanilla app, we would have to do exactly like in regular vanilla JS:
 ```js
 // Center the map on Manhattan, zoom level 13
 const map = L.map("map").setView([40.7468, -73.98775], 13);
@@ -48,7 +46,7 @@ const mtLayer = new L.MaptilerLayer({
 }).addTo(map);
 ```
 
-If you would rather stick to more modern API design and do not feel like using the `L` object, we got you covered:
+If you would rather stick to a more modern API design and do not feel like using the `L` object, we've got you covered:
 
 ```js
 import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
@@ -59,9 +57,9 @@ const mtLayer = new MaptilerLayer( options );
 ```
 
 ## From ES module, the *async* way
-Some frontend frameworks always are very opinionated regarding Server-Side-rendering and will attemp to perform it, that's the case of [Next.js](https://nextjs.org/). But Leaflet does not play well with it because there are some direct calls to the global `window` object, and this would crash on a server. The fix consists in importing Leaflet dynamically, and then `@maptiler/leaflet-maptilersdk` can also be imported.
+Some frontend frameworks are very opinionated regarding Server-Side-rendering and will attempt to perform it; that's the case of [Next.js](https://nextjs.org/). But Leaflet does not play well with it because there are some direct calls to the global `window` object, and this would crash on a server. The fix consists of importing Leaflet dynamically, and then `@maptiler/leaflet-maptilersdk` can also be imported.
 
-The React lifecycle method `.componentDidMount()` of a class component is only called on the frontend so this is why we have decided to dynamically import from there, but feel free to adapt your code if you are using a function component or a non-React app:
+The React lifecycle method `.componentDidMount()` of a class component is only called on the frontend, so this is why we have decided to dynamically import from there, but feel free to adapt your code if you are using a function component or a non-React app:
 
 ```js
 componentDidMount() {
@@ -91,7 +89,7 @@ componentDidMount() {
 
 
 ### From CDN with the UMD bundle
-The UDM *leaflet-maptilersdk* bundle is not package with Leaflet nor with MapTiler SDK, so those will have to be imported as `<script>` separately as follow in the `<head>` HTML element:
+The UDM *leaflet-maptilersdk* bundle is not packaged with Leaflet nor with MapTiler SDK, so those will have to be imported as `<script>` separately in the `<head>` HTML element as follows:
 
 ```html
 <!-- Leaflet -->
@@ -106,7 +104,7 @@ The UDM *leaflet-maptilersdk* bundle is not package with Leaflet nor with MapTil
 <script src="../build/leaflet-maptilersdk.umd.js"></script>
 ```
 
-Then, in the HTML `<body>`, decalre the container that will host the map:
+Then, in the HTML `<body>`, declare the container that will host the map:
 ```html
 <div id="map"></div>
 ```
@@ -130,7 +128,7 @@ const mtLayer = L.maptilerLayer({
 }).addTo(map);
 ```
 
-The notation `L.maptilerLayer` is the typical Leaflet way to expose a factory function that creates a layer. Though, our plugin exposes other ways to do exactely the same thing but that may suit your programming style better.  
+The notation `L.maptilerLayer` is the typical Leaflet way to expose a factory function that creates a layer. Even though our plugin exposes other ways to do exactly the same thing, this notation may suit your programming style better.  
 The following are all yielding the same result:
 - `const mtLayer = L.maptilerLayer( options )`
 - `const mtLayer = new L.MaptilerLayer( options )` (mind the upper case `M`)
@@ -143,9 +141,9 @@ The option object passed to the factory function `maptilerLayer` or to the const
 
 Here are the major options:
 
-- `geolocate`: [boolean] if `true`, will locate the user and center the map accordingly. Note that Leaflet still requires the use of `.setView()` but this will be ignored. Default: `false`.
-- `language`: [string] by default is using the language from the system settings, and falls back to local names. Yet the language can be enforced with one from the list below. Depending on how you are importing, you could use `L.MaptilerLanguage.ENGLISH`, `MaptilerLanguage.ENGLISH` or `leafletmaptilersdk.MaptilerLanguage.ENGLISH`. <details>
-  <summary>See the list of possible languages</summary>
+- `geolocate`: [boolean] if `true`, will locate the user and center the map accordingly. Note that Leaflet still requires the use of `.setView()`, but this will be ignored. Default: `false`.
+- `language`: [string] by default uses the language from the system settings and falls back to local names. Yet the language can be enforced with one from the list below. Depending on how you are importing, you could use `L.MaptilerLanguage.ENGLISH`, `MaptilerLanguage.ENGLISH` or `leafletmaptilersdk.MaptilerLanguage.ENGLISH`. <details>
+  <summary>➡️ See the list of possible languages ⬅️</summary>
   - `L.MaptilerLanguage.AUTO` uses the language of the browser 
   - `L.MaptilerLanguage.STYLE_LOCK` maintains the language as defined in the `style.json`
   - `L.MaptilerLanguage.LATIN` default language that uses latin charset
@@ -224,9 +222,8 @@ Here are the major options:
 
 </details>
 
-- `style`: [string | style definition] MapTiler has created many professional-looking styles that may suit your particular need. Directly from the constructor, you can specify the short style ID. Alternatively, a style URL or a complete style definition object can also be used. Default: `L.MaptilerStyle.STREETS`. Depending on how you are importing, you could use `L.MaptilerStyle.STREETS`, `MaptilerStyle.STREETS` or `leafletmaptilersdk.MaptilerStyle.STREETS`. <details>
-  <summary>🎨 Expand to list of the MapTiler style IDs</summary>
-
+- `style`: [string | style definition] MapTiler has created many professional-looking styles that suit the majority of use cases. Directly from the constructor, you can specify the short style ID. Alternatively, a style URL or a complete style definition object can also be used. Default: `L.MaptilerStyle.STREETS`. Depending on how you are importing, you could use `L.MaptilerStyle.STREETS`, `MaptilerStyle.STREETS` or `leafletmaptilersdk.MaptilerStyle.STREETS`. <details>
+  <summary>➡️ See the list of the MapTiler style IDs ⬅️</summary>
   - `L.MaptilerStyle.STREETS`, reference style for navigation and city exploration
     - `L.MaptilerStyle.STREETS.DARK` (variant)
     - `L.MaptilerStyle.STREETS.LIGHT` (variant)
@@ -262,15 +259,15 @@ Here are the major options:
   - `L.MaptilerStyle.OPENSTREETMAP` reference style for the classic OSM look
   - `L.MaptilerStyle.OCEAN` reference style with seabed isoline, hilshading and trenches info
 
-  You can also create your custom styles on [cloud.maptiler.com/maps](https://cloud.maptiler.com/maps/)
+  You can also easily [create your custom map style](https://maptiler.com/cloud/customize/)
 </details>  
 
 - `apiKey`: [string] your MapTiler Cloud API key. Default: empty string
 
-The `MaptilerLayer` constructor and/or `maptilerLayer` factory function returns a Leaflet Maptiler layer, that we will call `mtLayer`.
+The `MaptilerLayer` constructor and/or `maptilerLayer` factory function returns a Leaflet Maptiler layer that we will call `mtLayer`.
 
 #### Method `.addTo(map)`
-Same behavior as `.addTo` on any Leaflet layer: this adds the layer to a given
+The same behavior as `.addTo` on any Leaflet layer: this adds the layer to a given
 map or group.
 
 #### Method `.getMaptilerMap(): maptilerLayer.Map`
@@ -283,22 +280,22 @@ Returns layer's DOM container `div`.
 Returns `maptilerLayer.Map` canvas.
 
 #### Method `.getSize(): L.Point`
-Returns layer size in pixels including padding.
+Returns layer size in pixels, including padding.
 
 #### Method `.getBounds(): L.LatLngBounds`
-Returns layer bounds including padding.
+Returns layer bounds, including padding.
 
 #### Method `.getPaneName(): string`
 Returns the pane name set in options if it is a valid pane, defaults to tilePane.
 
 #### Method `.setStyle(s)`
-Update the style with a style ID, style URL or a style definition. The easiest is to use a built-in style ID such as listed above with the form `L.MaptilerStyle.STREETS`.
+Update the style with a style ID, style URL, or style definition. The easiest is to use a built-in style ID such as listed above with the form `L.MaptilerStyle.STREETS`.
 
 #### Method `.setLanguage(l)`
 Update the map language. For this, the best is to use a built-in language shorthand with the form `L.MaptilerLanguage.JAPANESE`, such as listed above.
 
 #### Methods to add vector layers
-We have added an even easier way to use the MapTiler SDK [vector layer helpers](https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers), directed under the instance of the custom Leaflet layer. You can now call `.addPolyline`, `.addPolygon`, `.addPoint` and `.addHeatmap` using a path to a file or the ID of a dataset hosted on MapTiler Cloud.   
+We have added an even easier way to use the MapTiler SDK [vector layer helpers](https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers), directed under the instance of the custom Leaflet layer. You can now call `.addPolyline`, `.addPolygon`, `.addPoint`, and `.addHeatmap` using a path to a file or the ID of a dataset hosted on MapTiler Cloud.   
 Let's see an example:
 
 ```js
@@ -315,7 +312,7 @@ const mtLayer = new L.MaptilerLayer({
 // MapTiler Map instance is fully loaded and can be added more layers
 mtLayer.on("ready", () => {
   
-  // Leverage the MapTiler SDK layer helpers to easily add polyline / point / polygon / heatmap layers
+  // Leverage the MapTiler SDK layer helpers to add polyline / point / polygon / heatmap layers easily
   mtLayer.addPolyline({
     // A Maptiler Cloud dataset ID, or URL to GeoJSON/GPX/KML
     data:"74003ba7-215a-4b7e-8e26-5bbe3aa70b05",
@@ -327,8 +324,8 @@ mtLayer.on("ready", () => {
 })
 ```
 
-Here is the result, a bike ride in France and Switzerlanld, displayed on the dark Backdrop MapTiler style:
-![](images/sdk_helpers.jpg)
+Here is the result, a bike ride in France and Switzerland, displayed on the dark Backdrop MapTiler style:
+![PolyLine on top of MapTiler Dark map](images/sdk_helpers.jpg)
 
 #### Event `"ready"`
 The `"ready"` event is triggered when the internal MapTiler SDK Map instance is fully loaded and can accept some more layers to be added. This corresponds to the MapTiler SDk and MapLibre `load` event.
@@ -336,7 +333,7 @@ The `"ready"` event is triggered when the internal MapTiler SDK Map instance is 
 ## Bug Reports & Feature Requests
 Please use the [issue tracker](https://github.com/maptiler/leaflet-maptilersdk/issues) to report any bugs or file feature requests.
 
-## Licence
+## License
 ISC © [MapTiler](https://maptiler.com)
 
 
