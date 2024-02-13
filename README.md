@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://docs.maptiler.com/leaflet/examples/vector-tiles-in-leaflet-js/">Official Vector Tiles in Leaflet JS page →</a><br><br>
+  <a href="https://docs.maptiler.com/leaflet/examples/vector-tiles-in-leaflet-js/">Vector Tiles in Leaflet JS tutorial →</a><br><br>
   <img src="images/header.png" width="70%" alt="Leaflet + MapTiler SDK JS logo">
 </p>
 
