@@ -5,6 +5,10 @@
 ### Bug Fixes
 ### Others
 
+### 3.0.0
+### Others
+- Update MapTiler SDK to v2
+
 ## 2.0.0
 ### New Features
 - Major rework of the library to nmake it fully compatible with ES module installable from NPM, yet designed to be fully backward compatible and still usable from CDN/UMD
