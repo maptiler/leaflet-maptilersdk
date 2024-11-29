@@ -26,8 +26,13 @@ export function init() {
     map: null,
 
     initialize: function (options) {
+      console.log("options", options);
+      
+      
+      
       L.setOptions(this, options);
 
+      console.log("this.options", this.options);
       // setup throttling the update event when panning
       this._throttledUpdate = L.Util.throttle(
         this._update,
@@ -40,19 +45,6 @@ export function init() {
       if (!this._container) {
         this._initContainer();
       }
-
-      // Adding MapTiler logo + link
-      const maptilerLink = document.createElement("a");
-      maptilerLink.href = "https://www.maptiler.com";
-      maptilerLink.style =
-        "position:absolute; left:10px; bottom:2px; z-index:999;";
-      const maptilerLogo = document.createElement("img");
-      maptilerLogo.src = "https://api.maptiler.com/resources/logo.svg";
-      maptilerLogo.alt = "MapTiler logo";
-      maptilerLogo.width = "100";
-      maptilerLogo.height = "30";
-      maptilerLink.appendChild(maptilerLogo);
-      map.getContainer().appendChild(maptilerLink);
 
       const paneName = this.getPaneName();
       map.getPane(paneName).appendChild(this._container);
@@ -144,25 +136,23 @@ export function init() {
       this._maptilerMap.setLanguage(l);
     },
 
-    _roundPoint: function (p) {
-      return { x: Math.round(p.x), y: Math.round(p.y) };
-    },
+    _roundPoint: (p) => ({ x: Math.round(p.x), y: Math.round(p.y) }),
 
     _initContainer: function () {
-      const container = (this._container = L.DomUtil.create(
+      this._container = L.DomUtil.create(
         "div",
         "leaflet-gl-layer"
-      ));
+      );
 
       const size = this.getSize();
       const offset = this._map.getSize().multiplyBy(this.options.padding);
-      container.style.width = size.x + "px";
-      container.style.height = size.y + "px";
+      this._container.style.width = `${size.x}px`;
+      this._container.style.height = `${size.y}px`;
 
       const topLeft = this._map
         .containerPointToLayerPoint([0, 0])
         .subtract(offset);
-      L.DomUtil.setPosition(container, this._roundPoint(topLeft));
+      L.DomUtil.setPosition(this._container, this._roundPoint(topLeft));
     },
 
     _initMaptilerSDK: function () {
@@ -203,15 +193,68 @@ export function init() {
 
       // if the geolocate MapTiiler SDK option was given, then the center should be removed
       if (this.options.geolocate) {
-        delete options.center;
-        delete options.zoom;
+        options.center = undefined;
+        options.zoom = undefined;
       }
+
+      
+      console.log("options (map)", options);
+      
 
       this._maptilerMap = new maptilersdk.Map(options);
 
       this._maptilerMap.once("load", () => {
         this.fire("ready");
       });
+
+
+      this._maptilerMap.once("load", async () => {
+        let tileJsonContent = { logo: null };
+  
+        try {
+          const possibleSources = Object.keys(this._maptilerMap.style.sourceCaches)
+            .map((sourceName) => this._maptilerMap.getSource(sourceName))
+            .filter(
+              (s) => s && "url" in s && typeof s.url === "string" && s?.url.includes("tiles.json"),
+            );
+  
+          const styleUrl = new URL(possibleSources[0].url);
+  
+          if (!styleUrl.searchParams.has("key")) {
+            styleUrl.searchParams.append("key", config.apiKey);
+          }
+  
+          const tileJsonRes = await fetch(styleUrl.href);
+          tileJsonContent = await tileJsonRes.json();
+        } catch (e) {
+          // No tiles.json found (should not happen on maintained styles)
+        }
+  
+        if (tileJsonContent.logo || options.maptilerLogo) {
+          const logoURL = tileJsonContent.logo ?? "https://api.maptiler.com/resources/logo.svg";
+
+          // Adding MapTiler logo + link
+          const maptilerLink = document.createElement("a");
+          maptilerLink.href = "https://www.maptiler.com";
+          maptilerLink.style =
+            "position:absolute; left:10px; bottom:2px; z-index:999;";
+          const maptilerLogo = document.createElement("img");
+          maptilerLogo.src = logoURL;
+          maptilerLogo.alt = "MapTiler logo";
+          maptilerLogo.width = "100";
+          maptilerLogo.height = "30";
+          maptilerLink.appendChild(maptilerLogo);
+          this._map.getContainer().appendChild(maptilerLink);
+        }
+      });
+
+
+      
+
+
+
+
+
 
       this._maptilerMap.transform.freezeElevation = true;
 
@@ -243,14 +286,14 @@ export function init() {
       }
 
       // adding the helpers to be exposed
-      Object.keys(maptilersdk.helpers).forEach((k) => {
+      for (const k of Object.keys(maptilersdk.helpers)) {
         this[k] = (options) => {
           return maptilersdk.helpers[k].apply(null, [
             this._maptilerMap,
             options,
           ]);
         };
-      });
+      }
     },
 
     _update: function () {
@@ -275,8 +318,8 @@ export function init() {
         this._maptilerMap.transform.width !== size.x ||
         this._maptilerMap.transform.height !== size.y
       ) {
-        this._container.style.width = size.x + "px";
-        this._container.style.height = size.y + "px";
+        this._container.style.width = `${size.x}px`;
+        this._container.style.height = `${size.y}px`;
         if (
           this._maptilerMap._resize !== null &&
           this._maptilerMap._resize !== undefined
@@ -388,25 +431,25 @@ export function init() {
   });
   MaptilerLayer = L.MaptilerLayer;
 
-  L.maptilerLayer = function (options) {
-    return new L.MaptilerLayer(options);
-  };
+  L.maptilerLayer = (options) => new L.MaptilerLayer(options);
   maptilerLayer = L.maptilerLayer;
 
   // exposing the styles
   L.MaptilerStyle = {};
-  Object.keys(maptilersdk.MapStyle).forEach((k) => {
+  for (const k of Object.keys(maptilersdk.MapStyle)) {
     L.MaptilerStyle[k] = maptilersdk.MapStyle[k];
-  });
+  }
+
   MaptilerStyle = L.MaptilerStyle;
   maptilerStyle = L.MaptilerStyle;
   L.maptilerStyle = L.MaptilerStyle;
 
   // exposing the languages
   L.MaptilerLanguage = {};
-  Object.keys(maptilersdk.Language).forEach((k) => {
+  for (const k of Object.keys(maptilersdk.Language)) {
     L.MaptilerLanguage[k] = maptilersdk.Language[k];
-  });
+  }
+
   MaptilerLanguage = L.MaptilerLanguage;
   maptilerLanguage = L.MaptilerLanguage;
   L.maptilerLanguage = L.MaptilerLanguage;
