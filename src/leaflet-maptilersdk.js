@@ -192,6 +192,7 @@ export function init() {
 
       const options = {
         ...this.options,
+        projection: "mercator",
         style,
         apiKey,
         container: this._container,
@@ -225,8 +226,8 @@ export function init() {
       }
 
       // allow GL base map to pan beyond min/max latitudes
-      this._maptilerMap.transform.latRange = null;
-      this._maptilerMap.transform.maxValidLatitude = Infinity;
+      // this._maptilerMap.transform.latRange = null;
+      // this._maptilerMap.transform.maxValidLatitude = Infinity;
       this._transformGL();
       this._maptilerMap._actualCanvas = this._maptilerMap._canvas;
 
@@ -298,10 +299,8 @@ export function init() {
     },
 
     _transformGL: function () {
-      const center = this._map.getCenter();
-      const tr = this._maptilerMap.transform;
-      tr.center = maptilersdk.LngLat.convert([center.lng, center.lat]);
-      tr.zoom = this._map.getZoom() - 1;
+      this._maptilerMap.setCenter(this._map.getCenter());
+      this._maptilerMap.setZoom(this._map.getZoom() - 1);
     },
 
     // update the map constantly during a pinch zoom
