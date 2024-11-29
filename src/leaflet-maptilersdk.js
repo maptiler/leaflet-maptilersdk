@@ -26,13 +26,8 @@ export function init() {
     map: null,
 
     initialize: function (options) {
-      console.log("options", options);
-      
-      
-      
       L.setOptions(this, options);
 
-      console.log("this.options", this.options);
       // setup throttling the update event when panning
       this._throttledUpdate = L.Util.throttle(
         this._update,
@@ -139,10 +134,7 @@ export function init() {
     _roundPoint: (p) => ({ x: Math.round(p.x), y: Math.round(p.y) }),
 
     _initContainer: function () {
-      this._container = L.DomUtil.create(
-        "div",
-        "leaflet-gl-layer"
-      );
+      this._container = L.DomUtil.create("div", "leaflet-gl-layer");
 
       const size = this.getSize();
       const offset = this._map.getSize().multiplyBy(this.options.padding);
@@ -197,41 +189,44 @@ export function init() {
         options.zoom = undefined;
       }
 
-      
-      console.log("options (map)", options);
-      
-
       this._maptilerMap = new maptilersdk.Map(options);
 
       this._maptilerMap.once("load", () => {
         this.fire("ready");
       });
 
-
       this._maptilerMap.once("load", async () => {
         let tileJsonContent = { logo: null };
-  
+
         try {
-          const possibleSources = Object.keys(this._maptilerMap.style.sourceCaches)
+          const possibleSources = Object.keys(
+            this._maptilerMap.style.sourceCaches
+          )
             .map((sourceName) => this._maptilerMap.getSource(sourceName))
             .filter(
-              (s) => s && "url" in s && typeof s.url === "string" && s?.url.includes("tiles.json"),
+              (s) =>
+                s &&
+                "url" in s &&
+                typeof s.url === "string" &&
+                s?.url.includes("tiles.json")
             );
-  
+
           const styleUrl = new URL(possibleSources[0].url);
-  
+
           if (!styleUrl.searchParams.has("key")) {
-            styleUrl.searchParams.append("key", config.apiKey);
+            styleUrl.searchParams.append("key", apiKey);
           }
-  
+
           const tileJsonRes = await fetch(styleUrl.href);
           tileJsonContent = await tileJsonRes.json();
         } catch (e) {
           // No tiles.json found (should not happen on maintained styles)
         }
-  
+
         if (tileJsonContent.logo || options.maptilerLogo) {
-          const logoURL = tileJsonContent.logo ?? "https://api.maptiler.com/resources/logo.svg";
+          const logoURL =
+            tileJsonContent.logo ??
+            "https://api.maptiler.com/resources/logo.svg";
 
           // Adding MapTiler logo + link
           const maptilerLink = document.createElement("a");
@@ -247,14 +242,6 @@ export function init() {
           this._map.getContainer().appendChild(maptilerLink);
         }
       });
-
-
-      
-
-
-
-
-
 
       this._maptilerMap.transform.freezeElevation = true;
 
