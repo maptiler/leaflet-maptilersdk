@@ -1,7 +1,7 @@
 import * as maptilersdk from "@maptiler/sdk";
 import L from "leaflet";
 
-import { registerTelemetry } from "./telemetry";
+import packagejson from "../package.json";
 
 // Are exported as well as being placed inside the Leaflet `L` object.
 export let MaptilerLayer = null;
@@ -39,7 +39,16 @@ export function init() {
     },
 
     onAdd: function (map) {
-      registerTelemetry(map);
+      /**
+       * TODO: Remove when telemetry will be implemented
+       */
+      map.telemetry = {
+        registerModule: (name, version) => {
+          console.log(`Telemetry module registered: ${name} ${version}`);
+        },
+      };
+      /* *** */
+      map.telemetry.registerModule(packagejson.name, packagejson.version);
 
       if (!this._container) {
         this._initContainer();
