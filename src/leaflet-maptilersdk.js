@@ -1,6 +1,8 @@
 import * as maptilersdk from "@maptiler/sdk";
 import L from "leaflet";
 
+import { registerTelemetry } from "./telemetry";
+
 // Are exported as well as being placed inside the Leaflet `L` object.
 export let MaptilerLayer = null;
 export let maptilerLayer = null;
@@ -37,6 +39,8 @@ export function init() {
     },
 
     onAdd: function (map) {
+      registerTelemetry(map);
+
       if (!this._container) {
         this._initContainer();
       }
