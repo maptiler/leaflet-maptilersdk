@@ -42,7 +42,7 @@
     "vite": "^4.4.8"
   },
   "dependencies": {
-    "@maptiler/sdk": "^3.0.0-rc.2",
+    "@maptiler/sdk": "^3.0.0-rc.4",
     "leaflet": "^1.9.4"
   }
 }

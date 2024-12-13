@@ -39,17 +39,6 @@ export function init() {
     },
 
     onAdd: function (map) {
-      /**
-       * TODO: Remove when telemetry will be implemented
-       */
-      map.telemetry = {
-        registerModule: (name, version) => {
-          console.log(`Telemetry module registered: ${name} ${version}`);
-        },
-      };
-      /* *** */
-      map.telemetry.registerModule(packagejson.name, packagejson.version);
-
       if (!this._container) {
         this._initContainer();
       }
@@ -203,6 +192,8 @@ export function init() {
       }
 
       this._maptilerMap = new maptilersdk.Map(options);
+      
+      this._maptilerMap.telemetry.registerModule(packagejson.name, packagejson.version);
 
       this._maptilerMap.once("load", () => {
         this.fire("ready");
