@@ -192,8 +192,11 @@ export function init() {
       }
 
       this._maptilerMap = new maptilersdk.Map(options);
-      
-      this._maptilerMap.telemetry.registerModule(packagejson.name, packagejson.version);
+
+      this._maptilerMap.telemetry.registerModule(
+        packagejson.name,
+        packagejson.version
+      );
 
       this._maptilerMap.once("load", () => {
         this.fire("ready");
