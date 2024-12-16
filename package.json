@@ -26,8 +26,8 @@
     "build-dev": "NODE_ENV=development npm run build-es && NODE_ENV=development npm run build-umd",
     "build-umd": "vite build -c vite.config-umd.js",
     "build-es": "vite build -c vite.config-es.js",
-    "dev:umd": "NODE_ENV=development vite build -w -c vite.config-umd.js",
-    "dev:es": "NODE_ENV=development vite build -w -c vite.config-ues.js"
+    "dev:umd": "NODE_ENV=development vite build -w -c vite.config-umd.ts",
+    "dev:es": "NODE_ENV=development vite build -w -c vite.config-es.ts"
   },
   "repository": {
     "type": "git",
@@ -39,7 +39,9 @@
     "eslint-plugin-import": "^2.28.0",
     "prettier": "^2.8.8",
     "terser": "^5.19.2",
-    "vite": "^4.4.8"
+    "typescript": "^5.7.2",
+    "vite": "^4.4.8",
+    "vite-plugin-dts": "^4.3.0"
   },
   "dependencies": {
     "@maptiler/sdk": "^3.0.0-rc.4",

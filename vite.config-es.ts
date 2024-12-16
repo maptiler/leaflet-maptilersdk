@@ -1,7 +1,12 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 const isProduction = process.env.NODE_ENV === "production";
+
+const plugins = [
+  dts({insertTypesEntry: true}),
+];
 
 export default defineConfig({
   mode: isProduction ? "production" : "development",
@@ -32,5 +37,5 @@ export default defineConfig({
       },
     },
   },
-  plugins: [],
+  plugins,
 })
