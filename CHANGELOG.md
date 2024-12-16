@@ -1,9 +1,8 @@
 # MapTiler Client Changelog
 
-## DEVEL
-### New Features
-### Bug Fixes
-### Others
+## 3.0.0-rc.1
+### Other
+- Updated with SDK v3 (rc) that in theory supports globe, though this is not enabled in the Leaflet plugin due to inherent limitations of Leaflet
 
 ## 2.0.0
 ### New Features
