@@ -1,6 +1,8 @@
 import * as maptilersdk from "@maptiler/sdk";
 import L from "leaflet";
 
+import packagejson from "../package.json";
+
 // Are exported as well as being placed inside the Leaflet `L` object.
 export let MaptilerLayer = null;
 export let maptilerLayer = null;
@@ -190,6 +192,11 @@ export function init() {
       }
 
       this._maptilerMap = new maptilersdk.Map(options);
+
+      this._maptilerMap.telemetry.registerModule(
+        packagejson.name,
+        packagejson.version
+      );
 
       this._maptilerMap.once("load", () => {
         this.fire("ready");
