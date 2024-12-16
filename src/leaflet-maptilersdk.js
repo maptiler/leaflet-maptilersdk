@@ -263,8 +263,6 @@ export function init() {
       }
 
       // allow GL base map to pan beyond min/max latitudes
-      // this._maptilerMap.transform.latRange = null;
-      // this._maptilerMap.transform.maxValidLatitude = Infinity;
       this._transformGL();
       this._maptilerMap._actualCanvas = this._maptilerMap._canvas;
 
