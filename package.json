@@ -6,7 +6,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/leaflet-maptilersdk.js"
+      "import": "./dist/leaflet-maptilersdk.js",
+      "types": "./dist/leaflet-maptilersdk.d.ts"
     }
   },
   "author": "MapTiler",

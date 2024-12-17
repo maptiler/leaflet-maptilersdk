@@ -16,7 +16,7 @@ export default defineConfig({
     sourcemap: !isProduction,
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: resolve(__dirname, 'src/leaflet-maptilersdk.ts'),
       name: 'leafletmaptilersdk',
       // the proper extensions will be added
       fileName: (format, entryName) => "leaflet-maptilersdk.js",

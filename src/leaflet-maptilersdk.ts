@@ -1,25 +1,26 @@
-import * as maptilersdk from "@maptiler/sdk";
 import L from "leaflet";
-import type {
-  MapOptions,
-  HeatmapLayerOptions,
-  LanguageInfo,
-  MapStyleVariant,
-  PointLayerOptions,
-  PolygonLayerOptions,
-  PolylineLayerOptions,
-  ReferenceMapStyle,
-  StyleSpecification
+import {
+  type MapOptions,
+  type HeatmapLayerOptions,
+  type LanguageInfo,
+  type MapStyleVariant,
+  type PointLayerOptions,
+  type PolygonLayerOptions,
+  type PolylineLayerOptions,
+  type ReferenceMapStyle,
+  type StyleSpecification,
+  MapStyle,
+  Language,
+  Map as MapSDK,
+  helpers,
 } from "@maptiler/sdk";
 import packagejson from "../package.json";
 
-export const MaptilerStyle = maptilersdk.MapStyle;
-export const maptilerStyle = maptilersdk.MapStyle;
-export const MaptilerLanguage = maptilersdk.Language;
-export const maptilerLanguage = maptilersdk.Language;
+export const MaptilerStyle = MapStyle;
+export const MaptilerLanguage = Language;
 
 type LeafletMap = L.Map;
-type MaptilerMap = maptilersdk.Map;
+type MaptilerMap = MapSDK;
 
 
 export const MaptilerLayer = L.Layer.extend({
@@ -202,7 +203,7 @@ export const MaptilerLayer = L.Layer.extend({
       options.zoom = undefined;
     }
 
-    this._maptilerMap = new maptilersdk.Map(options);
+    this._maptilerMap = new MapSDK(options);
 
     this._maptilerMap.telemetry.registerModule(
       packagejson.name,
@@ -296,7 +297,7 @@ export const MaptilerLayer = L.Layer.extend({
       heatmapLayerId: string;
       heatmapSourceId: string;
     } => {
-      return maptilersdk.helpers.addHeatmap(this._maptilerMap, options)
+      return helpers.addHeatmap(this._maptilerMap, options)
     }
 
     // Helper: polygon
@@ -305,7 +306,7 @@ export const MaptilerLayer = L.Layer.extend({
       polygonOutlineLayerId: string;
       polygonSourceId: string;
     } => {
-      return maptilersdk.helpers.addPolygon(this._maptilerMap, options)
+      return helpers.addPolygon(this._maptilerMap, options)
     }
 
     // Helper: point
@@ -315,7 +316,7 @@ export const MaptilerLayer = L.Layer.extend({
       labelLayerId: string;
       pointSourceId: string;
     } => {
-      return maptilersdk.helpers.addPoint(this._maptilerMap, options)
+      return helpers.addPoint(this._maptilerMap, options)
     }
 
     // Helper: polyline
@@ -324,7 +325,7 @@ export const MaptilerLayer = L.Layer.extend({
       polylineOutlineLayerId: string;
       polylineSourceId: string;
     }> => {
-      return await maptilersdk.helpers.addPolyline(this._maptilerMap, options)
+      return await helpers.addPolyline(this._maptilerMap, options)
     }
 
     // Helper: sceenshot
@@ -332,7 +333,7 @@ export const MaptilerLayer = L.Layer.extend({
       download?: boolean;
       filename?: string;
     }) => {
-      return maptilersdk.helpers.takeScreenshot(this._maptilerMap, options)
+      return helpers.takeScreenshot(this._maptilerMap, options)
     }
 
   },
