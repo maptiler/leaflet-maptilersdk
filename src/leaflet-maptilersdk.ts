@@ -1,6 +1,5 @@
 import L from "leaflet";
 import {
-  type MapOptions,
   type HeatmapLayerOptions,
   type LanguageInfo,
   type MapStyleVariant,
@@ -16,14 +15,145 @@ import {
 } from "@maptiler/sdk";
 import packagejson from "../package.json";
 
+/**
+ * Contains shorthands for all the MapTiler built-in styles and their variants.
+ * Examples:
+ * - `MaptilerStyle.OUTDOOR`
+ * - `MaptilerStyle.DATAVIZ`
+ * - MaptilerStyle.DATAVIZ.DARK`
+ * - etc.
+ */
 export const MaptilerStyle = MapStyle;
+
+/**
+ * Contains shorthands for all the MapTiler built-in languages.
+ * Example:
+ * - `MaptilerLanguage.ENGLISH` (default in built-in styles)
+ * - `MaptilerLanguage.LOCAL` (labels in local languages)
+ * - `MaptilerLanguage.VISITOR` (bilingual labels)
+ * - etc.
+ */
 export const MaptilerLanguage = Language;
 
 type LeafletMap = L.Map;
 type MaptilerMap = MapSDK;
 
+/**
+ * A Maptiler Layer for Leaflet consists in adding a MapTiler SDK Map
+ * inside of Leaflet as a custom layer.
+ */
+interface MaptilerLayerInterface extends L.Layer {
+  /**
+   * Get the Maptiler Map instance out of the layer.
+   * This can be convenient to add further events and logic.
+   */
+  getMaptilerSDKMap: () => MaptilerMap,
 
-export const MaptilerLayer = L.Layer.extend({
+  /**
+   * Get the HTML Canvas element where the MapTiler Map is
+   * instantiated.
+   */
+  getCanvas: () => HTMLCanvasElement,
+
+  /**
+   * Set the style of the internal MapTiler Map instance.
+   * The style can be one of the built-in list (as in `MaptilerStyle`)
+   * or a raw URL.
+   */
+  setStyle: (s: null | ReferenceMapStyle | MapStyleVariant | StyleSpecification | string) => void,
+
+  /**
+   * Set the language of the map from the built-in list of
+   * supported languages (see `MaptilerLanguage`)
+   */
+  setLanguage: (l: LanguageInfo | string) => void,
+
+
+  /**
+   * Add a heatmap layer from a geoJSON datasource or a 
+   * dataset hosted on MapTiler Cloud account.
+   * Read more about helpers at 
+   * https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers
+   */
+  addHeatmap: (options: HeatmapLayerOptions) => {
+    heatmapLayerId: string;
+    heatmapSourceId: string;
+  },
+
+  /**
+   * Add a polygon layer from a geoJSON datasource or a 
+   * dataset hosted on MapTiler Cloud account.
+   * Read more about helpers at 
+   * https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers
+   */
+  addPolygon: (options: PolygonLayerOptions) => {
+    polygonLayerId: string;
+    polygonOutlineLayerId: string;
+    polygonSourceId: string;
+  },
+
+  /**
+   * Add a point layer from a geoJSON datasource or a 
+   * dataset hosted on MapTiler Cloud account.
+   * Read more about helpers at 
+   * https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers
+   */
+  addPoint: (options: PointLayerOptions) => {
+    pointLayerId: string;
+    clusterLayerId: string;
+    labelLayerId: string;
+    pointSourceId: string;
+  },
+
+  /**
+   * Add a polyline layer from a geoJSON datasource or a 
+   * dataset hosted on MapTiler Cloud account.
+   * Read more about helpers at 
+   * https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers
+   */
+  addPolyline: (options: PolylineLayerOptions) => Promise<{
+    polylineLayerId: string;
+    polylineOutlineLayerId: string;
+    polylineSourceId: string;
+  }>,
+
+  /**
+   * Take a screenshot of the displayed map.
+   * Read more about this feature at
+   * https://github.com/maptiler/maptiler-sdk-js#take-screenshots-programmatically
+   */
+  takeScreenshot: (options?: {
+    download?: boolean;
+    filename?: string;
+  }) => Promise<Blob>
+}
+
+/**
+ * Options to create a MaptilerLayer
+ */
+export type MaptilerLayerOptions = {
+  /**
+   * Maptiler Cloud API key
+   */
+  apiKey: string,
+  /**
+   * Style hosted on MapTiler Cloud or raw URL.
+   * Default: MapTiler Streets style
+   */
+  style?: ReferenceMapStyle | MapStyleVariant | StyleSpecification | string,
+  /**
+   * Language for the map to display
+   * Default: uses the language as defined in the style
+   */
+  language?: LanguageInfo | string,
+}
+
+
+/**
+ * A Maptiler Layer for Leaflet consists in adding a MapTiler SDK Map
+ * inside of Leaflet as a custom layer.
+ */
+export const MaptilerLayer = (L.Layer.extend({
   options: {
     updateInterval: 32,
     // How much to extend the overlay view (relative to map size)
@@ -38,7 +168,7 @@ export const MaptilerLayer = L.Layer.extend({
 
   map: null,
 
-  initialize: function (options: MapOptions) {
+  initialize: function (options: unknown) {
     L.setOptions(this, options);
 
     // setup throttling the update event when panning
@@ -113,11 +243,11 @@ export const MaptilerLayer = L.Layer.extend({
     return this._maptilerMap.getCanvas();
   },
 
-  getSize: function () {
-    return this._map.getSize().multiplyBy(1 + this.options.padding * 2);
+  getSize: function (): L.Point {
+    return (this._map as L.Map).getSize().multiplyBy(1 + this.options.padding * 2);
   },
 
-  getBounds: function () {
+  getBounds: function (): L.LatLngBounds {
     const halfSize = this.getSize().multiplyBy(0.5);
     const center = this._map.latLngToContainerPoint(this._map.getCenter());
     return L.latLngBounds(
@@ -163,34 +293,9 @@ export const MaptilerLayer = L.Layer.extend({
 
   _initMaptilerSDK: function () {
     const center = this._map.getCenter();
-    let style = this.options.style;
-    let apiKey = this.options.apiKey;
-
-    // If the style is a MapTiler style, then it will probably come with an API key
-    if (
-      (typeof this.options.style === "string" ||
-        this.options.style instanceof String) &&
-      this.options.style.startsWith("https://api.maptiler.com/maps/")
-    ) {
-      try {
-        const styleURL = new URL(this.options.style);
-        const apiKeyFromURL = styleURL.searchParams.get("key");
-
-        if (apiKeyFromURL) {
-          apiKey = apiKeyFromURL;
-          styleURL.searchParams.delete("key");
-          style = styleURL.href;
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
     const options = {
       ...this.options,
       projection: "mercator",
-      style,
-      apiKey,
       container: this._container,
       center: [center.lng, center.lat],
       zoom: this._map.getZoom() - 1,
@@ -233,7 +338,7 @@ export const MaptilerLayer = L.Layer.extend({
         const styleUrl = new URL(possibleSources[0].url);
 
         if (!styleUrl.searchParams.has("key")) {
-          styleUrl.searchParams.append("key", apiKey);
+          styleUrl.searchParams.append("key", options.apiKey);
         }
 
         const tileJsonRes = await fetch(styleUrl.href);
@@ -320,19 +425,19 @@ export const MaptilerLayer = L.Layer.extend({
     }
 
     // Helper: polyline
-    this.addPolyline = async (options: PolylineLayerOptions): Promise<{
+    this.addPolyline = (options: PolylineLayerOptions): Promise<{
       polylineLayerId: string;
       polylineOutlineLayerId: string;
       polylineSourceId: string;
     }> => {
-      return await helpers.addPolyline(this._maptilerMap, options)
+      return helpers.addPolyline(this._maptilerMap, options)
     }
 
     // Helper: sceenshot
     this.takeScreenshot = (options?: {
       download?: boolean;
       filename?: string;
-    }) => {
+    }): Promise<Blob> => {
       return helpers.takeScreenshot(this._maptilerMap, options)
     }
 
@@ -471,10 +576,14 @@ export const MaptilerLayer = L.Layer.extend({
   _resize: function (e) {
     this._transitionEnd(e);
   },
-});
+}) as {
+  new (options: MaptilerLayerOptions): MaptilerLayerInterface;
+} & typeof L.Layer);
 
-
-export function maptilerLayer(options: MapOptions) {
-  // @ts-ignore
+/**
+ * Factory function to instantiate a MaptilerLayer.
+ * Does exactly the same as calling `new MaptilerLayer(options)`
+ */
+export function maptilerLayer(options: MaptilerLayerOptions) {
   return new MaptilerLayer(options);
 }
