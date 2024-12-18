@@ -8,35 +8,11 @@ import {
   type PolylineLayerOptions,
   type ReferenceMapStyle,
   type StyleSpecification,
-  MapStyle,
-  Language,
   Map as MapSDK,
   helpers,
 } from "@maptiler/sdk";
 import packagejson from "../package.json";
-
-/**
- * Contains shorthands for all the MapTiler built-in styles and their variants.
- * Examples:
- * - `MaptilerStyle.OUTDOOR`
- * - `MaptilerStyle.DATAVIZ`
- * - MaptilerStyle.DATAVIZ.DARK`
- * - etc.
- */
-export const MaptilerStyle = MapStyle;
-
-/**
- * Contains shorthands for all the MapTiler built-in languages.
- * Example:
- * - `MaptilerLanguage.ENGLISH` (default in built-in styles)
- * - `MaptilerLanguage.LOCAL` (labels in local languages)
- * - `MaptilerLanguage.VISITOR` (bilingual labels)
- * - etc.
- */
-export const MaptilerLanguage = Language;
-
-type LeafletMap = L.Map;
-type MaptilerMap = MapSDK;
+export { Language, MapStyle as Style } from "@maptiler/sdk";
 
 /**
  * A Maptiler Layer for Leaflet consists in adding a MapTiler SDK Map
@@ -47,7 +23,7 @@ interface MaptilerLayerInterface extends L.Layer {
    * Get the Maptiler Map instance out of the layer.
    * This can be convenient to add further events and logic.
    */
-  getMaptilerSDKMap: () => MaptilerMap,
+  getMaptilerSDKMap: () => MapSDK,
 
   /**
    * Get the HTML Canvas element where the MapTiler Map is
@@ -64,7 +40,7 @@ interface MaptilerLayerInterface extends L.Layer {
 
   /**
    * Set the language of the map from the built-in list of
-   * supported languages (see `MaptilerLanguage`)
+   * supported languages (see `Language`)
    */
   setLanguage: (l: LanguageInfo | string) => void,
 
@@ -179,7 +155,7 @@ export const MaptilerLayer = (L.Layer.extend({
     );
   },
 
-  onAdd: function (map: LeafletMap) {
+  onAdd: function (map: L.Map) {
     if (!this._container) {
       this._initContainer();
     }
@@ -208,7 +184,7 @@ export const MaptilerLayer = (L.Layer.extend({
     );
   },
 
-  onRemove: function (map: LeafletMap) {
+  onRemove: function (map: L.Map) {
     if (this._map._proxy && this._map.options.zoomAnimation) {
       L.DomEvent.off(
         this._map._proxy,
@@ -235,7 +211,7 @@ export const MaptilerLayer = (L.Layer.extend({
     };
   },
 
-  getMaptilerSDKMap: function (): MaptilerMap {
+  getMaptilerSDKMap: function (): MapSDK {
     return this._maptilerMap;
   },
 
@@ -285,7 +261,7 @@ export const MaptilerLayer = (L.Layer.extend({
     this._container.style.width = `${size.x}px`;
     this._container.style.height = `${size.y}px`;
 
-    const topLeft = (this._map as LeafletMap)
+    const topLeft = (this._map as L.Map)
       .containerPointToLayerPoint([0, 0])
       .subtract(offset);
     L.DomUtil.setPosition(this._container, this._roundPoint(topLeft));

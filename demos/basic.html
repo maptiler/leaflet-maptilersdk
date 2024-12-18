@@ -43,11 +43,11 @@ L.marker([40.7468, -73.98775])
   .openPopup();
 
 // Create a MapTiler Layer inside Leaflet
-const mtLayer = leafletmaptilersdk.maptilerLayer({
-  apiKey: "9S3bk8anb8mUsm1wwGlI",
+const mtLayer = L.maptiler.maptilerLayer({
+  apiKey: "API_KEY",
   // maptilerLogo: false,
-  style: "fsdfsd",
-  language: leafletmaptilersdk.MaptilerLanguage.VISITOR,
+  style: L.maptiler.Style.OUTDOOR,
+  language: L.maptiler.Language.VISITOR,
 }).addTo(map);
 
 
