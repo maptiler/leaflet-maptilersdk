@@ -8,7 +8,7 @@ export default defineConfig({
   mode: isProduction ? "production" : "development",
   build: {
     outDir: "build",
-    minify: false, //isProduction,
+    minify: isProduction,
     sourcemap: !isProduction,
     lib: {
       // Could also be a dictionary or array of multiple entry points

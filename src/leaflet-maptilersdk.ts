@@ -23,55 +23,54 @@ interface MaptilerLayerInterface extends L.Layer {
    * Get the Maptiler Map instance out of the layer.
    * This can be convenient to add further events and logic.
    */
-  getMaptilerSDKMap: () => MapSDK,
+  getMaptilerSDKMap: () => MapSDK;
 
   /**
    * Get the HTML Canvas element where the MapTiler Map is
    * instantiated.
    */
-  getCanvas: () => HTMLCanvasElement,
+  getCanvas: () => HTMLCanvasElement;
 
   /**
    * Set the style of the internal MapTiler Map instance.
    * The style can be one of the built-in list (as in `MaptilerStyle`)
    * or a raw URL.
    */
-  setStyle: (s: null | ReferenceMapStyle | MapStyleVariant | StyleSpecification | string) => void,
+  setStyle: (s: null | ReferenceMapStyle | MapStyleVariant | StyleSpecification | string) => void;
 
   /**
    * Set the language of the map from the built-in list of
    * supported languages (see `Language`)
    */
-  setLanguage: (l: LanguageInfo | string) => void,
-
+  setLanguage: (l: LanguageInfo | string) => void;
 
   /**
-   * Add a heatmap layer from a geoJSON datasource or a 
+   * Add a heatmap layer from a geoJSON datasource or a
    * dataset hosted on MapTiler Cloud account.
-   * Read more about helpers at 
+   * Read more about helpers at
    * https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers
    */
   addHeatmap: (options: HeatmapLayerOptions) => {
     heatmapLayerId: string;
     heatmapSourceId: string;
-  },
+  };
 
   /**
-   * Add a polygon layer from a geoJSON datasource or a 
+   * Add a polygon layer from a geoJSON datasource or a
    * dataset hosted on MapTiler Cloud account.
-   * Read more about helpers at 
+   * Read more about helpers at
    * https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers
    */
   addPolygon: (options: PolygonLayerOptions) => {
     polygonLayerId: string;
     polygonOutlineLayerId: string;
     polygonSourceId: string;
-  },
+  };
 
   /**
-   * Add a point layer from a geoJSON datasource or a 
+   * Add a point layer from a geoJSON datasource or a
    * dataset hosted on MapTiler Cloud account.
-   * Read more about helpers at 
+   * Read more about helpers at
    * https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers
    */
   addPoint: (options: PointLayerOptions) => {
@@ -79,19 +78,19 @@ interface MaptilerLayerInterface extends L.Layer {
     clusterLayerId: string;
     labelLayerId: string;
     pointSourceId: string;
-  },
+  };
 
   /**
-   * Add a polyline layer from a geoJSON datasource or a 
+   * Add a polyline layer from a geoJSON datasource or a
    * dataset hosted on MapTiler Cloud account.
-   * Read more about helpers at 
+   * Read more about helpers at
    * https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers
    */
   addPolyline: (options: PolylineLayerOptions) => Promise<{
     polylineLayerId: string;
     polylineOutlineLayerId: string;
     polylineSourceId: string;
-  }>,
+  }>;
 
   /**
    * Take a screenshot of the displayed map.
@@ -101,7 +100,7 @@ interface MaptilerLayerInterface extends L.Layer {
   takeScreenshot: (options?: {
     download?: boolean;
     filename?: string;
-  }) => Promise<Blob>
+  }) => Promise<Blob>;
 }
 
 /**
@@ -111,25 +110,24 @@ export type MaptilerLayerOptions = {
   /**
    * Maptiler Cloud API key
    */
-  apiKey: string,
+  apiKey: string;
   /**
    * Style hosted on MapTiler Cloud or raw URL.
    * Default: MapTiler Streets style
    */
-  style?: ReferenceMapStyle | MapStyleVariant | StyleSpecification | string,
+  style?: ReferenceMapStyle | MapStyleVariant | StyleSpecification | string;
   /**
    * Language for the map to display
    * Default: uses the language as defined in the style
    */
-  language?: LanguageInfo | string,
-}
-
+  language?: LanguageInfo | string;
+};
 
 /**
  * A Maptiler Layer for Leaflet consists in adding a MapTiler SDK Map
  * inside of Leaflet as a custom layer.
  */
-export const MaptilerLayer = (L.Layer.extend({
+export const MaptilerLayer = L.Layer.extend({
   options: {
     updateInterval: 32,
     // How much to extend the overlay view (relative to map size)
@@ -148,11 +146,7 @@ export const MaptilerLayer = (L.Layer.extend({
     L.setOptions(this, options);
 
     // setup throttling the update event when panning
-    this._throttledUpdate = L.Util.throttle(
-      this._update,
-      this.options.updateInterval,
-      this
-    );
+    this._throttledUpdate = L.Util.throttle(this._update, this.options.updateInterval, this);
   },
 
   onAdd: function (map: L.Map) {
@@ -174,24 +168,19 @@ export const MaptilerLayer = (L.Layer.extend({
         map._proxy,
         L.DomUtil.TRANSITION_END,
         this._transitionEnd,
-        this
+        this,
       );
     }
 
     // Adding MapTiler attribution
     map.attributionControl.addAttribution(
-      '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e'
+      '\u003ca href="https://www.maptiler.com/copyright/" target="_blank"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href="https://www.openstreetmap.org/copyright" target="_blank"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e',
     );
   },
 
   onRemove: function (map: L.Map) {
     if (this._map._proxy && this._map.options.zoomAnimation) {
-      L.DomEvent.off(
-        this._map._proxy,
-        L.DomUtil.TRANSITION_END,
-        this._transitionEnd,
-        this
-      );
+      L.DomEvent.off(this._map._proxy, L.DomUtil.TRANSITION_END, this._transitionEnd, this);
     }
     const paneName = this.getPaneName();
     map.getPane(paneName)?.removeChild(this._container);
@@ -228,7 +217,7 @@ export const MaptilerLayer = (L.Layer.extend({
     const center = this._map.latLngToContainerPoint(this._map.getCenter());
     return L.latLngBounds(
       this._map.containerPointToLatLng(center.subtract(halfSize)),
-      this._map.containerPointToLatLng(center.add(halfSize))
+      this._map.containerPointToLatLng(center.add(halfSize)),
     );
   },
 
@@ -238,9 +227,7 @@ export const MaptilerLayer = (L.Layer.extend({
 
   // returns the pane name set in options if it is a valid pane, defaults to tilePane
   getPaneName: function (): string {
-    return this._map.getPane(this.options.pane)
-      ? this.options.pane
-      : "tilePane";
+    return this._map.getPane(this.options.pane) ? this.options.pane : "tilePane";
   },
 
   setStyle: function (s: null | ReferenceMapStyle | MapStyleVariant | StyleSpecification | string) {
@@ -261,9 +248,7 @@ export const MaptilerLayer = (L.Layer.extend({
     this._container.style.width = `${size.x}px`;
     this._container.style.height = `${size.y}px`;
 
-    const topLeft = (this._map as L.Map)
-      .containerPointToLayerPoint([0, 0])
-      .subtract(offset);
+    const topLeft = (this._map as L.Map).containerPointToLayerPoint([0, 0]).subtract(offset);
     L.DomUtil.setPosition(this._container, this._roundPoint(topLeft));
   },
 
@@ -286,10 +271,7 @@ export const MaptilerLayer = (L.Layer.extend({
 
     this._maptilerMap = new MapSDK(options);
 
-    this._maptilerMap.telemetry.registerModule(
-      packagejson.name,
-      packagejson.version
-    );
+    this._maptilerMap.telemetry.registerModule(packagejson.name, packagejson.version);
 
     this._maptilerMap.once("load", () => {
       this.fire("ready");
@@ -299,17 +281,9 @@ export const MaptilerLayer = (L.Layer.extend({
       let tileJsonContent = { logo: null };
 
       try {
-        const possibleSources = Object.keys(
-          this._maptilerMap.style.sourceCaches
-        )
+        const possibleSources = Object.keys(this._maptilerMap.style.sourceCaches)
           .map((sourceName) => this._maptilerMap.getSource(sourceName))
-          .filter(
-            (s) =>
-              s &&
-              "url" in s &&
-              typeof s.url === "string" &&
-              s?.url.includes("tiles.json")
-          );
+          .filter((s) => s && "url" in s && typeof s.url === "string" && s?.url.includes("tiles.json"));
 
         const styleUrl = new URL(possibleSources[0].url);
 
@@ -324,9 +298,7 @@ export const MaptilerLayer = (L.Layer.extend({
       }
 
       if (tileJsonContent.logo || options.maptilerLogo) {
-        const logoURL =
-          tileJsonContent.logo ??
-          "https://api.maptiler.com/resources/logo.svg";
+        const logoURL = tileJsonContent.logo ?? "https://api.maptiler.com/resources/logo.svg";
 
         // Adding MapTiler logo + link
         const maptilerLink = document.createElement("a");
@@ -350,10 +322,7 @@ export const MaptilerLayer = (L.Layer.extend({
     // if the geolocate MapTiiler SDK option was given, then we need to propagate the actual center to Leaflet map
     if (this.options.geolocate) {
       this._maptilerMap.on("load", () => {
-        this._map.setView(
-          this._maptilerMap.getCenter(),
-          this._maptilerMap.getZoom() + 1
-        );
+        this._map.setView(this._maptilerMap.getCenter(), this._maptilerMap.getZoom() + 1);
       });
     }
 
@@ -372,51 +341,57 @@ export const MaptilerLayer = (L.Layer.extend({
       L.DomUtil.addClass(canvas, this.options.className);
     }
 
-    
     // Helper: heatmap
-    this.addHeatmap = (options: HeatmapLayerOptions): {
+    this.addHeatmap = (
+      options: HeatmapLayerOptions,
+    ): {
       heatmapLayerId: string;
       heatmapSourceId: string;
     } => {
-      return helpers.addHeatmap(this._maptilerMap, options)
-    }
+      return helpers.addHeatmap(this._maptilerMap, options);
+    };
 
     // Helper: polygon
-    this.addPolygon = (options: PolygonLayerOptions): {
+    this.addPolygon = (
+      options: PolygonLayerOptions,
+    ): {
       polygonLayerId: string;
       polygonOutlineLayerId: string;
       polygonSourceId: string;
     } => {
-      return helpers.addPolygon(this._maptilerMap, options)
-    }
+      return helpers.addPolygon(this._maptilerMap, options);
+    };
 
     // Helper: point
-    this.addPoint = (options: PointLayerOptions): {
+    this.addPoint = (
+      options: PointLayerOptions,
+    ): {
       pointLayerId: string;
       clusterLayerId: string;
       labelLayerId: string;
       pointSourceId: string;
     } => {
-      return helpers.addPoint(this._maptilerMap, options)
-    }
+      return helpers.addPoint(this._maptilerMap, options);
+    };
 
     // Helper: polyline
-    this.addPolyline = (options: PolylineLayerOptions): Promise<{
+    this.addPolyline = (
+      options: PolylineLayerOptions,
+    ): Promise<{
       polylineLayerId: string;
       polylineOutlineLayerId: string;
       polylineSourceId: string;
     }> => {
-      return helpers.addPolyline(this._maptilerMap, options)
-    }
+      return helpers.addPolyline(this._maptilerMap, options);
+    };
 
     // Helper: sceenshot
     this.takeScreenshot = (options?: {
       download?: boolean;
       filename?: string;
     }): Promise<Blob> => {
-      return helpers.takeScreenshot(this._maptilerMap, options)
-    }
-
+      return helpers.takeScreenshot(this._maptilerMap, options);
+    };
   },
 
   _update: function () {
@@ -429,34 +404,23 @@ export const MaptilerLayer = (L.Layer.extend({
 
     const size = this.getSize();
     const offset = this._map.getSize().multiplyBy(this.options.padding);
-    const topLeft = this._map
-      .containerPointToLayerPoint([0, 0])
-      .subtract(offset);
+    const topLeft = this._map.containerPointToLayerPoint([0, 0]).subtract(offset);
 
     L.DomUtil.setPosition(this._container, this._roundPoint(topLeft));
 
     this._transformGL();
 
-    if (
-      this._maptilerMap.transform.width !== size.x ||
-      this._maptilerMap.transform.height !== size.y
-    ) {
+    if (this._maptilerMap.transform.width !== size.x || this._maptilerMap.transform.height !== size.y) {
       this._container.style.width = `${size.x}px`;
       this._container.style.height = `${size.y}px`;
-      if (
-        this._maptilerMap._resize !== null &&
-        this._maptilerMap._resize !== undefined
-      ) {
+      if (this._maptilerMap._resize !== null && this._maptilerMap._resize !== undefined) {
         this._maptilerMap._resize();
       } else {
         this._maptilerMap.resize();
       }
     } else {
       // older versions of mapbox-gl surfaced update publicly
-      if (
-        this._maptilerMap._update !== null &&
-        this._maptilerMap._update !== undefined
-      ) {
+      if (this._maptilerMap._update !== null && this._maptilerMap._update !== undefined) {
         this._maptilerMap._update();
       } else {
         this._maptilerMap.update();
@@ -481,9 +445,7 @@ export const MaptilerLayer = (L.Layer.extend({
   // https://github.com/Leaflet/Leaflet/blob/master/src/layer/ImageOverlay.js#L139-L144
   _animateZoom: function (e: L.ZoomAnimEvent) {
     const scale = this._map.getZoomScale(e.zoom);
-    const padding = this._map
-      .getSize()
-      .multiplyBy(this.options.padding * scale);
+    const padding = this._map.getSize().multiplyBy(this.options.padding * scale);
     const viewHalf = this.getSize()._divideBy(2);
     // corrections for padding (scaled), adapted from
     // https://github.com/Leaflet/Leaflet/blob/master/src/map/Map.js#L1490-L1508
@@ -492,15 +454,9 @@ export const MaptilerLayer = (L.Layer.extend({
       ._subtract(viewHalf)
       ._add(this._map._getMapPanePos().add(padding))
       ._round();
-    const offset = this._map
-      .project(this._map.getBounds().getNorthWest(), e.zoom)
-      ._subtract(topLeft);
+    const offset = this._map.project(this._map.getBounds().getNorthWest(), e.zoom)._subtract(topLeft);
 
-    L.DomUtil.setTransform(
-      this._maptilerMap.getCanvas(),
-      offset.subtract(this._offset),
-      scale
-    );
+    L.DomUtil.setTransform(this._maptilerMap.getCanvas(), offset.subtract(this._offset), scale);
   },
 
   _zoomStart: function () {
@@ -514,7 +470,7 @@ export const MaptilerLayer = (L.Layer.extend({
       this._maptilerMap.getCanvas(),
       // https://github.com/mapbox/mapbox-gl-leaflet/pull/130
       new L.Point(0, 0),
-      scale
+      scale,
     );
 
     this._zooming = false;
@@ -525,9 +481,7 @@ export const MaptilerLayer = (L.Layer.extend({
     L.Util.requestAnimFrame(() => {
       const zoom = this._map.getZoom();
       const center = this._map.getCenter();
-      const offset = this._map.latLngToContainerPoint(
-        this._map.getBounds().getNorthWest()
-      );
+      const offset = this._map.latLngToContainerPoint(this._map.getBounds().getNorthWest());
 
       // reset the scale and offset
       L.DomUtil.setTransform(this._maptilerMap._actualCanvas, offset, 1);
@@ -537,7 +491,7 @@ export const MaptilerLayer = (L.Layer.extend({
         "moveend",
         L.Util.bind(() => {
           this._zoomEnd();
-        }, this)
+        }, this),
       );
 
       // update the map position
@@ -554,7 +508,7 @@ export const MaptilerLayer = (L.Layer.extend({
   },
 }) as {
   new (options: MaptilerLayerOptions): MaptilerLayerInterface;
-} & typeof L.Layer);
+} & typeof L.Layer;
 
 /**
  * Factory function to instantiate a MaptilerLayer.
