@@ -12,7 +12,7 @@ import {
   helpers,
 } from "@maptiler/sdk";
 import packagejson from "../package.json";
-export { Language, MapStyle as Style } from "@maptiler/sdk";
+export { Language, MapStyle } from "@maptiler/sdk";
 
 /**
  * A Maptiler Layer for Leaflet consists in adding a MapTiler SDK Map
