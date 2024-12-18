@@ -8,6 +8,7 @@ import {
   type PolylineLayerOptions,
   type ReferenceMapStyle,
   type StyleSpecification,
+  GeolocationType,
   Map as MapSDK,
   helpers,
 } from "@maptiler/sdk";
@@ -121,6 +122,19 @@ export type MaptilerLayerOptions = {
    * Default: uses the language as defined in the style
    */
   language?: LanguageInfo | string;
+
+  /**
+   * If the value is `true` or `"POINT"` then the positionning uses the MapTiler Cloud
+   * Geolocation to find the non-GPS location point.
+   *
+   * If the value is `"COUNTRY"` then the map is centered around the bounding box of the country.
+   *
+   * If the value is `false`, no geolocation is performed and the map centering and zooming depends on other options or on
+   * the built-in defaults.
+   *
+   * Default: `false`
+   */
+  geolocate?: (typeof GeolocationType)[keyof typeof GeolocationType] | boolean;
 };
 
 /**

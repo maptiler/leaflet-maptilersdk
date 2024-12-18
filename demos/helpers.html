@@ -19,8 +19,8 @@
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
     <!-- MapTiler SDK -->
-    <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0-rc.4/maptiler-sdk.umd.min.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0-rc.4/maptiler-sdk.css" rel="stylesheet" />
 
     <!-- Leaflet plugin for MapTiler SDK Layers -->
     <script src="../build/leaflet-maptilersdk.umd.js"></script>
@@ -37,9 +37,9 @@
 const map = L.map('map').setView([46.3796, 6.1518], 13);
 
 // Creating and mounting the MapTiler SDK Layer
-const mtLayer = new L.MaptilerLayer({
+const mtLayer = new L.maptiler.MaptilerLayer({
   apiKey: "YOUR_API_KEY",
-  style: L.MaptilerStyle.BACKDROP.DARK,
+  style: L.maptiler.MapStyle.BACKDROP.DARK,
 }).addTo(map);
 
 // Custom event triggered by the MaptilerLayer when the internal MapTiler Map instance is fully loaded
