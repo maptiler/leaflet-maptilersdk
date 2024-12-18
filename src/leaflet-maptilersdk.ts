@@ -8,7 +8,7 @@ import {
   type PolylineLayerOptions,
   type ReferenceMapStyle,
   type StyleSpecification,
-  GeolocationType,
+  type GeolocationType,
   Map as MapSDK,
   helpers,
 } from "@maptiler/sdk";
