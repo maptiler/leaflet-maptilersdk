@@ -19,8 +19,8 @@
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
     <!-- MapTiler SDK -->
-    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.umd.min.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.css" rel="stylesheet" />
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0-rc.4/maptiler-sdk.umd.min.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0-rc.4/maptiler-sdk.css" rel="stylesheet" />
 
     <!-- Leaflet plugin for MapTiler SDK Layers -->
     <script src="../build/leaflet-maptilersdk.umd.js"></script>
@@ -43,8 +43,11 @@ L.marker([40.7468, -73.98775])
   .openPopup();
 
 // Create a MapTiler Layer inside Leaflet
-const mtLayer = L.maptilerLayer({
-  apiKey: "YOUR_API_KEY",
+const mtLayer = L.maptiler.maptilerLayer({
+  apiKey: "API_KEY",
+  // maptilerLogo: false,
+  style: L.maptiler.MapStyle.OUTDOOR,
+  language: L.maptiler.Language.VISITOR,
 }).addTo(map);
 
 

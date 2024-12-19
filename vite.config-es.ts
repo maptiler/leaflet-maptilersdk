@@ -1,7 +1,12 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 const isProduction = process.env.NODE_ENV === "production";
+
+const plugins = [
+  dts({insertTypesEntry: true}),
+];
 
 export default defineConfig({
   mode: isProduction ? "production" : "development",
@@ -11,10 +16,10 @@ export default defineConfig({
     sourcemap: !isProduction,
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: resolve(__dirname, 'src/leaflet-maptilersdk.js'),
+      entry: resolve(__dirname, 'src/leaflet-maptilersdk.ts'),
       name: 'leafletmaptilersdk',
       // the proper extensions will be added
-      fileName: (format, entryName) => `${entryName}.js`,
+      fileName: (format, entryName) => "leaflet-maptilersdk.js",
       formats: ['es'],
     },
     
@@ -32,5 +37,5 @@ export default defineConfig({
       },
     },
   },
-  plugins: [],
+  plugins,
 })

@@ -12,7 +12,7 @@ export default defineConfig({
     sourcemap: !isProduction,
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: resolve(__dirname, 'src/leaflet-maptilersdk.js'),
+      entry: resolve(__dirname, 'src/leaflet-maptilersdk.ts'),
       name: 'leafletmaptilersdk',
       // the proper extensions will be added
       fileName: (format, entryName) => `${entryName}.${format}.js`,
@@ -24,15 +24,30 @@ export default defineConfig({
       // into your library
       external: [
         "leaflet",
-        "@maptiler/sdk"
+        "@maptiler/sdk",
       ],
       output: {
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
           "leaflet": "L",
-          "@maptiler/sdk": "maptilersdk"
+          "@maptiler/sdk": "maptilersdk",
         },
+
+        // make sure the global Leaflet object `L` is extended and not overwritten
+        extend: true,
+        
+        // Add a footer to the UMD bundle where we add to the L object all the content of the
+        // `leafletmaptilersdk` namespace
+        footer: `
+          // Assign exported modules to L.maptiler in UMD mode
+          if (typeof L !== "undefined" && typeof leafletmaptilersdk !== "undefined") {
+            L.maptiler = {};
+            Object.keys(leafletmaptilersdk).forEach(key => {
+              L.maptiler[key] = leafletmaptilersdk[key];
+            });
+          }
+        `
       },
     },
   },
