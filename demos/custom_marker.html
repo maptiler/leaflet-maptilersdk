@@ -17,8 +17,8 @@
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
     <!-- MapTiler SDK -->
-    <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0-rc.4/maptiler-sdk.umd.min.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0-rc.4/maptiler-sdk.css" rel="stylesheet" />
 
 </head>
 
@@ -47,10 +47,10 @@ L.marker([45.9767521, 7.6569418], {icon: leafIcon})
   .addTo(map)
   .openPopup();
 
-const mtLayer = L.maptilerLayer({
+const mtLayer = L.maptiler.maptilerLayer({
   // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-  style: L.MaptilerStyle.OUTDOOR,
-  apiKey: "YOUR_API_KEY",
+  style: L.maptiler.MapStyle.BRIGHT,
+  apiKey: "API_KEY",
 }).addTo(map);
 
 </script>

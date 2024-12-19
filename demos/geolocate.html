@@ -17,8 +17,8 @@
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
     <!-- MapTiler SDK -->
-    <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0-rc.4/maptiler-sdk.umd.min.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0-rc.4/maptiler-sdk.css" rel="stylesheet" />
 
 </head>
 
@@ -32,9 +32,9 @@
 // but this is going to be superseded by the `geolocate: true` options
 const map = L.map('map').setView([0, 0], 0);
 
-const mtLayer = L.maptilerLayer({
-  style: L.MaptilerStyle.BASIC,
-  apiKey: "YOUR_API_KEY",
+const mtLayer = L.maptiler.maptilerLayer({
+  style: L.maptiler.MapStyle.BASIC,
+  apiKey: "API_KEY",
   geolocate: true,
 }).addTo(map);
 
