@@ -4,6 +4,10 @@
 ### Other
 - Updated with SDK v3 (rc) that in theory supports globe, though this is not enabled in the Leaflet plugin due to inherent limitations of Leaflet
 
+### 3.0.0
+### Others
+- Update MapTiler SDK to v2
+
 ## 2.0.0
 ### New Features
 - Major rework of the library to nmake it fully compatible with ES module installable from NPM, yet designed to be fully backward compatible and still usable from CDN/UMD
