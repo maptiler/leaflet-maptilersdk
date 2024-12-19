@@ -1,6 +1,6 @@
 {
   "name": "@maptiler/leaflet-maptilersdk",
-  "version": "3.0.0-rc.1",
+  "version": "3.0.0-rc.2",
   "description": "Vector tiles basemap plugin for Leaflet - multi-lingual basemaps using MapTiler SDK",
   "module": "dist/leaflet-maptilersdk.js",
   "type": "module",
@@ -40,7 +40,7 @@
     "vite-plugin-dts": "^4.3.0"
   },
   "dependencies": {
-    "@maptiler/sdk": "^3.0.0-rc.4",
+    "@maptiler/sdk": "^3.0.0-rc.5",
     "leaflet": "^1.9.4"
   }
 }
