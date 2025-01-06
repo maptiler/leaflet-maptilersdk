@@ -7,10 +7,12 @@
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
   <!-- MapTiler SDK -->
-  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.umd.min.js"></script>
-  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.css" rel="stylesheet" />
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.umd.min.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.css" rel="stylesheet" />
+
+  <!-- Leaflet plugin for MapTiler SDK Layers -->
+  <script src="../build/leaflet-maptilersdk.umd.min.js"></script>
   
-  <script src="../build/leaflet-maptilersdk.umd.js"></script>
   <style>
     html, body, #map {
       width: 100%;
@@ -19,17 +21,25 @@
     }
   </style>
 </head>
-<body>
 
+<body>
 	<div id="map"></div>
 
 	<script>
     const map = new L.Map('map');
 
-		const mtLayer = L.maptilerLayer({
-      // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-      style: L.MaptilerStyle.DATAVIZ.LIGHT,
-      apiKey: "YOUR_API_KEY",
+    const apiKey = new URLSearchParams(location.search).get("key") || "API_KEY";
+
+    if (apiKey === "API_KEY") {
+      const errorMessage = "MapTiler API key is missing. Please use URL `key` parameter to set it (`?key=XXXXX`).";
+      
+      alert(errorMessage);
+      throw new Error(errorMessage);
+    }
+
+		const mtLayer = L.maptiler.maptilerLayer({
+      apiKey,
+      style: L.maptiler.MapStyle.DATAVIZ.LIGHT,
     }).addTo(map);
 
 		const	bounds = new L.LatLngBounds(

@@ -20,12 +20,15 @@
   "scripts": {
     "biome": "biome check --max-diagnostics=1000",
     "biome:fix": "npx @biomejs/biome check --max-diagnostics=1000 --write",
-    "make": "npm run biome:fix && npm run build",
     "build": "npm run build:es && npm run build:umd",
     "build:umd": "vite build -c vite.config-umd.js",
     "build:es": "vite build -c vite.config-es.js",
     "dev:umd": "NODE_ENV=development vite build -w -c vite.config-umd.ts",
-    "dev:es": "NODE_ENV=development vite build -w -c vite.config-es.ts"
+    "dev:es": "NODE_ENV=development vite build -w -c vite.config-es.ts",
+    "make": "npm run biome:fix && npm run build",
+    "dev": "concurrently \"vite -c vite.config-dev.ts\" \"npm run dev-umd\"",
+    "dev-umd": "tsc && NODE_ENV=development vite build -w -c vite.config-umd.ts",
+    "ncu": "npx npm-check-updates"
   },
   "repository": {
     "type": "git",
@@ -35,6 +38,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/leaflet": "^1.9.15",
+    "concurrently": "^9.1.2",
     "typescript": "^5.7.2",
     "vite": "^4.4.8",
     "vite-plugin-dts": "^4.3.0"

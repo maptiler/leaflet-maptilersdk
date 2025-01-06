@@ -122,7 +122,7 @@ useEffect(() => {
 
     // Creating the MapTiler Layer
     const mtLayer = new leafletmaptilersdk.MaptilerLayer({
-      apiKey: "YOUR_API_KEY",
+      apiKey: "YOUR_MAPTILER_API_KEY",
     }).addTo(map);
 
   })();
@@ -284,7 +284,7 @@ const map = L.map('map').setView([46.3796, 6.1518], 13);
 
 // Creating and mounting the MapTiler SDK Layer
 const mtLayer = new L.MaptilerLayer({
-  apiKey: "YOUR_API_KEY",
+  apiKey: "YOUR_MAPTILER_API_KEY",
   style: L.MaptilerStyle.BACKDROP.DARK,
 }).addTo(map);
 
