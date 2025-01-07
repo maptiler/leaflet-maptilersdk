@@ -12,7 +12,7 @@ import {
   Map as MapSDK,
   helpers,
 } from "@maptiler/sdk";
-import packagejson from "../package.json";
+import { name, version } from "../package.json";
 export { Language, MapStyle } from "@maptiler/sdk";
 
 /**
@@ -285,7 +285,7 @@ export const MaptilerLayer = L.Layer.extend({
 
     this._maptilerMap = new MapSDK(options);
 
-    this._maptilerMap.telemetry.registerModule(packagejson.name, packagejson.version);
+    this._maptilerMap.telemetry.registerModule(name, version);
 
     this._maptilerMap.once("load", () => {
       this.fire("ready");
