@@ -3,90 +3,13 @@
   <img src="images/header.png" width="70%" alt="Leaflet + MapTiler SDK JS logo">
 </p>
 
-This is a binding from [MapTiler SDK JS/TS](https://docs.maptiler.com/sdk-js/) to the popular [Leaflet](http://leafletjs.com/) API.
+Add a layer to your Leaflet app that displays [MapTiler SDK](https://docs.maptiler.com/sdk-js/) basemaplayer!
 
-**MapTiler SDK JS** is an extension of MapLibre GL JS, fully backward compatible, tailored for MapTiler Cloud, and with plenty of extra features!
+**MapTiler SDK JS** is an extension of MapLibre GL JS, fully backward compatible, tailored for MapTiler Cloud, and with plenty of extra features, including **TypeScript** support!
 
 ![MapTiler vector map displayed with Leaflet](images/leaflet-maptilersdk.jpg)
 
 ## How to use vector tile layer in Leaflet with MapTiler SDK JS
-### From ES module using `import`
-We use the [Vite vanilla JS app](https://vitejs.dev/guide/) as a starting point for the following examples.
-
-The typical Leaflet plugin usually adds new elements directly in the global object `L`. Even though this API design is now a bit dated and somewhat frowned upon, we wanted to maintain the dev experience for those used to this. For this reason, you will need to import the plugin but not a specific object from it, as `MaptilerLayer` is internally added to `L`:
-
-```js
-// import Leaflet and its style
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-
-// Import the Leaflet MapTiler Plugin
-import "@maptiler/leaflet-maptilersdk";
-
-// Import your custom style, 
-// depending on your configuration, you may have to change how this is done
-import './style.css';
-```
-
-Then, in the Vite vanilla app, we would have to do exactly like in regular vanilla JS:
-```js
-// Center the map on Manhattan, zoom level 13
-const map = L.map("map").setView([40.7468, -73.98775], 13);
-
-// Center the map on Manhattan, zoom level 13
-L.marker([40.7468, -73.98775])
-  .bindPopup("Hello <b>Leaflet with MapTiler SDK</b>")
-  .addTo(map)
-  .openPopup();
-
-// Create a MapTiler Layer inside Leaflet
-const mtLayer = new L.MaptilerLayer({
-  // Get your free API key at https://cloud.maptiler.com
-  apiKey: "YOUR_MAPTILER_API_KEY",
-}).addTo(map);
-```
-
-If you would rather stick to a more modern API design and do not feel like using the `L` object, we've got you covered:
-
-```js
-import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
-
-// ...
-
-const mtLayer = new MaptilerLayer( options );
-```
-
-## From ES module, the *async* way
-Some frontend frameworks are very opinionated regarding Server-Side-rendering and will attempt to perform it; that's the case of [Next.js](https://nextjs.org/). But Leaflet does not play well with it because there are some direct calls to the global `window` object, and this would crash on a server. The fix consists of importing Leaflet dynamically, and then `@maptiler/leaflet-maptilersdk` can also be imported.
-
-The React lifecycle method `.componentDidMount()` of a class component is only called on the frontend, so this is why we have decided to dynamically import from there, but feel free to adapt your code if you are using a function component or a non-React app:
-
-```js
-componentDidMount() {
-  // assuming this was init with React.createRef()
-  const container = this.mapContainer.current;
-  
-  // A self-callable async function because importing packages dynamically is an async thing to do
-  (async () => {
-
-    // dynamic import of Leaflet
-    const L = await import('leaflet');
-
-    // dynamic import of the library
-    const leafletmaptilersdk = await import('@maptiler/leaflet-maptilersdk'); 
-    
-    // Creating the Leaflet map
-    const map = L.map(container).setView([51.505, -0.09], 10);
-
-    // Creating the MapTiler Layer
-    const mtLayer = new leafletmaptilersdk.MaptilerLayer({
-      apiKey: "YOUR_API_KEY",
-    }).addTo(map);
-
-  })()
-}
-```
-
 
 ### From CDN with the UMD bundle
 The UDM *leaflet-maptilersdk* bundle is not packaged with Leaflet nor with MapTiler SDK, so those will have to be imported as `<script>` separately in the `<head>` HTML element as follows:
@@ -97,11 +20,11 @@ The UDM *leaflet-maptilersdk* bundle is not packaged with Leaflet nor with MapTi
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
 <!-- MapTiler SDK -->
-<script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
-<link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
+<script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.umd.min.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.css" rel="stylesheet" />
 
 <!-- Leaflet plugin for MapTiler SDK Layers -->
-<script src="../build/leaflet-maptilersdk.umd.js"></script>
+<script src="https://cdn.maptiler.com/leaflet-maptilersdk/v3.0.0/leaflet-maptilersdk.js"></script>
 ```
 
 Then, in the HTML `<body>`, declare the container that will host the map:
@@ -122,18 +45,90 @@ L.marker([40.7468, -73.98775])
   .openPopup();
 
 // Create a MapTiler Layer inside Leaflet
-const mtLayer = L.maptilerLayer({
+const mtLayer = L.maptiler.maptilerLayer({
   // Get your free API key at https://cloud.maptiler.com
   apiKey: "YOUR_MAPTILER_API_KEY",
 }).addTo(map);
 ```
 
-The notation `L.maptilerLayer` is the typical Leaflet way to expose a factory function that creates a layer. Even though our plugin exposes other ways to do exactly the same thing, this notation may suit your programming style better.  
+The notation `L.maptiler.maptilerLayer()` is the typical Leaflet way to expose a factory function that creates a layer. Even though our plugin exposes other ways to do exactly the same thing, this notation may suit your programming style better.  
 The following are all yielding the same result:
-- `const mtLayer = L.maptilerLayer( options )`
-- `const mtLayer = new L.MaptilerLayer( options )` (mind the upper case `M`)
-- `const mtLayer = leafletmaptilersdk.maptilerLayer( options )`
-- `const mtLayer = new leafletmaptilersdk.MaptilerLayer( options )` (mind the upper case `M`)
+- `const mtLayer = L.maptiler.maptilerLayer( options )` (mind the lowercase `m`, it's a factory function)
+- `const mtLayer = new L.maptiler.MaptilerLayer( options )` (mind the uppercase `M`, it's a class)
+- `const mtLayer = leafletmaptilersdk.maptilerLayer( options )` (mind the lowercase `m`, it's a factory function)
+- `const mtLayer = new leafletmaptilersdk.MaptilerLayer( options )` (mind the upper case `M`, it's a class)
+
+
+### From ES module using `import`
+We use the [Vite vanilla JS app](https://vitejs.dev/guide/) as a starting point for the following examples.
+
+The typical Leaflet plugin usually adds new elements directly in the global object `L`. ⚠️ Since the version 3.0.0 (and the addition of TypeScript support), this plugin no longer adds anything to the global `L` namespace in ES mode. Instead, the library opts for a cleaner and more modern design:
+
+```js
+// import Leaflet and its style
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Import some elements from the Leaflet-MapTiler Plugin
+import { Language, MaptilerLayer, MapStyle } from "@maptiler/leaflet-maptilersdk";
+
+// Import your custom style, 
+// depending on your configuration, you may have to change how this is done
+import './style.css';
+```
+
+Then, in the Vite vanilla app, we would have to do exactly like in regular vanilla JS:
+```js
+// Center the map on Manhattan, zoom level 13
+const map = L.map("map").setView([40.7468, -73.98775], 13);
+
+// Center the map on Manhattan, zoom level 13
+L.marker([40.7468, -73.98775])
+  .bindPopup("Hello <b>Leaflet with MapTiler SDK</b>")
+  .addTo(map)
+  .openPopup();
+
+// Create a MapTiler Layer inside Leaflet
+const mtLayer = new MaptilerLayer({
+  // Get your free API key at https://cloud.maptiler.com
+  apiKey: "YOUR_MAPTILER_API_KEY",
+}).addTo(map);
+
+// Alternatively, we can call the factory function (mind the lowercase `m`)
+const mtLayer = maptilerLayer({
+  // Get your free API key at https://cloud.maptiler.com
+  apiKey: "YOUR_MAPTILER_API_KEY",
+}).addTo(map);
+```
+
+## From ES module, the *async* way
+Some frontend frameworks are very opinionated regarding Server-Side-rendering and will attempt to perform it; that's the case of [Next.js](https://nextjs.org/). But Leaflet does not play well with it because there are some direct calls to the global `window` object, and this would crash on a server. The fix consists of importing Leaflet dynamically, and then `@maptiler/leaflet-maptilersdk` can also be imported.
+
+The React lifecycle `.componentDidMount()` of a class component of the `useEffect []` functional equivalent is only called on the frontend when the component is ready. It's a good moment to dynamically import Leaflet because the `window` globale object is accessible:
+
+```js
+useEffect(() => {
+  // A self-callable async function because importing packages dynamically is an async thing to do
+  (async () => {
+
+    // dynamic import of Leaflet
+    const L = await import('leaflet');
+
+    // dynamic import of the library
+    const leafletmaptilersdk = await import('@maptiler/leaflet-maptilersdk'); 
+    
+    // Creating the Leaflet map
+    const map = L.map(containerRef.current).setView([51.505, -0.09], 10);
+
+    // Creating the MapTiler Layer
+    const mtLayer = new leafletmaptilersdk.MaptilerLayer({
+      apiKey: "YOUR_MAPTILER_API_KEY",
+    }).addTo(map);
+
+  })();
+}, []);
+```
+
 
 ### API and options
 #### Constructor and Factory function
@@ -273,21 +268,6 @@ map or group.
 #### Method `.getMaptilerMap(): maptilerLayer.Map`
 Returns `mapltilersdk.Map` object.
 
-#### Method `.getContainer(): HTMLDivElement`
-Returns layer's DOM container `div`.
-
-#### Method `.getCanvas(): HTMLCanvasElement`
-Returns `maptilerLayer.Map` canvas.
-
-#### Method `.getSize(): L.Point`
-Returns layer size in pixels, including padding.
-
-#### Method `.getBounds(): L.LatLngBounds`
-Returns layer bounds, including padding.
-
-#### Method `.getPaneName(): string`
-Returns the pane name set in options if it is a valid pane, defaults to tilePane.
-
 #### Method `.setStyle(s)`
 Update the style with a style ID, style URL, or style definition. The easiest is to use a built-in style ID such as listed above with the form `L.MaptilerStyle.STREETS`.
 
@@ -304,7 +284,7 @@ const map = L.map('map').setView([46.3796, 6.1518], 13);
 
 // Creating and mounting the MapTiler SDK Layer
 const mtLayer = new L.MaptilerLayer({
-  apiKey: "YOUR_API_KEY",
+  apiKey: "YOUR_MAPTILER_API_KEY",
   style: L.MaptilerStyle.BACKDROP.DARK,
 }).addTo(map);
 

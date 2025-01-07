@@ -1,62 +1,70 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>WebGL</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      html, body, #map {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-      }
-    </style>
+  <title>WebGL</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html,
+    body,
+    #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+  </style>
 
 
 
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
-    <!-- MapTiler SDK -->
-    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.umd.min.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.css" rel="stylesheet" />
+  <!-- MapTiler SDK -->
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.umd.min.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.css" rel="stylesheet" />
 
-    <!-- Leaflet plugin for MapTiler SDK Layers -->
-    <script src="../build/leaflet-maptilersdk.umd.js"></script>
+  <!-- Leaflet plugin for MapTiler SDK Layers -->
+  <script src="../build/leaflet-maptilersdk.umd.min.js"></script>
 </head>
 
 <body>
-<!-- The map container -->
-<div id="map"></div>
+  <!-- The map container -->
+  <div id="map"></div>
+
+  <script>
+    const map = L.map('map').setView([46.3796, 6.1518], 13);
+
+    const apiKey = new URLSearchParams(location.search).get("key") || "API_KEY";
+
+    if (apiKey === "API_KEY") {
+      const errorMessage = "MapTiler API key is missing. Please use URL `key` parameter to set it (`?key=XXXXX`).";
+      
+      alert(errorMessage);
+      throw new Error(errorMessage);
+    }
+
+    const mtLayer = new L.maptiler.MaptilerLayer({
+      apiKey,
+      style: L.maptiler.MapStyle.BACKDROP.DARK,
+    }).addTo(map);
+
+    // Custom event triggered by the MaptilerLayer when the internal MapTiler Map instance is fully loaded
+    mtLayer.on("ready", () => {
+      // Leverage the MapTiler SDK layer helpers to easily add polyline / point / polygon / heatmap layers
+      mtLayer.addPolyline({
+        // An Maptiler Cloud dataset ID, or URL to GeoJSON/GPX/KML
+        data: "74003ba7-215a-4b7e-8e26-5bbe3aa70b05",
+        lineColor: "#ff3333", // optional
+        outline: true,        // optional
+        outlineWidth: 2,      // optional
+      });
+
+    })
 
 
-<script>
-
-// Init the map
-const map = L.map('map').setView([46.3796, 6.1518], 13);
-
-// Creating and mounting the MapTiler SDK Layer
-const mtLayer = new L.MaptilerLayer({
-  apiKey: "YOUR_API_KEY",
-  style: L.MaptilerStyle.BACKDROP.DARK,
-}).addTo(map);
-
-// Custom event triggered by the MaptilerLayer when the internal MapTiler Map instance is fully loaded
-mtLayer.on("ready", () => {
-  
-  // Leverage the MapTiler SDK layer helpers to easily add polyline / point / polygon / heatmap layers
-  mtLayer.addPolyline({
-    // An Maptiler Cloud dataset ID, or URL to GeoJSON/GPX/KML
-    data:"74003ba7-215a-4b7e-8e26-5bbe3aa70b05",
-    lineColor: "#ff3333", // optional
-    outline: true,        // optional
-    outlineWidth: 2,      // optional
-  });
-
-})
-
-
-</script>
+  </script>
 </body>
+
 </html>

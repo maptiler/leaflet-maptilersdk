@@ -1,58 +1,69 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>WebGL</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      html, body, #map {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-      }
-    </style>
+  <title>WebGL</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html,
+    body,
+    #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+  </style>
 
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
-    <!-- MapTiler SDK -->
-    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.umd.min.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.css" rel="stylesheet" />
+  <!-- MapTiler SDK -->
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.umd.min.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.css" rel="stylesheet" />
 
+  <!-- Leaflet plugin for MapTiler SDK Layers -->
+  <script src="../build/leaflet-maptilersdk.umd.min.js"></script>
 </head>
 
 <body>
-<div id="map"></div>
+  <div id="map"></div>
 
-<script src="../build/leaflet-maptilersdk.umd.js"></script>
-<script>
-const map = L.map('map').setView([45.9767521, 7.6569418], 12);
+  <script>
+    const map = L.map('map').setView([45.9767521, 7.6569418], 12);
 
+    const LeafIcon = L.Icon.extend({
+      options: {
+        shadowUrl: "leaf_shadow.png",
+        iconSize: [38, 95],
+        shadowSize: [50, 64],
+        iconAnchor: [22, 94],
+        shadowAnchor: [4, 62],
+        popupAnchor: [-3, -76]
+      }
+    });
 
-const LeafIcon = L.Icon.extend({
-		options: {
-			shadowUrl: "leaf_shadow.png",
-			iconSize:     [38, 95],
-			shadowSize:   [50, 64],
-			iconAnchor:   [22, 94],
-			shadowAnchor: [4, 62],
-			popupAnchor:  [-3, -76]
-		}
-	});
+    const leafIcon = new LeafIcon({ iconUrl: "leaf_marker.png" });
 
-const leafIcon = new LeafIcon({iconUrl: "leaf_marker.png"});
+    L.marker([45.9767521, 7.6569418], { icon: leafIcon })
+      .addTo(map)
+      .openPopup();
 
-L.marker([45.9767521, 7.6569418], {icon: leafIcon})
-  .addTo(map)
-  .openPopup();
+    const apiKey = new URLSearchParams(location.search).get("key") || "API_KEY";
 
-const mtLayer = L.maptilerLayer({
-  // get your own MapTiler token at https://cloud.maptiler.com/ or use MapBox style
-  style: L.MaptilerStyle.OUTDOOR,
-  apiKey: "YOUR_API_KEY",
-}).addTo(map);
+    if (apiKey === "API_KEY") {
+      const errorMessage = "MapTiler API key is missing. Please use URL `key` parameter to set it (`?key=XXXXX`).";
 
-</script>
+      alert(errorMessage);
+      throw new Error(errorMessage);
+    }
+
+    const mtLayer = L.maptiler.maptilerLayer({
+      apiKey,
+      style: L.maptiler.MapStyle.BRIGHT,
+    }).addTo(map);
+  </script>
 </body>
+
 </html>

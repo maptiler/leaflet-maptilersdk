@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaflet plugin for MapTiler SDK JS</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+</head>
+
+<body>
+  <h1>Leaflet plugin for MapTiler SDK JS Examples</h1>
+  <ul>
+    <li>
+      <a href="basic.html?key=">Basic 1</a>
+    </li>
+    <li>
+      <a href="basic2.html?key=">Basic 2</a>
+    </li>
+    <li>
+      <a href="choropleth.html?key=">Choropleth</a>
+    </li>
+    <li>
+      <a href="custom_marker.html?key=">Custom marker</a>
+    </li>
+    <li>
+      <a href="events.html?key=">Events</a>
+    </li>
+    <li>
+      <a href="geolocate.html?key=">Geolocate</a>
+    </li>
+    <li>
+      <a href="helpers.html?key=">Helpers</a>
+    </li>
+    <li>
+      <a href="language.html?key=">Language</a>
+    </li>
+    <li>
+      <a href="overlay.html?key=">Overlay</a>
+    </li>
+  </ul>
+
+  <script type="module">
+    document.querySelectorAll("a").forEach((a) => {
+      a.href += import.meta.env.VITE_API_KEY;
+    });
+  </script>
+</body>
+
+</html>
