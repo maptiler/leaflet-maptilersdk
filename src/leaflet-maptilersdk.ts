@@ -522,7 +522,7 @@ export const MaptilerLayer = L.Layer.extend({
   },
 }) as {
   new (options: MaptilerLayerOptions): MaptilerLayerInterface;
-} & typeof L.Layer;
+} & Omit<typeof L.Layer, "prototype">;
 
 /**
  * Factory function to instantiate a MaptilerLayer.
@@ -530,4 +530,4 @@ export const MaptilerLayer = L.Layer.extend({
  */
 export function maptilerLayer(options: MaptilerLayerOptions) {
   return new MaptilerLayer(options);
-}
+};
