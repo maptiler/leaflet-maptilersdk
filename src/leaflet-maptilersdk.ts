@@ -530,4 +530,4 @@ export const MaptilerLayer = L.Layer.extend({
  */
 export function maptilerLayer(options: MaptilerLayerOptions) {
   return new MaptilerLayer(options);
-};
+}
