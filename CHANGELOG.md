@@ -1,12 +1,23 @@
 # MapTiler Client Changelog
 
-## 3.0.0
+
+## 4.0.2
+- Fix ES release to use correct declarations
+
+
+## 4.0.1
+- Fix ES release to include correct declarations files
+
+
+## 4.0.0
 ### Other
 - Updated with SDK v3 (rc) that in theory supports globe, though this is not enabled in the Leaflet plugin due to inherent limitations of Leaflet
+
 
 ### 3.0.0
 ### Others
 - Update MapTiler SDK to v2
+
 
 ## 2.0.0
 ### New Features
