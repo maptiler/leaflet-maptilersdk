@@ -1,6 +1,6 @@
 {
   "name": "@maptiler/leaflet-maptilersdk",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Vector tiles basemap plugin for Leaflet - multi-lingual basemaps using MapTiler SDK",
   "module": "dist/leaflet-maptilersdk.js",
   "type": "module",
