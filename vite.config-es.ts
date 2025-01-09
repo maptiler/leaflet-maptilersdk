@@ -12,7 +12,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/leaflet-maptilersdk.ts'),
       name: 'leafletmaptilersdk',
-      fileName: () => "leaflet-maptilersdk.min.js",
+      fileName: (format, entryName) => "leaflet-maptilersdk.js",
       formats: ['es'],
     },
     rollupOptions: {
