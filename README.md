@@ -314,6 +314,6 @@ The `"ready"` event is triggered when the internal MapTiler SDK Map instance is 
 Please use the [issue tracker](https://github.com/maptiler/leaflet-maptilersdk/issues) to report any bugs or file feature requests.
 
 ## License
-ISC © [MapTiler](https://maptiler.com)
+See [LICENSE.md](https://github.com/maptiler/leaflet-maptilersdk/blob/main/LICENSE.md)
 
 
