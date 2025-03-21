@@ -1,6 +1,6 @@
 {
   "name": "@maptiler/leaflet-maptilersdk",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "Vector tiles basemap plugin for Leaflet - multi-lingual basemaps using MapTiler SDK",
   "module": "dist/leaflet-maptilersdk.js",
   "type": "module",
@@ -41,7 +41,6 @@
   "license": "",
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/leaflet": "^1.9.16",
     "@types/node": "^22.10.5",
     "concurrently": "^9.1.2",
     "husky": "^9.1.7",
@@ -51,6 +50,7 @@
     "vite-plugin-dts": "^4.4.0"
   },
   "dependencies": {
+    "@types/leaflet": "^1.9.16",
     "@maptiler/sdk": "^3.0.0",
     "leaflet": "^1.9.4"
   }

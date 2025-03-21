@@ -1,5 +1,7 @@
 # MapTiler Client Changelog
 
+## 4.0.3
+- Move @leaflet/types to dependencies to ensure they're included when project is installed.
 
 ## 4.0.2
 - Fix ES release to use correct declarations
