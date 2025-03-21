@@ -37,7 +37,6 @@
   "license": "",
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/leaflet": "^1.9.16",
     "@types/node": "^22.10.5",
     "concurrently": "^9.1.2",
     "typescript": "^5.7.2",
@@ -45,6 +44,7 @@
     "vite-plugin-dts": "^4.4.0"
   },
   "dependencies": {
+    "@types/leaflet": "^1.9.16",
     "@maptiler/sdk": "^3.0.0",
     "leaflet": "^1.9.4"
   }
