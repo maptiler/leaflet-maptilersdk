@@ -1,5 +1,8 @@
 # MapTiler Client Changelog
 
+## 4.1.0
+- Update @maptiler/sdk to the latest version
+
 ## 4.0.3
 - Move @leaflet/types to dependencies to ensure they're included when project is installed.
 
