@@ -50,7 +50,7 @@
     "vite-plugin-dts": "^4.4.0"
   },
   "dependencies": {
-    "@maptiler/sdk": "^3.2.2",
+    "@maptiler/sdk": "^3.2.3",
     "@types/leaflet": "^1.9.16",
     "leaflet": "^1.9.4"
   }
