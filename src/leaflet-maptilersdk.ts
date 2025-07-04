@@ -286,10 +286,7 @@ export const MaptilerLayer = L.Layer.extend({
     );
 
     const options = {
-      maxBounds: [
-        [Number.NEGATIVE_INFINITY, -90],
-        [Number.POSITIVE_INFINITY, 90],
-      ],
+      maxBounds,
       ...this.options,
       projection: "mercator",
       container: this._container,
@@ -305,7 +302,7 @@ export const MaptilerLayer = L.Layer.extend({
     }
 
     this._maptilerMap = new MapSDK(options);
-    console.log("maptilerMap", this._maptilerMap.maxBounds);
+
     this._maptilerMap.telemetry.registerModule(name, version);
 
     this._maptilerMap.once("load", () => {
