@@ -273,7 +273,7 @@ export const MaptilerLayer = L.Layer.extend({
         return this.options.maxBounds;
       }
 
-      // Mpalibre is LngLat
+      // Maplibre is LngLat
       return [
         [Number.NEGATIVE_INFINITY, -90],
         [Number.POSITIVE_INFINITY, 90],
