@@ -268,7 +268,28 @@ export const MaptilerLayer = L.Layer.extend({
 
   _initMaptilerSDK: function () {
     const center = this._map.getCenter();
+    const maxBounds = (() => {
+      if (this.options.maxBounds) {
+        return this.options.maxBounds;
+      }
+
+      // Mpalibre is LngLat
+      return [
+        [Number.NEGATIVE_INFINITY, -90],
+        [Number.POSITIVE_INFINITY, 90],
+      ];
+    })();
+
+    // Leaflet expects LatLng
+    this._map.setMaxBounds(
+      L.latLngBounds(L.latLng(maxBounds[0][1], maxBounds[0][0]), L.latLng(maxBounds[1][1], maxBounds[1][0])),
+    );
+
     const options = {
+      maxBounds: [
+        [Number.NEGATIVE_INFINITY, -90],
+        [Number.POSITIVE_INFINITY, 90],
+      ],
       ...this.options,
       projection: "mercator",
       container: this._container,
@@ -284,7 +305,7 @@ export const MaptilerLayer = L.Layer.extend({
     }
 
     this._maptilerMap = new MapSDK(options);
-
+    console.log("maptilerMap", this._maptilerMap.maxBounds);
     this._maptilerMap.telemetry.registerModule(name, version);
 
     this._maptilerMap.once("load", () => {
