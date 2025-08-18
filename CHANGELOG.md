@@ -1,5 +1,8 @@
 # MapTiler Client Changelog
 
+## 4.1.1
+- Constrain maxbounds on Leaflet to those of MapLibre / Maptiler ensure layers are reconclied in terms of position properly. Fixes [30](https://github.com/maptiler/leaflet-maptilersdk/issues/30)
+
 ## 4.1.0
 - Update @maptiler/sdk to the latest version
 
