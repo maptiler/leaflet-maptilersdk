@@ -28,7 +28,7 @@ jobs:
         run: npm ci
 
       - name: Make release
-        run: npm run make
+        run: npm run build
         id: makeRelease
 
       - name: Fail job if makeRelease failed
