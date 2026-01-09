@@ -212,88 +212,91 @@ The option object passed to the factory function `maptilerLayer` or to the const
 Here are the major options:
 
 - `geolocate`: [boolean] if `true`, will locate the user and center the map accordingly. Note that Leaflet still requires the use of `.setView()`, but this will be ignored. Default: `false`.
-- `language`: [string] by default uses the language from the system settings and falls back to local names. Yet the language can be enforced with one from the list below. Depending on how you are importing, you could use `L.MaptilerLanguage.ENGLISH`, `MaptilerLanguage.ENGLISH` or `leafletmaptilersdk.MaptilerLanguage.ENGLISH`. <details>
-  <summary>➡️ See the list of possible languages ⬅️</summary>
-  - `L.MaptilerLanguage.AUTO` uses the language of the browser 
-  - `L.MaptilerLanguage.STYLE_LOCK` maintains the language as defined in the `style.json`
-  - `L.MaptilerLanguage.LATIN` default language that uses latin charset
-  - `L.MaptilerLanguage.NON_LATIN` default language that uses non-latin charset
-  - `L.MaptilerLanguage.LOCAL` Labels are in their local language, when available
-  - `L.MaptilerLanguage.ALBANIAN`
-  - `L.MaptilerLanguage.AMHARIC`
-  - `L.MaptilerLanguage.ARABIC`
-  - `L.MaptilerLanguage.ARMENIAN`
-  - `L.MaptilerLanguage.AZERBAIJANI`
-  - `L.MaptilerLanguage.BASQUE`
-  - `L.MaptilerLanguage.BELORUSSIAN`
-  - `L.MaptilerLanguage.BOSNIAN`
-  - `L.MaptilerLanguage.BRETON`
-  - `L.MaptilerLanguage.BULGARIAN`
-  - `L.MaptilerLanguage.CATALAN`
-  - `L.MaptilerLanguage.CHINESE`
-  - `L.MaptilerLanguage.CORSICAN`
-  - `L.MaptilerLanguage.CROATIAN`
-  - `L.MaptilerLanguage.CZECH`
-  - `L.MaptilerLanguage.DANISH`
-  - `L.MaptilerLanguage.DUTCH`
-  - `L.MaptilerLanguage.ENGLISH`
-  - `L.MaptilerLanguage.ESPERANTO`
-  - `L.MaptilerLanguage.ESTONIAN`
-  - `L.MaptilerLanguage.FINNISH`
-  - `L.MaptilerLanguage.FRENCH`
-  - `L.MaptilerLanguage.FRISIAN`
-  - `L.MaptilerLanguage.GEORGIAN`
-  - `L.MaptilerLanguage.GERMAN`
-  - `L.MaptilerLanguage.GREEK`
-  - `L.MaptilerLanguage.HEBREW`
-  - `L.MaptilerLanguage.HINDI`
-  - `L.MaptilerLanguage.HUNGARIAN`
-  - `L.MaptilerLanguage.ICELANDIC`
-  - `L.MaptilerLanguage.INDONESIAN`
-  - `L.MaptilerLanguage.IRISH`
-  - `L.MaptilerLanguage.ITALIAN`
-  - `L.MaptilerLanguage.JAPANESE`
-  - `L.MaptilerLanguage.JAPANESE_HIRAGANA`
-  - `L.MaptilerLanguage.JAPANESE_KANA`
-  - `L.MaptilerLanguage.JAPANESE_LATIN`
-  - `L.MaptilerLanguage.JAPANESE_2018`
-  - `L.MaptilerLanguage.KANNADA`
-  - `L.MaptilerLanguage.KAZAKH`
-  - `L.MaptilerLanguage.KOREAN`
-  - `L.MaptilerLanguage.KOREAN_LATIN`
-  - `L.MaptilerLanguage.KURDISH`
-  - `L.MaptilerLanguage.ROMAN_LATIN`
-  - `L.MaptilerLanguage.LATVIAN`
-  - `L.MaptilerLanguage.LITHUANIAN`
-  - `L.MaptilerLanguage.LUXEMBOURGISH`
-  - `L.MaptilerLanguage.MACEDONIAN`
-  - `L.MaptilerLanguage.MALAYALAM`
-  - `L.MaptilerLanguage.MALTESE`
-  - `L.MaptilerLanguage.NORWEGIAN`
-  - `L.MaptilerLanguage.OCCITAN`
-  - `L.MaptilerLanguage.POLISH`
-  - `L.MaptilerLanguage.PORTUGUESE`
-  - `L.MaptilerLanguage.ROMANIAN`
-  - `L.MaptilerLanguage.ROMANSH`
-  - `L.MaptilerLanguage.RUSSIAN`
-  - `L.MaptilerLanguage.SCOTTISH_GAELIC`
-  - `L.MaptilerLanguage.SERBIAN_CYRILLIC`
-  - `L.MaptilerLanguage.SERBIAN_LATIN`
-  - `L.MaptilerLanguage.SLOVAK`
-  - `L.MaptilerLanguage.SLOVENE`
-  - `L.MaptilerLanguage.SPANISH`
-  - `L.MaptilerLanguage.SWEDISH`
-  - `L.MaptilerLanguage.TAMIL`
-  - `L.MaptilerLanguage.TELUGU`
-  - `L.MaptilerLanguage.THAI`
-  - `L.MaptilerLanguage.TURKISH`
-  - `L.MaptilerLanguage.UKRAINIAN`
-  - `L.MaptilerLanguage.WELSH`
+- `language`: [string] by default uses the language from the system settings and falls back to local names. Yet the language can be enforced with one from the list below. Depending on how you are importing, you could use `L.MaptilerLanguage.ENGLISH`, `MaptilerLanguage.ENGLISH` or `leafletmaptilersdk.MaptilerLanguage.ENGLISH`.
+  <details>
+    <summary>➡️ See the list of possible languages ⬅️</summary>
+    
+    - `L.MaptilerLanguage.AUTO` uses the language of the browser 
+    - `L.MaptilerLanguage.STYLE_LOCK` maintains the language as defined in the `style.json`
+    - `L.MaptilerLanguage.LATIN` default language that uses latin charset
+    - `L.MaptilerLanguage.NON_LATIN` default language that uses non-latin charset
+    - `L.MaptilerLanguage.LOCAL` Labels are in their local language, when available
+    - `L.MaptilerLanguage.ALBANIAN`
+    - `L.MaptilerLanguage.AMHARIC`
+    - `L.MaptilerLanguage.ARABIC`
+    - `L.MaptilerLanguage.ARMENIAN`
+    - `L.MaptilerLanguage.AZERBAIJANI`
+    - `L.MaptilerLanguage.BASQUE`
+    - `L.MaptilerLanguage.BELORUSSIAN`
+    - `L.MaptilerLanguage.BOSNIAN`
+    - `L.MaptilerLanguage.BRETON`
+    - `L.MaptilerLanguage.BULGARIAN`
+    - `L.MaptilerLanguage.CATALAN`
+    - `L.MaptilerLanguage.CHINESE`
+    - `L.MaptilerLanguage.CORSICAN`
+    - `L.MaptilerLanguage.CROATIAN`
+    - `L.MaptilerLanguage.CZECH`
+    - `L.MaptilerLanguage.DANISH`
+    - `L.MaptilerLanguage.DUTCH`
+    - `L.MaptilerLanguage.ENGLISH`
+    - `L.MaptilerLanguage.ESPERANTO`
+    - `L.MaptilerLanguage.ESTONIAN`
+    - `L.MaptilerLanguage.FINNISH`
+    - `L.MaptilerLanguage.FRENCH`
+    - `L.MaptilerLanguage.FRISIAN`
+    - `L.MaptilerLanguage.GEORGIAN`
+    - `L.MaptilerLanguage.GERMAN`
+    - `L.MaptilerLanguage.GREEK`
+    - `L.MaptilerLanguage.HEBREW`
+    - `L.MaptilerLanguage.HINDI`
+    - `L.MaptilerLanguage.HUNGARIAN`
+    - `L.MaptilerLanguage.ICELANDIC`
+    - `L.MaptilerLanguage.INDONESIAN`
+    - `L.MaptilerLanguage.IRISH`
+    - `L.MaptilerLanguage.ITALIAN`
+    - `L.MaptilerLanguage.JAPANESE`
+    - `L.MaptilerLanguage.JAPANESE_HIRAGANA`
+    - `L.MaptilerLanguage.JAPANESE_KANA`
+    - `L.MaptilerLanguage.JAPANESE_LATIN`
+    - `L.MaptilerLanguage.JAPANESE_2018`
+    - `L.MaptilerLanguage.KANNADA`
+    - `L.MaptilerLanguage.KAZAKH`
+    - `L.MaptilerLanguage.KOREAN`
+    - `L.MaptilerLanguage.KOREAN_LATIN`
+    - `L.MaptilerLanguage.KURDISH`
+    - `L.MaptilerLanguage.ROMAN_LATIN`
+    - `L.MaptilerLanguage.LATVIAN`
+    - `L.MaptilerLanguage.LITHUANIAN`
+    - `L.MaptilerLanguage.LUXEMBOURGISH`
+    - `L.MaptilerLanguage.MACEDONIAN`
+    - `L.MaptilerLanguage.MALAYALAM`
+    - `L.MaptilerLanguage.MALTESE`
+    - `L.MaptilerLanguage.NORWEGIAN`
+    - `L.MaptilerLanguage.OCCITAN`
+    - `L.MaptilerLanguage.POLISH`
+    - `L.MaptilerLanguage.PORTUGUESE`
+    - `L.MaptilerLanguage.ROMANIAN`
+    - `L.MaptilerLanguage.ROMANSH`
+    - `L.MaptilerLanguage.RUSSIAN`
+    - `L.MaptilerLanguage.SCOTTISH_GAELIC`
+    - `L.MaptilerLanguage.SERBIAN_CYRILLIC`
+    - `L.MaptilerLanguage.SERBIAN_LATIN`
+    - `L.MaptilerLanguage.SLOVAK`
+    - `L.MaptilerLanguage.SLOVENE`
+    - `L.MaptilerLanguage.SPANISH`
+    - `L.MaptilerLanguage.SWEDISH`
+    - `L.MaptilerLanguage.TAMIL`
+    - `L.MaptilerLanguage.TELUGU`
+    - `L.MaptilerLanguage.THAI`
+    - `L.MaptilerLanguage.TURKISH`
+    - `L.MaptilerLanguage.UKRAINIAN`
+    - `L.MaptilerLanguage.WELSH`
+  </details>
 
-</details>
-
-- `style`: [string | style definition] MapTiler has created many professional-looking styles that suit the majority of use cases. Directly from the constructor, you can specify the short style ID. Alternatively, a style URL or a complete style definition object can also be used. Default: `L.MaptilerStyle.STREETS`. Depending on how you are importing, you could use `L.MaptilerStyle.STREETS`, `MaptilerStyle.STREETS` or `leafletmaptilersdk.MaptilerStyle.STREETS`. <details>
+- `style`: [string | style definition] MapTiler has created many professional-looking styles that suit the majority of use cases. Directly from the constructor, you can specify the short style ID. Alternatively, a style URL or a complete style definition object can also be used. Default: `L.MaptilerStyle.STREETS`. Depending on how you are importing, you could use `L.MaptilerStyle.STREETS`, `MaptilerStyle.STREETS` or `leafletmaptilersdk.MaptilerStyle.STREETS`.
+  <details>
     <summary>➡️ See the list of the MapTiler style IDs ⬅️</summary>
+    
     - `L.MaptilerStyle.STREETS`, reference style for navigation and city exploration
       - `L.MaptilerStyle.STREETS.DARK` (variant)
       - `L.MaptilerStyle.STREETS.LIGHT` (variant)
