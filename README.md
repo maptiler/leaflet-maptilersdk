@@ -1,33 +1,88 @@
-<p align="center">
-  <a href="https://docs.maptiler.com/leaflet/examples/vector-tiles-in-leaflet-js/">Vector Tiles in Leaflet JS tutorial →</a><br><br>
-  <img src="images/header.png" width="70%" alt="Leaflet + MapTiler SDK JS logo">
-</p>
+<img src="images/header.png" alt="Company Logo" height="32"/>
+
+# Vector Tiles in Leaflet
 
 Add a layer to your Leaflet app that displays [MapTiler SDK](https://docs.maptiler.com/sdk-js/) basemaplayer!
 
 **MapTiler SDK JS** is an extension of MapLibre GL JS, fully backward compatible, tailored for MapTiler Cloud, and with plenty of extra features, including **TypeScript** support!
 
-![MapTiler vector map displayed with Leaflet](images/leaflet-maptilersdk.jpg)
+[![](https://img.shields.io/npm/v/@maptiler/leaflet-maptilersdk?style=for-the-badge&labelColor=D3DBEC&color=f2f6ff&logo=npm&logoColor=333359)](https://www.npmjs.com/package/@maptiler/leaflet-maptilersdk) ![](https://img.shields.io/badge/-white?style=for-the-badge&logo=javascript)![](https://img.shields.io/badge/-white?style=for-the-badge&logo=typescript)
 
-## How to use vector tile layer in Leaflet with MapTiler SDK JS
+---
+
+📖 [Documentation](https://docs.maptiler.com/leaflet/#maptiler-sdk-layer-vector-tiles-layer) &nbsp; 📦 [NPM Package](https://www.npmjs.com/package/@maptiler/leaflet-maptilersdk) &nbsp; 🌐 [Website](https://www.maptiler.com/) &nbsp; 🔑 [Get API Key](https://cloud.maptiler.com/account/keys/)
+
+---
+
+<br>
+
+<details> <summary><b>Table of Contents</b></summary>
+<ul>
+<li><a href="#-installation">Installation</a></li>
+<li><a href="#-basic-usage">Basic Usage</a></li>
+<li><a href="#-related-examples">Examples</a></li>
+<li><a href="#-api-reference">API Reference</a></li>
+<li><a href="#-support">Support</a></li>
+<li><a href="#-contributing">Contributing</a></li>
+<li><a href="#-license">License</a></li>
+<li><a href="#-acknowledgements">Acknowledgements</a></li>
+</ul>
+</details>
+
+<p align="center">   <img src="images/leaflet-maptilersdk.jpg" alt="MapTiler vector map displayed with Leaflet" width="80%"/>  <br />  <a href="https://docs.maptiler.com/leaflet/examples/vector-tiles-in-leaflet-js/">See live interactive demo</a> </p>
+<br>
+
+## 📦 Installation
+
+### From NPM
+
+```shell
+npm install @maptiler/leaflet-maptilersdk
+```
 
 ### From CDN with the UMD bundle
-The UDM *leaflet-maptilersdk* bundle is not packaged with Leaflet nor with MapTiler SDK, so those will have to be imported as `<script>` separately in the `<head>` HTML element as follows:
+
+```html
+<!-- MapTiler SDK -->
+<script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.umd.min.js"></script>
+<link
+  href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.css"
+  rel="stylesheet"
+/>
+
+<!-- Leaflet plugin for MapTiler SDK Layers -->
+<script src="https://cdn.maptiler.com/leaflet-maptilersdk/v3.0.0/leaflet-maptilersdk.js"></script>
+```
+
+<br>
+
+## 🚀 Basic Usage
+
+### From CDN with the UMD bundle
+
+The UDM _leaflet-maptilersdk_ bundle is not packaged with Leaflet nor with MapTiler SDK, so those will have to be imported as `<script>` separately in the `<head>` HTML element as follows:
 
 ```html
 <!-- Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+/>
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
 <!-- MapTiler SDK -->
 <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.umd.min.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.css" rel="stylesheet" />
+<link
+  href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.css"
+  rel="stylesheet"
+/>
 
 <!-- Leaflet plugin for MapTiler SDK Layers -->
 <script src="https://cdn.maptiler.com/leaflet-maptilersdk/v3.0.0/leaflet-maptilersdk.js"></script>
 ```
 
 Then, in the HTML `<body>`, declare the container that will host the map:
+
 ```html
 <div id="map"></div>
 ```
@@ -36,7 +91,7 @@ Finally, add a `<script>` to initialize the Leaflet Map that contains a MapTiler
 
 ```js
 // Center the map on Manhattan, zoom level 13
-const map = L.map('map').setView([40.7468, -73.98775], 13);
+const map = L.map("map").setView([40.7468, -73.98775], 13);
 
 // Add a marker with a popup
 L.marker([40.7468, -73.98775])
@@ -45,21 +100,24 @@ L.marker([40.7468, -73.98775])
   .openPopup();
 
 // Create a MapTiler Layer inside Leaflet
-const mtLayer = L.maptiler.maptilerLayer({
-  // Get your free API key at https://cloud.maptiler.com
-  apiKey: "YOUR_MAPTILER_API_KEY",
-}).addTo(map);
+const mtLayer = L.maptiler
+  .maptilerLayer({
+    // Get your free API key at https://cloud.maptiler.com
+    apiKey: "YOUR_MAPTILER_API_KEY",
+  })
+  .addTo(map);
 ```
 
 The notation `L.maptiler.maptilerLayer()` is the typical Leaflet way to expose a factory function that creates a layer. Even though our plugin exposes other ways to do exactly the same thing, this notation may suit your programming style better.  
 The following are all yielding the same result:
+
 - `const mtLayer = L.maptiler.maptilerLayer( options )` (mind the lowercase `m`, it's a factory function)
 - `const mtLayer = new L.maptiler.MaptilerLayer( options )` (mind the uppercase `M`, it's a class)
 - `const mtLayer = leafletmaptilersdk.maptilerLayer( options )` (mind the lowercase `m`, it's a factory function)
 - `const mtLayer = new leafletmaptilersdk.MaptilerLayer( options )` (mind the upper case `M`, it's a class)
 
-
 ### From ES module using `import`
+
 We use the [Vite vanilla JS app](https://vitejs.dev/guide/) as a starting point for the following examples.
 
 The typical Leaflet plugin usually adds new elements directly in the global object `L`. ⚠️ Since the version 3.0.0 (and the addition of TypeScript support), this plugin no longer adds anything to the global `L` namespace in ES mode. Instead, the library opts for a cleaner and more modern design:
@@ -70,14 +128,19 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 // Import some elements from the Leaflet-MapTiler Plugin
-import { Language, MaptilerLayer, MapStyle } from "@maptiler/leaflet-maptilersdk";
+import {
+  Language,
+  MaptilerLayer,
+  MapStyle,
+} from "@maptiler/leaflet-maptilersdk";
 
-// Import your custom style, 
+// Import your custom style,
 // depending on your configuration, you may have to change how this is done
-import './style.css';
+import "./style.css";
 ```
 
 Then, in the Vite vanilla app, we would have to do exactly like in regular vanilla JS:
+
 ```js
 // Center the map on Manhattan, zoom level 13
 const map = L.map("map").setView([40.7468, -73.98775], 13);
@@ -101,7 +164,8 @@ const mtLayer = maptilerLayer({
 }).addTo(map);
 ```
 
-## From ES module, the *async* way
+## From ES module, the _async_ way
+
 Some frontend frameworks are very opinionated regarding Server-Side-rendering and will attempt to perform it; that's the case of [Next.js](https://nextjs.org/). But Leaflet does not play well with it because there are some direct calls to the global `window` object, and this would crash on a server. The fix consists of importing Leaflet dynamically, and then `@maptiler/leaflet-maptilersdk` can also be imported.
 
 The React lifecycle `.componentDidMount()` of a class component of the `useEffect []` functional equivalent is only called on the frontend when the component is ready. It's a good moment to dynamically import Leaflet because the `window` globale object is accessible:
@@ -110,13 +174,12 @@ The React lifecycle `.componentDidMount()` of a class component of the `useEffec
 useEffect(() => {
   // A self-callable async function because importing packages dynamically is an async thing to do
   (async () => {
-
     // dynamic import of Leaflet
-    const L = await import('leaflet');
+    const L = await import("leaflet");
 
     // dynamic import of the library
-    const leafletmaptilersdk = await import('@maptiler/leaflet-maptilersdk'); 
-    
+    const leafletmaptilersdk = await import("@maptiler/leaflet-maptilersdk");
+
     // Creating the Leaflet map
     const map = L.map(containerRef.current).setView([51.505, -0.09], 10);
 
@@ -124,14 +187,26 @@ useEffect(() => {
     const mtLayer = new leafletmaptilersdk.MaptilerLayer({
       apiKey: "YOUR_MAPTILER_API_KEY",
     }).addTo(map);
-
   })();
 }, []);
 ```
 
+<br>
 
-### API and options
-#### Constructor and Factory function
+## 💡 Related Examples
+
+- [Use Leaflet JS with Vector Tiles](https://docs.maptiler.com/leaflet/examples/vector-tiles-in-leaflet-js/)
+- [Display thousands of polygons in Leaflet](https://docs.maptiler.com/leaflet/examples/helpers-polygon/)
+- [Plotting thousands or millions of points in Leaflet](https://docs.maptiler.com/leaflet/examples/helpers-point/)
+
+Check out the full list of [MapTiler Leaflet examples](https://docs.maptiler.com/leaflet/examples/)
+
+<br>
+
+## 📘 API Reference
+
+### Constructor and Factory function
+
 The option object passed to the factory function `maptilerLayer` or to the constructor `MaptilerLayer` is then passed to the constructor of the Maptiler SDK `Map` class. Read more about the possible options on our [SDK documentation](https://docs.maptiler.com/sdk-js/api/map/).
 
 Here are the major options:
@@ -218,69 +293,76 @@ Here are the major options:
 </details>
 
 - `style`: [string | style definition] MapTiler has created many professional-looking styles that suit the majority of use cases. Directly from the constructor, you can specify the short style ID. Alternatively, a style URL or a complete style definition object can also be used. Default: `L.MaptilerStyle.STREETS`. Depending on how you are importing, you could use `L.MaptilerStyle.STREETS`, `MaptilerStyle.STREETS` or `leafletmaptilersdk.MaptilerStyle.STREETS`. <details>
-  <summary>➡️ See the list of the MapTiler style IDs ⬅️</summary>
-  - `L.MaptilerStyle.STREETS`, reference style for navigation and city exploration
-    - `L.MaptilerStyle.STREETS.DARK` (variant)
-    - `L.MaptilerStyle.STREETS.LIGHT` (variant)
-    - `L.MaptilerStyle.STREETS.PASTEL` (variant)
-  - `L.MaptilerStyle.SATELLITE` reference style satellite and airborne imagery (no variants)
-  - `L.MaptilerStyle.HYBRID` reference style satellite and airborne imagery with labels (no variants)
-  - `L.MaptilerStyle.OUTDOOR` reference style for adventure
-    - `L.MaptilerStyle.OUTDOOR.DARK` (variant)
-  - `L.MaptilerStyle.WINTER` reference style for winter adventure
-    - `L.MaptilerStyle.WINTER.DARK` (variant)
-  - `L.MaptilerStyle.DATAVIZ`, the perfect style for data visualization, with very little noise
-    - `L.MaptilerStyle.DATAVIZ.DARK` (variant)
-    - `L.MaptilerStyle.DATAVIZ.LIGHT` (variant)
-  - `L.MaptilerStyle.BASIC` reference style for minimalist design and general purpose
-    - `L.MaptilerStyle.BASIC.DARK` (variant)
-    - `L.MaptilerStyle.BASIC.LIGHT` (variant)
-  - `L.MaptilerStyle.BRIGHT` reference style for high contrast navigation
-    - `L.MaptilerStyle.BRIGHT.DARK` (variant)
-    - `L.MaptilerStyle.BRIGHT.LIGHT` (variant)
-    - `L.MaptilerStyle.BRIGHT.PASTEL` (variant)
-  - `L.MaptilerStyle.TOPO` reference style for topographic study
-    - `L.MaptilerStyle.TOPO.SHINY` (variant)
-    - `L.MaptilerStyle.TOPO.PASTEL` (variant)
-    - `L.MaptilerStyle.TOPO.TOPOGRAPHIQUE` (variant)
-  - `L.MaptilerStyle.VOYAGER` reference style for stylish yet minimalist maps
-    - `L.MaptilerStyle.VOYAGER.DARK` (variant)
-    - `L.MaptilerStyle.VOYAGER.LIGHT` (variant)
-    - `L.MaptilerStyle.VOYAGER.VINTAGE` (variant)
-  - `L.MaptilerStyle.TONER` reference style for very high contrast stylish maps 
-    - `L.MaptilerStyle.TONER.BACKGROUND` (variant)
-    - `L.MaptilerStyle.TONER.LITE` (variant)
-    - `L.MaptilerStyle.TONER.LINES` (variant)
-  - `L.MaptilerStyle.OPENSTREETMAP` reference style for the classic OSM look
-  - `L.MaptilerStyle.OCEAN` reference style with seabed isoline, hilshading and trenches info
+    <summary>➡️ See the list of the MapTiler style IDs ⬅️</summary>
+    - `L.MaptilerStyle.STREETS`, reference style for navigation and city exploration
+      - `L.MaptilerStyle.STREETS.DARK` (variant)
+      - `L.MaptilerStyle.STREETS.LIGHT` (variant)
+      - `L.MaptilerStyle.STREETS.PASTEL` (variant)
+    - `L.MaptilerStyle.SATELLITE` reference style satellite and airborne imagery (no variants)
+    - `L.MaptilerStyle.HYBRID` reference style satellite and airborne imagery with labels (no variants)
+    - `L.MaptilerStyle.OUTDOOR` reference style for adventure
+      - `L.MaptilerStyle.OUTDOOR.DARK` (variant)
+    - `L.MaptilerStyle.WINTER` reference style for winter adventure
+      - `L.MaptilerStyle.WINTER.DARK` (variant)
+    - `L.MaptilerStyle.DATAVIZ`, the perfect style for data visualization, with very little noise
+      - `L.MaptilerStyle.DATAVIZ.DARK` (variant)
+      - `L.MaptilerStyle.DATAVIZ.LIGHT` (variant)
+    - `L.MaptilerStyle.BASIC` reference style for minimalist design and general purpose
+      - `L.MaptilerStyle.BASIC.DARK` (variant)
+      - `L.MaptilerStyle.BASIC.LIGHT` (variant)
+    - `L.MaptilerStyle.BRIGHT` reference style for high contrast navigation
+      - `L.MaptilerStyle.BRIGHT.DARK` (variant)
+      - `L.MaptilerStyle.BRIGHT.LIGHT` (variant)
+      - `L.MaptilerStyle.BRIGHT.PASTEL` (variant)
+    - `L.MaptilerStyle.TOPO` reference style for topographic study
+      - `L.MaptilerStyle.TOPO.SHINY` (variant)
+      - `L.MaptilerStyle.TOPO.PASTEL` (variant)
+      - `L.MaptilerStyle.TOPO.TOPOGRAPHIQUE` (variant)
+    - `L.MaptilerStyle.VOYAGER` reference style for stylish yet minimalist maps
+      - `L.MaptilerStyle.VOYAGER.DARK` (variant)
+      - `L.MaptilerStyle.VOYAGER.LIGHT` (variant)
+      - `L.MaptilerStyle.VOYAGER.VINTAGE` (variant)
+    - `L.MaptilerStyle.TONER` reference style for very high contrast stylish maps 
+      - `L.MaptilerStyle.TONER.BACKGROUND` (variant)
+      - `L.MaptilerStyle.TONER.LITE` (variant)
+      - `L.MaptilerStyle.TONER.LINES` (variant)
+    - `L.MaptilerStyle.OPENSTREETMAP` reference style for the classic OSM look
+    - `L.MaptilerStyle.OCEAN` reference style with seabed isoline, hilshading and trenches info
 
   You can also easily [create your custom map style](https://maptiler.com/cloud/customize/)
-</details>  
+  </details>
 
 - `apiKey`: [string] your MapTiler Cloud API key. Default: empty string
 
 The `MaptilerLayer` constructor and/or `maptilerLayer` factory function returns a Leaflet Maptiler layer that we will call `mtLayer`.
 
-#### Method `.addTo(map)`
+### Methods
+
+#### `.addTo(map)`
+
 The same behavior as `.addTo` on any Leaflet layer: this adds the layer to a given
 map or group.
 
-#### Method `.getMaptilerMap(): maptilerLayer.Map`
+#### `.getMaptilerMap(): maptilerLayer.Map`
+
 Returns `mapltilersdk.Map` object.
 
-#### Method `.setStyle(s)`
+#### `.setStyle(s)`
+
 Update the style with a style ID, style URL, or style definition. The easiest is to use a built-in style ID such as listed above with the form `L.MaptilerStyle.STREETS`.
 
-#### Method `.setLanguage(l)`
+#### `.setLanguage(l)`
+
 Update the map language. For this, the best is to use a built-in language shorthand with the form `L.MaptilerLanguage.JAPANESE`, such as listed above.
 
 #### Methods to add vector layers
-We have added an even easier way to use the MapTiler SDK [vector layer helpers](https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers), directed under the instance of the custom Leaflet layer. You can now call `.addPolyline`, `.addPolygon`, `.addPoint`, and `.addHeatmap` using a path to a file or the ID of a dataset hosted on MapTiler Cloud.   
+
+We have added an even easier way to use the MapTiler SDK [vector layer helpers](https://github.com/maptiler/maptiler-sdk-js#vector-layer-helpers), directed under the instance of the custom Leaflet layer. You can now call `.addPolyline`, `.addPolygon`, `.addPoint`, and `.addHeatmap` using a path to a file or the ID of a dataset hosted on MapTiler Cloud.  
 Let's see an example:
 
 ```js
 // Init the map
-const map = L.map('map').setView([46.3796, 6.1518], 13);
+const map = L.map("map").setView([46.3796, 6.1518], 13);
 
 // Creating and mounting the MapTiler SDK Layer
 const mtLayer = new L.MaptilerLayer({
@@ -291,29 +373,78 @@ const mtLayer = new L.MaptilerLayer({
 // The custom event "ready" is triggered by the MaptilerLayer when the internal
 // MapTiler Map instance is fully loaded and can be added more layers
 mtLayer.on("ready", () => {
-  
   // Leverage the MapTiler SDK layer helpers to add polyline / point / polygon / heatmap layers easily
   mtLayer.addPolyline({
     // A Maptiler Cloud dataset ID, or URL to GeoJSON/GPX/KML
-    data:"74003ba7-215a-4b7e-8e26-5bbe3aa70b05",
+    data: "74003ba7-215a-4b7e-8e26-5bbe3aa70b05",
     lineColor: "#008888", // optional
-    outline: true,        // optional
-    outlineWidth: 2,      // optional
+    outline: true, // optional
+    outlineWidth: 2, // optional
   });
-
-})
+});
 ```
 
 Here is the result, a bike ride in France and Switzerland, displayed on the dark Backdrop MapTiler style:
 ![PolyLine on top of MapTiler Dark map](images/sdk_helpers.jpg)
 
-#### Event `"ready"`
+### Events
+
+#### `"ready"`
+
 The `"ready"` event is triggered when the internal MapTiler SDK Map instance is fully loaded and can accept some more layers to be added. This corresponds to the MapTiler SDk and MapLibre `load` event.
 
-## Bug Reports & Feature Requests
+<br>
+
+## 💬 Support
+
+- 📚 [Documentation](https://docs.maptiler.com/leaflet/#maptiler-sdk-layer-vector-tiles-layer) - Comprehensive guides and API reference
+- ✉️ [Contact us](https://maptiler.com/contact) - Get in touch or submit a request
+- 🐦 [Twitter/X](https://twitter.com/maptiler) - Follow us for updates
+
+<br>
+
+---
+
+<br>
+
+## 🤝 Contributing
+
+We love contributions from the community! Whether it's bug reports, feature requests, or pull requests, all contributions are welcome:
+
+- Fork the repository and create your branch from `main`
+- If you've added code, add tests that cover your changes
+- Ensure your code follows our style guidelines
+- Give your pull request a clear, descriptive summary
+- Open a Pull Request with a comprehensive description
+
+### Bug Reports & Feature Requests
+
 Please use the [issue tracker](https://github.com/maptiler/leaflet-maptilersdk/issues) to report any bugs or file feature requests.
 
-## License
-See [LICENSE.md](https://github.com/maptiler/leaflet-maptilersdk/blob/main/LICENSE.md)
+<br>
 
+## 📄 License
 
+This project is licensed under the MapTiler SDK Leaflet Module – see the [LICENSE](./LICENSE) file for details.
+
+<br>
+
+## 🙏 Acknowledgements
+
+This project is built on the shoulders of giants:
+
+- [MapTiler SDK JS](https://www.maptiler.com/interactive-maps/) – The open-source mapping library
+- [Leaflet](https://leafletjs.com/) – an open-source JavaScript library for mobile-friendly interactive maps
+
+<br>
+
+<p align="center" style="margin-top:20px;margin-bottom:20px;"> <a href="https://cloud.maptiler.com/account/keys/" style="display:inline-block;padding:12px 32px;background:#F2F6FF;color:#000;font-weight:bold;border-radius:6px;text-decoration:none;"> Get Your API Key <sup style="background-color:#0000ff;color:#fff;padding:2px 6px;font-size:12px;border-radius:3px;">FREE</sup><br /> <span style="font-size:90%;font-weight:400;">Start building with 100,000 free map loads per month ・ No credit card required.</span> </a> </p>
+
+<br>
+
+<p align="center"> 💜 Made with love by the <a href="https://www.maptiler.com/">MapTiler</a> team <br />
+<p align="center">
+  <a href="https://www.maptiler.com/">Website</a> •
+  <a href="https://docs.maptiler.com/leaflet/#maptiler-sdk-layer-vector-tiles-layer">Documentation</a> •
+  <a href="https://github.com/maptiler/leaflet-maptilersdk">GitHub</a>
+</p>
