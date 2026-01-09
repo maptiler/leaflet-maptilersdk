@@ -425,7 +425,7 @@ Please use the [issue tracker](https://github.com/maptiler/leaflet-maptilersdk/i
 
 ## 📄 License
 
-This project is licensed under the MapTiler SDK Leaflet Module – see the [LICENSE](./LICENSE) file for details.
+This project is licensed under the MapTiler SDK Leaflet Module – see the [LICENSE](./LICENSE.md) file for details.
 
 <br>
 
