@@ -44,14 +44,14 @@ npm install @maptiler/leaflet-maptilersdk
 
 ```html
 <!-- MapTiler SDK -->
-<script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.umd.min.js"></script>
+<script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.9.0/maptiler-sdk.umd.min.js"></script>
 <link
-  href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.css"
+  href="https://cdn.maptiler.com/maptiler-sdk-js/v3.9.0/maptiler-sdk.css"
   rel="stylesheet"
 />
 
 <!-- Leaflet plugin for MapTiler SDK Layers -->
-<script src="https://cdn.maptiler.com/leaflet-maptilersdk/v3.0.0/leaflet-maptilersdk.js"></script>
+<script src="https://cdn.maptiler.com/leaflet-maptilersdk/v4.1.1/leaflet-maptilersdk.js"></script>
 ```
 
 <br>
@@ -66,19 +66,19 @@ The UDM _leaflet-maptilersdk_ bundle is not packaged with Leaflet nor with MapTi
 <!-- Leaflet -->
 <link
   rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <!-- MapTiler SDK -->
-<script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.umd.min.js"></script>
+<script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.9.0/maptiler-sdk.umd.min.js"></script>
 <link
-  href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.0/maptiler-sdk.css"
+  href="https://cdn.maptiler.com/maptiler-sdk-js/v3.9.0/maptiler-sdk.css"
   rel="stylesheet"
 />
 
 <!-- Leaflet plugin for MapTiler SDK Layers -->
-<script src="https://cdn.maptiler.com/leaflet-maptilersdk/v3.0.0/leaflet-maptilersdk.js"></script>
+<script src="https://cdn.maptiler.com/leaflet-maptilersdk/v4.1.1/leaflet-maptilersdk.js"></script>
 ```
 
 Then, in the HTML `<body>`, declare the container that will host the map:
