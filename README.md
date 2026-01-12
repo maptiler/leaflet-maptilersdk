@@ -60,7 +60,7 @@ npm install @maptiler/leaflet-maptilersdk
 
 ### From CDN with the UMD bundle
 
-The UDM _leaflet-maptilersdk_ bundle is not packaged with Leaflet nor with MapTiler SDK, so those will have to be imported as `<script>` separately in the `<head>` HTML element as follows:
+The UMD _leaflet-maptilersdk_ bundle is not packaged with Leaflet nor with MapTiler SDK, so those will have to be imported as `<script>` separately in the `<head>` HTML element as follows:
 
 ```html
 <!-- Leaflet -->
