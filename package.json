@@ -38,7 +38,7 @@
     "type": "git",
     "url": "https://github.com/maptiler/leaflet-maptilersdk.git"
   },
-  "license": "",
+  "license": "See LICENSE.md",
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.10.5",
